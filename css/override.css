@@ -1,0 +1,13 @@
+figure.img {
+    text-align: center;
+}
+
+figure.img img {
+    width: auto;
+    display: inline;
+}
+
+/*pre code {
+    white-space: pre-wrap;
+    word-break: keep-all;
+}*/

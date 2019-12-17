@@ -1,0 +1,51 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>centos &ndash; Of Code & Systems</title><meta name=description property="og:description" content><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/blog_hugo/assets/syntax.css><link rel=stylesheet href=/blog_hugo/assets/primer-build.css><link rel=stylesheet href=/blog_hugo/assets/style.css></head><body class=bg-gray><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=https://zam-zam.github.io/blog_hugo/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div><h1>centos</h1><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/blog_hugo/2017/05/centos-7-kernel-panic-not-syncing-fatal-machine-check-on-current-cpu/><div class="h2 mt-1 mb-1">CentOS 7. Kernel panic — not syncing: Fatal machine check on current CPU</div></a></div><div class=Subhead-description><a href=/blog_hugo/categories/linux class=muted-link><span class="Label Label--gray-darker">linux</span></a>
+<a href=/blog_hugo/tags/centos class=muted-link><span class="Label Label--gray">centos</span></a>
+<a href=/blog_hugo/tags/linux class=muted-link><span class="Label Label--gray">linux</span></a><div class=float-md-right><span>2017-05-01</span></div></div></div><div class=text-gray><p><img src=/wp-content/uploads/2017/05/install-centos-7-logo.png alt></p><p><strong>Провайдер услуг</strong>: ovh</p><p><strong>Проц</strong>: Intel Xeon D-1521</p><p><strong>ОС</strong>: CentOS 7.3</p><p><strong>Ядро</strong>: 3.14 кастомное от ovh</p><p>Дело было на майских праздниках. Клиент, держащий сервис, написанный на php и использующий mysql как бд, попросил посмотреть, почему сервер внезапно перестаёт отвечать.</p><p>Предположили, что дело может быть в высокой нагрузке и отваливается сеть. Но нет, нагрузка так себе, на интерфейсе максимум 300 pps, трафик низкий, память не кушается, проц процентов на 40% загружен. В процессе выяснилось, что сервер не только перестаёт отвечать, но и сам перезагружается.</p><p>Ага! Настраиваем kdump. kdump не запускается на кастомном ядре 3.14 ovh. Ставим ванильное из родных реп</p><a class=muted-link href=/blog_hugo/2017/05/centos-7-kernel-panic-not-syncing-fatal-machine-check-on-current-cpu/>…</a></div></div><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/blog_hugo/2017/04/selinux-na-veb-servere/><div class="h2 mt-1 mb-1">SELinux на веб-сервере</div></a></div><div class=Subhead-description><a href=/blog_hugo/categories/linux class=muted-link><span class="Label Label--gray-darker">linux</span></a>
+<a href=/blog_hugo/tags/centos class=muted-link><span class="Label Label--gray">centos</span></a>
+<a href=/blog_hugo/tags/linux class=muted-link><span class="Label Label--gray">linux</span></a><div class=float-md-right><span>2017-04-19</span></div></div></div><div class=text-gray><h3 id=heading>Введение</h3><p>Когда-то, настраивая nginx+php-fpm, я просто делал <strong>setenforce 0</strong> или правил <strong>/etc/selinux/config</strong>, перманентно отключая selinux на сервере</p><blockquote><p><strong>/etc/selinux/config</strong></p></blockquote><div class=highlight><pre class=chroma><code class=language-ini data-lang=ini><span class=c1># This file controls the state of SELinux on the system.</span>
+<span class=c1># SELINUX= can take one of these three values:</span>
+<span class=c1>#       enforcing - SELinux security policy is enforced.</span>
+<span class=c1>#       permissive - SELinux prints warnings instead of enforcing.</span>
+<span class=c1>#       disabled - No SELinux policy is loaded.</span>
+<span class=na>SELINUX</span><span class=o>=</span><span class=s>disabled</span>
+</code></pre></div><p>Теперь, наконец разобравшись, я понял, что никогда больше не буду выключать selinux</p><a class=muted-link href=/blog_hugo/2017/04/selinux-na-veb-servere/>…</a></div></div></div></div><div id=side class="pr-1 bg-white"><aside class=pr-3><div class="Box Box--blue p-2 mb-3 mt-5"><a href=/blog_hugo/tags/ class=link-gray-dark><h4>Tags</h4></a><span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/tags/centos class="link-gray text-emphasized css-truncate-target"><span>Centos</span></a>
+<span class="text-right Counter">2</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/tags/dapp class="link-gray text-emphasized css-truncate-target"><span>Dapp</span></a>
+<span class="text-right Counter">1</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/tags/devops class="link-gray text-emphasized css-truncate-target"><span>Devops</span></a>
+<span class="text-right Counter">2</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/tags/linux class="link-gray text-emphasized css-truncate-target"><span>Linux</span></a>
+<span class="text-right Counter">3</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/tags/nginx class="link-gray text-emphasized css-truncate-target"><span>Nginx</span></a>
+<span class="text-right Counter">1</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/tags/php class="link-gray text-emphasized css-truncate-target"><span>Php</span></a>
+<span class="text-right Counter">1</span></span></div><div class="Box Box--blue p-2 mb-3"><a href=/blog_hugo/categories/ class=link-gray-dark><h4>Categories</h4></a><span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/categories/backend class="link-gray text-emphasized css-truncate-target"><span>Backend</span></a>
+<span class="text-right Counter">1</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/categories/devops class="link-gray text-emphasized css-truncate-target"><span>Devops</span></a>
+<span class="text-right Counter">2</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/categories/frontend class="link-gray text-emphasized css-truncate-target"><span>Frontend</span></a>
+<span class="text-right Counter">1</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/categories/javascript class="link-gray text-emphasized css-truncate-target"><span>Javascript</span></a>
+<span class="text-right Counter">1</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/categories/kubernetes class="link-gray text-emphasized css-truncate-target"><span>Kubernetes</span></a>
+<span class="text-right Counter">1</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/categories/linux class="link-gray text-emphasized css-truncate-target"><span>Linux</span></a>
+<span class="text-right Counter">3</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/categories/mysql class="link-gray text-emphasized css-truncate-target"><span>Mysql</span></a>
+<span class="text-right Counter">1</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/categories/owncloud class="link-gray text-emphasized css-truncate-target"><span>Owncloud</span></a>
+<span class="text-right Counter">1</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/categories/php class="link-gray text-emphasized css-truncate-target"><span>Php</span></a>
+<span class="text-right Counter">2</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/categories/web class="link-gray text-emphasized css-truncate-target"><span>Web</span></a>
+<span class="text-right Counter">2</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/categories/%d0%b1%d0%b0%d0%b7%d1%8b-%d0%b4%d0%b0%d0%bd%d0%bd%d1%8b%d1%85 class="link-gray text-emphasized css-truncate-target"><span>Базы данных</span></a>
+<span class="text-right Counter">1</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/categories/%d0%b1%d0%b5%d0%b7-%d1%80%d1%83%d0%b1%d1%80%d0%b8%d0%ba%d0%b8 class="link-gray text-emphasized css-truncate-target"><span>Без рубрики</span></a>
+<span class="text-right Counter">20</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/categories/%d0%b1%d0%b5%d0%b7%d0%be%d0%bf%d0%b0%d1%81%d0%bd%d0%be%d1%81%d1%82%d1%8c class="link-gray text-emphasized css-truncate-target"><span>Безопасность</span></a>
+<span class="text-right Counter">2</span></span>
+<span class="css-truncate no-wrap m-1 pl-1"><a href=/blog_hugo/categories/%d0%bf%d0%b5%d1%80%d0%b5%d0%b2%d0%be%d0%b4 class="link-gray text-emphasized css-truncate-target"><span>Перевод</span></a>
+<span class="text-right Counter">2</span></span></div></aside></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
+<a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.</span></div></div><script type=text/javascript src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type=text/x-mathjax-config>MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });</script></body></html>

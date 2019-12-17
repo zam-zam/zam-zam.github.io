@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Добавляем поле в форму обратной связи Joomla 1.5 &ndash; Of Code & Systems</title><meta name=description property="og:description" content="Создаём дополнительное поле «Введите Ваш номер телефона» при отправке сообщения через обратную связь Joomla
+Изменяемые файлы:
+ /components/contact.html.php /language/russian.php /language/english.php /components/contact.php |"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/blog_hugo/assets/syntax.css><link rel=stylesheet href=/blog_hugo/assets/primer-build.css><link rel=stylesheet href=/blog_hugo/assets/style.css></head><body class=bg-gray><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=https://zam-zam.github.io/blog_hugo/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">Добавляем поле в форму обратной связи Joomla 1.5</div></div><div class=Subhead-description><a href=/blog_hugo/categories/%D0%B1%D0%B5%D0%B7-%D1%80%D1%83%D0%B1%D1%80%D0%B8%D0%BA%D0%B8 class=muted-link><span class="Label Label--gray-darker">Без рубрики</span></a><div class=float-md-right><span title="Lastmod: 2012-09-06. Published at: 2012-09-06.">Published: 2012-09-06</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><p><img src=/wp-content/uploads/2012/09/01.png alt></p><p>Создаём дополнительное поле «Введите Ваш номер телефона» при отправке сообщения через обратную связь Joomla</p><p>Изменяемые файлы:</p><ul><li>/components/contact.html.php</li><li>/language/russian.php</li><li>/language/english.php</li><li>/components/contact.php</li></ul><ol><li><p>/components/contact.html.php</p><p>Ищем</p><pre><code>&lt;label for=&quot;contact_name&quot;&gt;
+    &lt;?php echo(_NAME_PROMPT);?&gt;
+&lt;/label&gt;
+&lt;br /&gt;
+&lt;input type=&quot;text&quot; name=&quot;name&quot; id=&quot;contact_name&quot; size=&quot;30″ class=&quot;inputbox&quot; value=&quot;&quot; /&gt;
+&lt;br /&gt;
+</code></pre><p>После добавляем</p><pre><code>&lt;label for=&quot;contact_phone&quot;&gt;
+    &lt;?php echo(_PHONE_PROMPT);?&gt;
+&lt;/label&gt;
+&lt;br /&gt;
+&lt;input type=&quot;text&quot; name=&quot;phone&quot; id=&quot;contact_phone&quot; size=&quot;30″ class=&quot;inputbox&quot; value=&quot;&quot; /&gt;
+&lt;br /&gt;
+</code></pre><p>Тем самым мы добавили поле ввода номера телефона в форму.</p><p>Теперь, чтобы вместо «_PHONE_PROMPT» отобразилось то, что ты хочешь, типа «Введите Ваш номер телефона», лезем дальше</p></li><li><p>/language/russian.php</p><p>Ищем</p><pre><code>DEFINE(‘_NAME_PROMPT','Введите Ваше имя:');
+</code></pre><p>После добавляем</p><pre><code>DEFINE(‘_PHONE_PROMPT','Введите Ваш номер телефона:');
+</code></pre></li><li><p>/language/english.php</p><p>Ищем</p><pre><code>DEFINE(‘_NAME_PROMPT',' Enter your name:');
+</code></pre><p>После добавляем</p><pre><code>DEFINE(‘_PHONE_PROMPT',' Enter your phone number:');
+</code></pre></li><li><p>/components/contact.php</p><p>Ищем</p><pre><code>$text         = strval( mosGetParam( $_POST, ‘text',             &quot; ) );
+$name         = strval( mosGetParam( $_POST, ‘name',             &quot; ) );
+$subject     = strval( mosGetParam( $_POST, ‘subject',         $default ) );
+</code></pre><p>После добавляем строчку</p><pre><code>$phone         = strval( mosGetParam( $_POST, ‘phone',         &quot; ) );
+</code></pre><p>За ней будет ещё строчка с email_copy. Этим мы добавили &ldquo;перехват&rdquo; значения переменной $phone при нажатии клавиши &ldquo;Отправить&rdquo; в форме сообщения.</p><p>Ищем</p><pre><code>$text     = $prefix .&quot;n&quot;. $name. ‘ &lt;‘. $email .'&gt;' .&quot;nn&quot;. stripslashes( $text );
+</code></pre><p>Заменяем на</p><pre><code>$text     = $prefix .&quot;n&quot;. $name. ‘ (‘. $phone .')' .' &lt;‘. $email .'&gt;' .&quot;nn&quot;. stripslashes( $text );
+</code></pre></li></ol><p>Таким образом добавили телефон в скобках справа от имени в приходящем сообщении.</p><p><img src=/wp-content/uploads/2012/09/02.png alt></p><p>Аналогично можно добавить любую другую информацию</p></section><section></section></article></div><div id=side class="pr-1 bg-white"><aside class=pr-3><div id=toc class="Box Box--blue mb-3"><b>Добавляем поле в форму обратной связи Joomla 1.5</b><nav id=TableOfContents></nav></div><div></div></aside></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
+<a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.</span></div></div><script type=text/javascript src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type=text/x-mathjax-config>MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });</script></body></html>

@@ -1,0 +1,108 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>dapp — утилита для сборки и деплоя контейнеров. Особенности работы &ndash; Of Code & Systems</title><meta name=description property="og:description" content="dapp — утилита от российской компании Флант, которая занимается внедрением devops-практик (kubernetes, ci/cd и всё такое, ну вы в курсе) Подробное описание можно прочитать на Хабре, а я бы хотел остановиться на некоторых особенностях работы с ней при сборке образов (здесь и далее под образом подразумевается docker image)
+На момент написания статьи актуальная версия dapp 0.36.*
+В качестве примера для наглядности и понимания общей картины возьмём за основу немного урезанное содержимое dappfile.yaml из официальной документации
+|"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/blog_hugo/assets/syntax.css><link rel=stylesheet href=/blog_hugo/assets/primer-build.css><link rel=stylesheet href=/blog_hugo/assets/style.css></head><body class=bg-gray><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=https://zam-zam.github.io/blog_hugo/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">dapp — утилита для сборки и деплоя контейнеров. Особенности работы</div></div><div class=Subhead-description><a href=/blog_hugo/categories/devops class=muted-link><span class="Label Label--gray-darker">devops</span></a>
+<a href=/blog_hugo/categories/linux class=muted-link><span class="Label Label--gray-darker">linux</span></a>
+<a href=/blog_hugo/tags/dapp class=muted-link><span class="Label Label--gray">dapp</span></a>
+<a href=/blog_hugo/tags/devops class=muted-link><span class="Label Label--gray">devops</span></a>
+<a href=/blog_hugo/tags/linux class=muted-link><span class="Label Label--gray">linux</span></a><div class=float-md-right><span title="Lastmod: 2018-12-03. Published at: 2018-12-03.">Published: 2018-12-03</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><figure class=img><img src=/wp-content/uploads/2018/12/logo_og-e1543878630388.png></figure><p><a href=https://github.com/flant/dapp>dapp</a> — утилита от российской компании Флант, которая занимается внедрением devops-практик (kubernetes, ci/cd и всё такое, ну вы в курсе) Подробное описание можно прочитать на <a href=https://habr.com/company/flant/blog/333682/>Хабре</a>, а я бы хотел остановиться на некоторых особенностях работы с ней при сборке образов (здесь и далее под образом подразумевается docker image)</p><p>На момент написания статьи актуальная версия dapp 0.36.*</p><p>В качестве примера для наглядности и понимания общей картины возьмём за основу немного урезанное содержимое <strong>dappfile.yaml</strong> из <a href=https://flant.github.io/dapp/how_to/getting_started.html>официальной документации</a></p><div class=highlight><pre class=chroma><code class=language-yaml data-lang=yaml>dimg<span class=p>:</span><span class=w> </span>~<span class=w>
+</span><span class=w></span>from<span class=p>:</span><span class=w> </span>ubuntu<span class=p>:</span><span class=m>16.04</span><span class=w>
+</span><span class=w></span>docker<span class=p>:</span><span class=w>
+</span><span class=w>  </span>WORKDIR<span class=p>:</span><span class=w> </span>/app<span class=w>
+</span><span class=w></span>git<span class=p>:</span><span class=w>
+</span><span class=w></span>-<span class=w> </span>add<span class=p>:</span><span class=w> </span>/<span class=w>
+</span><span class=w>  </span>to<span class=p>:</span><span class=w> </span>/app<span class=w>
+</span><span class=w>  </span>stageDependencies<span class=p>:</span><span class=w>
+</span><span class=w>    </span>install<span class=p>:</span><span class=w>
+</span><span class=w>    </span>-<span class=w> </span><span class=s2>&#34;*&#34;</span><span class=w>
+</span><span class=w></span>ansible<span class=p>:</span><span class=w>
+</span><span class=w>  </span>beforeInstall<span class=p>:</span><span class=w>
+</span><span class=w>  </span>-<span class=w> </span>name<span class=p>:</span><span class=w> </span><span class=s2>&#34;Install additional packages&#34;</span><span class=w>
+</span><span class=w>    </span>apt<span class=p>:</span><span class=w>
+</span><span class=w>      </span>name<span class=p>:</span><span class=w> </span><span class=s2>&#34;{{`{{ item }}`}}&#34;</span><span class=w>
+</span><span class=w>      </span>state<span class=p>:</span><span class=w> </span>present<span class=w>
+</span><span class=w>      </span>update_cache<span class=p>:</span><span class=w> </span>yes<span class=w>
+</span><span class=w>    </span>with_items<span class=p>:</span><span class=w>
+</span><span class=w>      </span>-<span class=w> </span>locales<span class=w>
+</span><span class=w>      </span>-<span class=w> </span>ca-certificates<span class=w>
+</span><span class=w>  </span>-<span class=w> </span>name<span class=p>:</span><span class=w> </span>Add<span class=w> </span>repository<span class=w> </span>key<span class=w>
+</span><span class=w>    </span>apt_key<span class=p>:</span><span class=w>
+</span><span class=w>      </span>keyserver<span class=p>:</span><span class=w> </span>keyserver.ubuntu.com<span class=w>
+</span><span class=w>      </span>id<span class=p>:</span><span class=w> </span>E5267A6C<span class=w>
+</span><span class=w>  </span>-<span class=w> </span>name<span class=p>:</span><span class=w> </span><span class=s2>&#34;Add PHP apt repository&#34;</span><span class=w>
+</span><span class=w>    </span>apt_repository<span class=p>:</span><span class=w>
+</span><span class=w>      </span>repo<span class=p>:</span><span class=w> </span><span class=s1>&#39;deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial main&#39;</span><span class=w>
+</span><span class=w>      </span>update_cache<span class=p>:</span><span class=w> </span>yes<span class=w>
+</span><span class=w>  </span>-<span class=w> </span>name<span class=p>:</span><span class=w> </span><span class=s2>&#34;Install PHP and modules&#34;</span><span class=w>
+</span><span class=w>    </span>apt<span class=p>:</span><span class=w>
+</span><span class=w>      </span>name<span class=p>:</span><span class=w> </span><span class=s2>&#34;{{`{{ item }}`}}&#34;</span><span class=w>
+</span><span class=w>      </span>state<span class=p>:</span><span class=w> </span>present<span class=w>
+</span><span class=w>      </span>update_cache<span class=p>:</span><span class=w> </span>yes<span class=w>
+</span><span class=w>    </span>with_items<span class=p>:</span><span class=w>
+</span><span class=w>      </span>-<span class=w> </span>php7<span class=m>.2</span><span class=w>
+</span><span class=w>      </span>-<span class=w> </span>php-sqlite3<span class=w>
+</span><span class=w>      </span>-<span class=w> </span>php-xml<span class=w>
+</span><span class=w>      </span>-<span class=w> </span>php-zip<span class=w>
+</span><span class=w>      </span>-<span class=w> </span>php-mbstring<span class=w>
+</span><span class=w>      </span>-<span class=w> </span>php-intl<span class=w>
+</span><span class=w>  </span>-<span class=w> </span>name<span class=p>:</span><span class=w> </span>Install<span class=w> </span>composer<span class=w>
+</span><span class=w>    </span>get_url<span class=p>:</span><span class=w>
+</span><span class=w>      </span>url<span class=p>:</span><span class=w> </span>https<span class=p>:</span>//getcomposer.org/download/<span class=m>1.6</span><span class=m>.5</span>/composer.phar<span class=w>
+</span><span class=w>      </span>dest<span class=p>:</span><span class=w> </span>/usr/local/bin/composer<span class=w>
+</span><span class=w>      </span>mode<span class=p>:</span><span class=w> </span>a+x<span class=w>
+</span><span class=w>  </span>install<span class=p>:</span><span class=w>
+</span><span class=w>  </span>-<span class=w> </span>name<span class=p>:</span><span class=w> </span><span class=s2>&#34;Install app deps&#34;</span><span class=w>
+</span><span class=w>    </span><span class=c># NOTICE: Always use `composer install` command in real world environment!</span><span class=w>
+</span><span class=w>    </span>shell<span class=p>:</span><span class=w> </span>composer<span class=w> </span>update<span class=w>
+</span><span class=w>    </span>become<span class=p>:</span><span class=w> </span>yes<span class=w>
+</span><span class=w>    </span>become_user<span class=p>:</span><span class=w> </span>app<span class=w>
+</span><span class=w>    </span>args<span class=p>:</span><span class=w>
+</span><span class=w>      </span>creates<span class=p>:</span><span class=w> </span>/app/vendor/<span class=w>
+</span><span class=w>      </span>chdir<span class=p>:</span><span class=w> </span>/app/<span class=w>
+</span><span class=w>  </span>setup<span class=p>:</span><span class=w>
+</span><span class=w>  </span>-<span class=w> </span>name<span class=p>:</span><span class=w> </span><span class=s2>&#34;Create start script&#34;</span><span class=w>
+</span><span class=w>    </span>copy<span class=p>:</span><span class=w>
+</span><span class=w>      </span>content<span class=p>:</span><span class=w> </span><span class=sd>|
+</span><span class=sd>       </span><span class=sd> </span><span class=sd>#!/bin/bash</span><span class=w>
+</span><span class=w>        </span>php<span class=w> </span>bin/console<span class=w> </span>server<span class=p>:</span>run<span class=w> </span><span class=m>0.0</span><span class=m>.0</span><span class=m>.0</span><span class=p>:</span><span class=m>8000</span><span class=w>
+</span><span class=w>      </span>dest<span class=p>:</span><span class=w> </span>/app/start.sh<span class=w>
+</span></code></pre></div><ul><li>Если в <strong>dappfile.yaml</strong> описан только один образ, мы можем использовать тильду <code>~</code> для обозначения образа по-умолчанию</li></ul><div class=highlight><pre class=chroma><code class=language-yaml data-lang=yaml>dimg<span class=p>:</span><span class=w> </span>~<span class=w>
+</span></code></pre></div><ul><li>Если мы хотим указать в качестве зависимостей этапа сборки (stageDependencies) все файлы, которые добавляются в образ, используем астериск в кавычках <code>"*"</code></li></ul><div class=highlight><pre class=chroma><code class=language-yaml data-lang=yaml>git<span class=p>:</span><span class=w>
+</span><span class=w></span>-<span class=w> </span>add<span class=p>:</span><span class=w> </span>/<span class=w>
+</span><span class=w>  </span>to<span class=p>:</span><span class=w> </span>/app<span class=w>
+</span><span class=w>  </span>stageDependencies<span class=p>:</span><span class=w>
+</span><span class=w>    </span>install<span class=p>:</span><span class=w>
+</span><span class=w>    </span>-<span class=w> </span><span class=s2>&#34;*&#34;</span><span class=w>
+</span></code></pre></div><ul><li>При указании stageDependencies пути должны быть указаны относительные (относительно указанного в <code>- add:</code>)</li></ul><div class=highlight><pre class=chroma><code class=language-yaml data-lang=yaml>git<span class=p>:</span><span class=w>
+</span><span class=w></span>-<span class=w> </span>add<span class=p>:</span><span class=w> </span>/<span class=w>
+</span><span class=w>  </span>to<span class=p>:</span><span class=w> </span>/app<span class=w>
+</span><span class=w>  </span>stageDependencies<span class=p>:</span><span class=w>
+</span><span class=w>    </span>install<span class=p>:</span><span class=w>
+</span><span class=w>    </span>-<span class=w> </span>composer.json<span class=w>
+</span></code></pre></div><ul><li><p>Добавление файлов в образ командой git происходит между этапами <code>beforeInstall</code> и <code>install</code>, поэтому stageDependencies нет смысла задавать для beforeInstall, к тому же такая попытка приведёт к ошибке
+<img src=/wp-content/uploads/2018/12/Screenshot-from-2018-12-04-01-16-14.png alt></p></li><li><p>Для директивы git можно указывать несколько <code>- add:</code> со своими stageDependencies для работы с разными каталогами</p></li></ul><div class=highlight><pre class=chroma><code class=language-yaml data-lang=yaml>git<span class=p>:</span><span class=w>
+</span><span class=w></span>-<span class=w> </span>add<span class=p>:</span><span class=w> </span>/src<span class=w>
+</span><span class=w>  </span>to<span class=p>:</span><span class=w> </span>/app<span class=w>
+</span><span class=w>  </span>stageDependencies<span class=p>:</span><span class=w>
+</span><span class=w>    </span>install<span class=p>:</span><span class=w>
+</span><span class=w>    </span>-<span class=w> </span><span class=s2>&#34;*&#34;</span><span class=w>
+</span><span class=w></span>-<span class=w> </span>add<span class=p>:</span><span class=w> </span>/assets<span class=w>
+</span><span class=w>  </span>to<span class=p>:</span><span class=w> </span>/assets<span class=w>
+</span><span class=w>  </span>stageDependencies<span class=p>:</span><span class=w>
+</span><span class=w>    </span>install<span class=p>:</span><span class=w>
+</span><span class=w>    </span>-<span class=w> </span><span class=s2>&#34;style.css&#34;</span><span class=w>
+</span></code></pre></div><ul><li>Для использования ansible переменных конструкцию с названием переменной и двойными фигурными скобками <code>{{ }}</code> надо дополнительно заключать в гравис, заключая уже это в ещё одни фигурные скобки с двойными кавычками — вспоминаем, что dapp написан на ruby</li></ul><div class=highlight><pre class=chroma><code class=language-yaml data-lang=yaml>ansible<span class=p>:</span><span class=w>
+</span><span class=w>  </span>beforeInstall<span class=p>:</span><span class=w>
+</span><span class=w>  </span>-<span class=w> </span>name<span class=p>:</span><span class=w> </span><span class=s2>&#34;Install additional packages&#34;</span><span class=w>
+</span><span class=w>    </span>apt<span class=p>:</span><span class=w>
+</span><span class=w>      </span>name<span class=p>:</span><span class=w> </span><span class=s2>&#34;{{`{{ item }}`}}&#34;</span><span class=w>
+</span><span class=w>      </span>state<span class=p>:</span><span class=w> </span>present<span class=w>
+</span><span class=w>      </span>update_cache<span class=p>:</span><span class=w> </span>yes<span class=w>
+</span></code></pre></div><ul><li>Чтобы с помощью ansible скопировать содержимое какого-либо файла в файл в образе, можно использовать функцию <code>.Files.Get</code>. Пути указываем относительно местоположение самого <strong>dappfile.yaml</strong>. Не забываем использовать <code>indent</code>, чтобы получить правильные отступы в yaml-файле, иначе получим ошибку</li></ul><div class=highlight><pre class=chroma><code class=language-yaml data-lang=yaml>ansible<span class=p>:</span><span class=w>
+</span><span class=w>  </span>-<span class=w> </span>copy<span class=p>:</span><span class=w>
+</span><span class=w>      </span>content<span class=p>:</span><span class=w> </span><span class=sd>|</span><span class=sd>
+</span><span class=sd></span><span class=sd>{{ .Files.Get &#34;files/nginx/nginx.conf&#34; | indent 8 }}</span><span class=w>
+</span><span class=w>      </span>dest<span class=p>:</span><span class=w> </span>/etc/nginx/nginx.conf<span class=w>
+</span></code></pre></div><p>Также за дополнительными полезностями в работе с dapp можно обратиться к официальному <a href=https://flant.github.io/dapp/faq.html>FAQ</a></p></section><section></section></article></div><div id=side class="pr-1 bg-white"><aside class=pr-3><div id=toc class="Box Box--blue mb-3"><b>dapp — утилита для сборки и деплоя контейнеров. Особенности работы</b><nav id=TableOfContents></nav></div><div></div></aside></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
+<a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.</span></div></div><script type=text/javascript src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type=text/x-mathjax-config>MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });</script></body></html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>centos on Of Code &amp; Systems</title><link>https://zam-zam.github.io/blog_hugo/tags/centos/</link><description>Recent content in centos on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Mon, 01 May 2017 18:55:07 +0000</lastBuildDate><atom:link href="https://zam-zam.github.io/blog_hugo/tags/centos/index.xml" rel="self" type="application/rss+xml"/><item><title>CentOS 7. Kernel panic — not syncing: Fatal machine check on current CPU</title><link>https://zam-zam.github.io/blog_hugo/2017/05/centos-7-kernel-panic-not-syncing-fatal-machine-check-on-current-cpu/</link><pubDate>Mon, 01 May 2017 18:55:07 +0000</pubDate><guid>https://zam-zam.github.io/blog_hugo/2017/05/centos-7-kernel-panic-not-syncing-fatal-machine-check-on-current-cpu/</guid><description>&lt;p>&lt;img src="https://zam-zam.github.io/blog_hugo/wp-content/uploads/2017/05/install-centos-7-logo.png" alt="">&lt;/p>
+&lt;p>&lt;strong>Провайдер услуг&lt;/strong>: ovh&lt;/p>
+&lt;p>&lt;strong>Проц&lt;/strong>: Intel Xeon D-1521&lt;/p>
+&lt;p>&lt;strong>ОС&lt;/strong>: CentOS 7.3&lt;/p>
+&lt;p>&lt;strong>Ядро&lt;/strong>: 3.14 кастомное от ovh&lt;/p>
+&lt;p>Дело было на майских праздниках. Клиент, держащий сервис, написанный на php и использующий mysql как бд, попросил посмотреть, почему сервер внезапно перестаёт отвечать.&lt;/p>
+&lt;p>Предположили, что дело может быть в высокой нагрузке и отваливается сеть. Но нет, нагрузка так себе, на интерфейсе максимум 300 pps, трафик низкий, память не кушается, проц процентов на 40% загружен. В процессе выяснилось, что сервер не только перестаёт отвечать, но и сам перезагружается.&lt;/p>
+&lt;p>Ага! Настраиваем kdump. kdump не запускается на кастомном ядре 3.14 ovh. Ставим ванильное из родных реп&lt;/p></description></item><item><title>SELinux на веб-сервере</title><link>https://zam-zam.github.io/blog_hugo/2017/04/selinux-na-veb-servere/</link><pubDate>Wed, 19 Apr 2017 15:00:10 +0000</pubDate><guid>https://zam-zam.github.io/blog_hugo/2017/04/selinux-na-veb-servere/</guid><description>&lt;h3 id="heading">Введение&lt;/h3>
+&lt;p>Когда-то, настраивая nginx+php-fpm, я просто делал &lt;strong>setenforce 0&lt;/strong> или правил &lt;strong>/etc/selinux/config&lt;/strong>, перманентно отключая selinux на сервере&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>/etc/selinux/config&lt;/strong>&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="c1"># This file controls the state of SELinux on the system.&lt;/span>
+&lt;span class="c1"># SELINUX= can take one of these three values:&lt;/span>
+&lt;span class="c1"># enforcing - SELinux security policy is enforced.&lt;/span>
+&lt;span class="c1"># permissive - SELinux prints warnings instead of enforcing.&lt;/span>
+&lt;span class="c1"># disabled - No SELinux policy is loaded.&lt;/span>
+&lt;span class="na">SELINUX&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">disabled&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Теперь, наконец разобравшись, я понял, что никогда больше не буду выключать selinux&lt;/p></description></item></channel></rss>
