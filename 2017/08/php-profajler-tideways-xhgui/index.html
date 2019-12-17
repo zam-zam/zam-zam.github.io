@@ -17,14 +17,16 @@ make
 </code></pre></div><h3 id=-xhgui>Устанавливаем xhgui</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> /var/www
 git clone https://github.com/perftools/xhgui.git xhgui
 </code></pre></div><h3 id=----->Создадим конфиг, чтобы настроить частоту профилирования</h3><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>cp xhgui/config/config.default.php xhgui/config/config.php
-</code></pre></div><h3 id=--xhguiconfigconfigphp---->Кусок конфига xhgui/config/config.php, отвечающий за частоту профилирования</h3><div class=highlight><pre class=chroma><code class=language-php data-lang=php>...
-    // Profile 1 in 100 requests.
-    // You can return true to profile every request.
-    &#39;profiler.enable&#39; =<span class=ni>&amp;gt;</span> function() {
-        #return rand(1, 100) === 42;
-        return true; # будет профилировать каждый запрос
-    },
-...
+</code></pre></div><h3 id=--xhguiconfigconfigphp---->Кусок конфига xhgui/config/config.php, отвечающий за частоту профилирования</h3><div class=highlight><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+
+<span class=o>...</span>
+    <span class=c1>// Profile 1 in 100 requests.
+</span><span class=c1></span>    <span class=c1>// You can return true to profile every request.
+</span><span class=c1></span>    <span class=s1>&#39;profiler.enable&#39;</span> <span class=o>=&amp;</span><span class=nx>gt</span><span class=p>;</span> <span class=k>function</span><span class=p>()</span> <span class=p>{</span>
+        <span class=c1>#return rand(1, 100) === 42;
+</span><span class=c1></span>        <span class=k>return</span> <span class=k>true</span><span class=p>;</span> <span class=c1># будет профилировать каждый запрос
+</span><span class=c1></span>    <span class=p>},</span>
+<span class=o>...</span>
 </code></pre></div><h2 id=->Включаем профилирование</h2><p>Чтобы получить доступ к веб-интерфейсу xhgui, для nginx надо создать конфиг следующего вида:</p><div class=highlight><pre class=chroma><code class=language-nginx data-lang=nginx><span class=k>server</span> <span class=p>{</span>
     <span class=kn>listen</span>   <span class=mi>8888</span><span class=p>;</span>
 
