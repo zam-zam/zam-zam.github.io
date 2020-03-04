@@ -57,7 +57,7 @@
 </span><span class=gd></span><span class=gi>+   version: {{ .Values.charts.versions.backend }}
 </span><span class=gi></span>...
 </code></pre></div><h2 id=----->Разный набор приложений в разных окружениях</h2><p>Отлично, но что если нам не надо в <code>production</code> выкатывать postgres, потому что мы знаем, что не надо базу данных пихать в k8s и для прода у нас есть замечательный отдельный кластер postgres? Для решения этой проблемы у нас есть лейблы (labels)</p><pre><code>helmfile -n &lt;namespace&gt; -e devel apply
-helmfile -n &lt;namespace&gt; -e production `-l app=backend` apply
+helmfile -n &lt;namespace&gt; -e production -l app=backend apply
 </code></pre><p>Это здорово, но лично я предпочту описывать, какие приложения я хочу разворачивать в окружении не с помощью аргументов запуска, а в описании самих окружений. Что делать? Можно поместить описание релизов в отдельную папку, в описании окружения завести список нужных релизов и &ldquo;подцеплять&rdquo; только нужные релизы, игнорируя остальные</p><div class=highlight><pre class=chroma><code class=language-diff data-lang=diff>    .
     ├── envs
     │   ├── devel
