@@ -1,4 +1,25 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Of Code &amp; Systems</title><link>/</link><description>Recent content on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Mon, 15 Jun 2020 21:00:24 +0300</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Как избежать запуска двойного pipeline при использовании merge requests pipelines?</title><link>/2020/06/gitlab-avoid-double-pipeline-run/</link><pubDate>Mon, 15 Jun 2020 21:00:24 +0300</pubDate><guid>/2020/06/gitlab-avoid-double-pipeline-run/</guid><description>&lt;p>&lt;a href="https://docs.gitlab.com/ee/ci/merge_request_pipelines/">Пайплайны для Merge Requests&lt;/a> существуют отдельно (имеют лейбл detached) и запускается независимо от основного pipeline. Из-за этого если сделать push в репу в ветку, из которой в гитлабе есть открытый МР, то запускаются 2 одинаковых пайплайна&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Of Code &amp; Systems</title><link>/</link><description>Recent content on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Mon, 15 Jun 2020 22:00:24 +0300</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Как определяются права пользователя в kubernetes?</title><link>/2020/06/kubernetes-rbac/</link><pubDate>Mon, 15 Jun 2020 22:00:24 +0300</pubDate><guid>/2020/06/kubernetes-rbac/</guid><description>&lt;h1 id="--rbac">Немного о RBAC&lt;/h1>
+&lt;p>В kubernetes есть сущность, которая называется &lt;code>RoleBinding&lt;/code>. Она определяет, каким субъектам какая роль будет назначена. &lt;code>RoleBinding&lt;/code> действует в рамках &lt;code>namespace&lt;/code>, в котором она создана. Для разрешения действий во всех &lt;code>namespace&lt;/code> без ограничений необходимо создавать &lt;code>ClusterRoleBinding&lt;/code>, который является cluster-wide объектом.&lt;/p>
+&lt;p>Пример RoleBinding&lt;/p>
+&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">apiVersion&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>rbac.authorization.k8s.io/v1&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>kind&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>RoleBinding&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>metadata&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>edit&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>namespace&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>project-a-devel&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>subjects&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>-&lt;span class="w"> &lt;/span>kind&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>Group&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>sre&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>apiGroup&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>rbac.authorization.k8s.io&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>roleRef&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>kind&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>ClusterRole&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>edit&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>apiGroup&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>rbac.authorization.k8s.io&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Эта роль:&lt;/p>
+&lt;ul>
+&lt;li>Действует в рамках namespace &lt;code>project-a-devel&lt;/code> - (metadata:)&lt;/li>
+&lt;li>Применяется к пользователям в группе &lt;code>sre&lt;/code> (&lt;code>/O=sre&lt;/code>) - (subjects:)&lt;/li>
+&lt;li>Разрешает действия, описанные в созданной по-умолчанию кластерной роли (ClusterRole) &lt;code>edit&lt;/code> - (roleRef:)&lt;/li>
+&lt;/ul></description></item><item><title>Как избежать запуска двойного pipeline при использовании merge requests pipelines?</title><link>/2020/06/gitlab-avoid-double-pipeline-run/</link><pubDate>Mon, 15 Jun 2020 21:00:24 +0300</pubDate><guid>/2020/06/gitlab-avoid-double-pipeline-run/</guid><description>&lt;p>&lt;a href="https://docs.gitlab.com/ee/ci/merge_request_pipelines/">Пайплайны для Merge Requests&lt;/a> существуют отдельно (имеют лейбл detached) и запускается независимо от основного pipeline. Из-за этого если сделать push в репу в ветку, из которой в гитлабе есть открытый МР, то запускаются 2 одинаковых пайплайна&lt;/p>
 &lt;p>&lt;img src="/wp-content/uploads/2020/06/double-pipeline.png" alt="">
  
 Есть варианта, чтобы это избежать:&lt;/p>
