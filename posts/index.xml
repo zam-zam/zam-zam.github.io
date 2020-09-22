@@ -216,4 +216,6 @@
 &lt;li>/language/russian.php&lt;/li>
 &lt;li>/language/english.php&lt;/li>
 &lt;li>/components/contact.php&lt;/li>
-&lt;/ul></description></item></channel></rss>
+&lt;/ul></description></item><item><title>Graceful Shutdown в Akka HTTP</title><link>/2020/09/scala-akka-graceful-shutdown/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/2020/09/scala-akka-graceful-shutdown/</guid><description>По-умолчанию, Akka при завершении (в т.ч. получении SIGTERM) запускает процесс Coordinated Shutdown, в рамках которого происходят последовательно несколько фаз:
+before-service-unbind service-unbind service-requests-done service-stop before-cluster-shutdown cluster-sharding-shutdown-region cluster-leave cluster-exiting cluster-exiting-done cluster-shutdown before-actor-system-terminate actor-system-terminate В каждой фазе выполняются определённые действия и настроен таймаут, который можно переопределить и в течение которого эти действия должны завершиться. Если действия не успевают завершаться, то фаза заканчивается и начинается следующая
+В рамках Akka HTTP нас в первую очередь интересуют следующие фазы</description></item></channel></rss>
