@@ -1,4 +1,59 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Of Code &amp; Systems</title><link>/</link><description>Recent content on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Tue, 29 Sep 2020 15:29:00 +0300</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Kubernetes What If...?</title><link>/2020/09/kubernetes-what-if/</link><pubDate>Tue, 29 Sep 2020 15:29:00 +0300</pubDate><guid>/2020/09/kubernetes-what-if/</guid><description>&lt;h1 id="--">Что произойдёт, если&lt;/h1>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Of Code &amp; Systems</title><link>/</link><description>Recent content on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Mon, 26 Apr 2021 11:33:00 +0300</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Docker build options on CI</title><link>/2021/04/docker-build-options-on-ci/</link><pubDate>Mon, 26 Apr 2021 11:33:00 +0300</pubDate><guid>/2021/04/docker-build-options-on-ci/</guid><description>&lt;h1 id="--">Варианты запуска сборок&lt;/h1>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Shell executor&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>docker-in-docker&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Изолированные друг от друга контейнеры, т.к. здесь child контейнеры от контейнера dind, а не от хостового docker.sock&lt;/li>
+&lt;li>Необходим запуск с privileged (небезопасно)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Проброс docker.sock&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Все контейнеры - siblings (видят друг друга), т.к. запускается через хостовый docker&lt;/li>
+&lt;li>Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>buildah/buildkit/img&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Позволяют внутри докер контейнера запускать сборку образа без докер-демона&lt;/li>
+&lt;li>Требуется unprivileged_userns_clone (user namespaces), у которого свои security-риски&lt;/li>
+&lt;li>Синтаксис запуска отличается -&amp;gt; переучивать команду&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>kaniko&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Позволяют внутри докер контейнера запускать сборку образа без докер-демона&lt;/li>
+&lt;li>Не поддерживается установка бинарника в свой образ. Необходимо использовать официальный образ&lt;/li>
+&lt;li>Синтаксис запуска отличается -&amp;gt; переучивать команду&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h1 id="--1">Потенциальные векторы атаки&lt;/h1>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Источник&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>В сборке используется публичный образ, в котором в entrypoint выполняется команда проверки docker.sock и запуск контейнера через него&lt;/li>
+&lt;li>При сборке в зависимостях (напрмер, node) скачивается здовред, который запускается в процессе сборки. Далее проверка docker.sock и запуск контейнера через него&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Цель&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Закрепиться в системе. Через докер возможно установить свои бинарники и сервисы в систему&lt;/li>
+&lt;li>Дальнейший скан сети и поиск уязвимостей для распространения и закрепления&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol></description></item><item><title>Kubernetes What If...?</title><link>/2020/09/kubernetes-what-if/</link><pubDate>Tue, 29 Sep 2020 15:29:00 +0300</pubDate><guid>/2020/09/kubernetes-what-if/</guid><description>&lt;h1 id="--">Что произойдёт, если&lt;/h1>
 &lt;h2 id="-kubelet">Перезапустить kubelet&lt;/h2>
 &lt;p>Контейнеры продолжают работать, но в момент синхронизации состояния подов с api-server поды могут переходить в состояние 0/1 Running, когда трафик на них перестаёт направляться&lt;/p>
 &lt;h2 id="-kubelet1">Остановить kubelet&lt;/h2>
