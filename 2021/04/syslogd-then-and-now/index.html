@@ -1,4 +1,59 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Syslogd then and now &ndash; Of Code & Systems</title><meta name=description property="og:description" content="Как обрабатывает логи оригинальный syslogd Как обрабатывает логи связка journald + rsyslogd |"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">Syslogd then and now</div></div><div class=Subhead-description><div class=float-md-right><span title="Lastmod: 2021-04-27. Published at: 2021-04-27.">Published: 2021-04-27</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><h2 id=----syslogd>Как обрабатывает логи оригинальный syslogd</h2><p><img src=/wp-content/uploads/2021/04/syslogd01.png alt></p><h2 id=----journald--rsyslogd>Как обрабатывает логи связка journald + rsyslogd</h2><p><img src=/wp-content/uploads/2021/04/syslogd02.png alt></p></section><section><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Syslogd then and now &ndash; Of Code & Systems</title><meta name=description property="og:description" content="Как обрабатываются логи Как обрабатывает логи оригинальный syslogd Как обрабатывает логи связка journald + rsyslogd |"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">Syslogd then and now</div></div><div class=Subhead-description><div class=float-md-right><span title="Lastmod: 2021-04-27. Published at: 2021-04-27.">Published: 2021-04-27</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><div id=toc class="Box Box--blue mb-3"><b>Содержание</b><nav id=TableOfContents><ul><li><a href=#-->Как обрабатываются логи</a><ul><li><a href=#----syslogd>Как обрабатывает логи оригинальный syslogd</a></li><li><a href=#----journald--rsyslogd>Как обрабатывает логи связка journald + rsyslogd</a></li></ul></li><li><a href=#-syslog->Форматы syslog сообщений</a><ul><li><a href=#rfc-3164->RFC 3164 (устаревший)</a><ul><li><a href=#--1>Описание формата сообщения</a></li><li><a href=#-rsyslog>Шаблон rsyslog</a></li></ul></li><li><a href=#rfc-5424>RFC 5424</a><ul><li><a href=#--2>Описание формата сообщения</a></li><li><a href=#-rsyslog1>Шаблон rsyslog</a></li></ul></li></ul></li></ul></nav></div><h1 id=-->Как обрабатываются логи</h1><h2 id=----syslogd>Как обрабатывает логи оригинальный syslogd</h2><p><img src=/wp-content/uploads/2021/04/syslogd01.png alt></p><h2 id=----journald--rsyslogd>Как обрабатывает логи связка journald + rsyslogd</h2><p><img src=/wp-content/uploads/2021/04/syslogd02.png alt></p><h1 id=-syslog->Форматы syslog сообщений</h1><h2 id=rfc-3164->RFC 3164 (устаревший)</h2><p><a href=https://tools.ietf.org/html/rfc3164>RFC 3164 - The BSD Syslog Protocol</a></p><h3 id=--1>Описание формата сообщения</h3><p>The first part is called the <code>PRI</code>, the second part is the <code>HEADER</code>, and the third part is the <code>MSG</code>. The total length of the packet MUST be 1024 bytes or less</p><ul><li>The <code>PRI</code> part MUST have three, four, or five characters and will be bound with angle brackets as the first and last characters. The <code>PRI</code> part starts with a leading &ldquo;&lt;&rdquo; (&lsquo;less-than&rsquo; character), followed by a number, which is followed by a &ldquo;>&rdquo; (&lsquo;greater-than&rsquo; character).</li><li>The <code>HEADER</code> contains two fields called the <code>TIMESTAMP</code> and the <code>HOSTNAME</code>. The <code>TIMESTAMP</code> will immediately follow the trailing &ldquo;>&rdquo; from the <code>PRI</code> part and single space characters MUST follow each of the <code>TIMESTAMP</code> and <code>HOSTNAME</code> fields. HOSTNAME will contain the hostname, as it knows itself. If it does not have a hostname, then it will contain its own IP address. If a device has multiple IP addresses, it has usually been seen to use the IP address from which the message is transmitted.</li><li>The <code>MSG</code> part has two fields known as the <code>TAG</code> field and the <code>CONTENT</code> field. The value in the TAG field will be the name of the program or process that generated the message. The <code>CONTENT</code> contains the details of the message.</li></ul><p>Упрощённо он выглядит так:</p><p><code>&lt;PRI>TIMESTAMP HOSTNAME TAG CONTENT</code></p><h3 id=-rsyslog>Шаблон rsyslog</h3><p><code>&lt;%PRI%>%TIMESTAMP% %HOSTNAME% %syslogtag:1:32%%msg:::sp-if-no-1st-sp%%msg%</code></p><p><code>%msg:::sp-if-no-1st-sp%</code> просто добавляет пробел в качестве разделителя между <code>TAG</code> и <code>CONTENT</code>, если msg начинается НЕ с пробела. Подробнее здесь <a href=https://www.rsyslog.com/doc/v8-stable/configuration/property_replacer.html>https://www.rsyslog.com/doc/v8-stable/configuration/property_replacer.html</a></p><h2 id=rfc-5424>RFC 5424</h2><p><a href=https://tools.ietf.org/html/rfc5424>RFC 5424 - The Syslog Protocol</a></p><h3 id=--2>Описание формата сообщения</h3><p>В самом RFC есть очень хорошее описание формата</p><p>Упрощённо он выглядит так:</p><p><code>&lt;PRI>VERSION TIMESTAMP HOSTNAME APP-NAME PROCID MSGID STRUCTURED-DATA MSG</code></p><p>Развёрнуто так:</p><pre><code>SYSLOG-MSG      = HEADER SP STRUCTURED-DATA [SP MSG]
+
+HEADER          = PRI VERSION SP TIMESTAMP SP HOSTNAME
+                SP APP-NAME SP PROCID SP MSGID
+PRI             = &quot;&lt;&quot; PRIVAL &quot;&gt;&quot;
+PRIVAL          = 1*3DIGIT ; range 0 .. 191
+VERSION         = NONZERO-DIGIT 0*2DIGIT
+HOSTNAME        = NILVALUE / 1*255PRINTUSASCII
+
+APP-NAME        = NILVALUE / 1*48PRINTUSASCII
+PROCID          = NILVALUE / 1*128PRINTUSASCII
+MSGID           = NILVALUE / 1*32PRINTUSASCII
+
+TIMESTAMP       = NILVALUE / FULL-DATE &quot;T&quot; FULL-TIME
+FULL-DATE       = DATE-FULLYEAR &quot;-&quot; DATE-MONTH &quot;-&quot; DATE-MDAY
+DATE-FULLYEAR   = 4DIGIT
+DATE-MONTH      = 2DIGIT  ; 01-12
+DATE-MDAY       = 2DIGIT  ; 01-28, 01-29, 01-30, 01-31 based on
+                        ; month/year
+FULL-TIME       = PARTIAL-TIME TIME-OFFSET
+PARTIAL-TIME    = TIME-HOUR &quot;:&quot; TIME-MINUTE &quot;:&quot; TIME-SECOND
+                [TIME-SECFRAC]
+TIME-HOUR       = 2DIGIT  ; 00-23
+TIME-MINUTE     = 2DIGIT  ; 00-59
+TIME-SECOND     = 2DIGIT  ; 00-59
+TIME-SECFRAC    = &quot;.&quot; 1*6DIGIT
+TIME-OFFSET     = &quot;Z&quot; / TIME-NUMOFFSET
+TIME-NUMOFFSET  = (&quot;+&quot; / &quot;-&quot;) TIME-HOUR &quot;:&quot; TIME-MINUTE
+
+
+STRUCTURED-DATA = NILVALUE / 1*SD-ELEMENT
+SD-ELEMENT      = &quot;[&quot; SD-ID *(SP SD-PARAM) &quot;]&quot;
+SD-PARAM        = PARAM-NAME &quot;=&quot; %d34 PARAM-VALUE %d34
+SD-ID           = SD-NAME
+PARAM-NAME      = SD-NAME
+PARAM-VALUE     = UTF-8-STRING ; characters '&quot;', '\' and
+                                ; ']' MUST be escaped.
+SD-NAME         = 1*32PRINTUSASCII
+                ; except '=', SP, ']', %d34 (&quot;)
+
+MSG             = MSG-ANY / MSG-UTF8
+MSG-ANY         = *OCTET ; not starting with BOM
+MSG-UTF8        = BOM UTF-8-STRING
+BOM             = %xEF.BB.BF
+
+UTF-8-STRING    = *OCTET ; UTF-8 string as specified
+                ; in RFC 3629
+
+OCTET           = %d00-255
+SP              = %d32
+PRINTUSASCII    = %d33-126
+NONZERO-DIGIT   = %d49-57
+DIGIT           = %d48 / NONZERO-DIGIT
+NILVALUE        = &quot;-&quot;
+</code></pre><p><em><code>SP</code> - это ASCII символ <code>%d32</code> (пробел)</em></p><h3 id=-rsyslog1>Шаблон rsyslog</h3><pre><code>&lt;%PRI%&gt;1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% %PROCID% %MSGID% %STRUCTURED-DATA% %msg%\n
+</code></pre></section><section><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
 var d=document,s=d.createElement('script');s.async=true;s.src='//'+"blog-zamolod-ru"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></section></article></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
 <a href=https://gohugo.io class=link-gray-dark>Hugo</a>.</span></div></div><script type=text/javascript src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type=text/x-mathjax-config>MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });</script></body></html>
