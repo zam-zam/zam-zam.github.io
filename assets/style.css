@@ -23,7 +23,7 @@ body {
 }
 #main {
   grid-area: main;
-  max-width: 782px;
+  /*max-width: 782px;*/
 }
 #side {
   grid-area: side;

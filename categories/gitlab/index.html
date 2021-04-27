@@ -1,52 +1,6 @@
 <!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>gitlab &ndash; Of Code & Systems</title><meta name=description property="og:description" content><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div><h1>gitlab</h1><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2020/06/gitlab-avoid-double-pipeline-run/><div class="h2 mt-1 mb-1">Как избежать запуска двойного pipeline при использовании merge requests pipelines?</div></a></div><div class=Subhead-description><a href=/categories/gitlab class=muted-link><span class="Label Label--gray-darker">gitlab</span></a>
 <a href=/categories/devops class=muted-link><span class="Label Label--gray-darker">devops</span></a><div class=float-md-right><span>2020-06-15</span></div></div></div><div class=text-gray><p><a href=https://docs.gitlab.com/ee/ci/merge_request_pipelines/>Пайплайны для Merge Requests</a> существуют отдельно (имеют лейбл detached) и запускается независимо от основного pipeline. Из-за этого если сделать push в репу в ветку, из которой в гитлабе есть открытый МР, то запускаются 2 одинаковых пайплайна</p><p><img src=/wp-content/uploads/2020/06/double-pipeline.png alt>
  
-Есть варианта, чтобы это избежать:</p><ol><li>Дублировать все джобы через extends, чтобы разделить на запускаемые на МРах и на обычные</li><li>Не запускать CI на некоторых ветках, пока из них нет открытого МРа</li></ol><div><a href=/2020/06/gitlab-avoid-double-pipeline-run/>Открыть полностью…</a></div></div></div></div></div><div id=side class="pr-1 bg-white"><aside class=pr-3><div class="Box Box--blue p-2 mb-3 mt-5"><a href=/tags/ class=link-gray-dark><h4>Tags</h4></a><span class="css-truncate no-wrap m-1 pl-1"><a href=/tags/centos class="link-gray text-emphasized css-truncate-target"><span>Centos</span></a>
-<span class="text-right Counter">2</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/tags/dapp class="link-gray text-emphasized css-truncate-target"><span>Dapp</span></a>
-<span class="text-right Counter">1</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/tags/devops class="link-gray text-emphasized css-truncate-target"><span>Devops</span></a>
-<span class="text-right Counter">2</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/tags/linux class="link-gray text-emphasized css-truncate-target"><span>Linux</span></a>
-<span class="text-right Counter">3</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/tags/nginx class="link-gray text-emphasized css-truncate-target"><span>Nginx</span></a>
-<span class="text-right Counter">1</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/tags/php class="link-gray text-emphasized css-truncate-target"><span>Php</span></a>
-<span class="text-right Counter">1</span></span></div><div class="Box Box--blue p-2 mb-3"><a href=/categories/ class=link-gray-dark><h4>Categories</h4></a><span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/backend class="link-gray text-emphasized css-truncate-target"><span>Backend</span></a>
-<span class="text-right Counter">1</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/devops class="link-gray text-emphasized css-truncate-target"><span>Devops</span></a>
-<span class="text-right Counter">4</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/frontend class="link-gray text-emphasized css-truncate-target"><span>Frontend</span></a>
-<span class="text-right Counter">1</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/gitlab class="link-gray text-emphasized css-truncate-target"><span>Gitlab</span></a>
-<span class="text-right Counter">1</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/helm class="link-gray text-emphasized css-truncate-target"><span>Helm</span></a>
-<span class="text-right Counter">1</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/javascript class="link-gray text-emphasized css-truncate-target"><span>Javascript</span></a>
-<span class="text-right Counter">1</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/kafka class="link-gray text-emphasized css-truncate-target"><span>Kafka</span></a>
-<span class="text-right Counter">1</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/kubernetes class="link-gray text-emphasized css-truncate-target"><span>Kubernetes</span></a>
-<span class="text-right Counter">3</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/linux class="link-gray text-emphasized css-truncate-target"><span>Linux</span></a>
-<span class="text-right Counter">3</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/mysql class="link-gray text-emphasized css-truncate-target"><span>Mysql</span></a>
-<span class="text-right Counter">1</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/owncloud class="link-gray text-emphasized css-truncate-target"><span>Owncloud</span></a>
-<span class="text-right Counter">1</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/php class="link-gray text-emphasized css-truncate-target"><span>Php</span></a>
-<span class="text-right Counter">2</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/scala class="link-gray text-emphasized css-truncate-target"><span>Scala</span></a>
-<span class="text-right Counter">1</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/web class="link-gray text-emphasized css-truncate-target"><span>Web</span></a>
-<span class="text-right Counter">2</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/%d0%b1%d0%b0%d0%b7%d1%8b-%d0%b4%d0%b0%d0%bd%d0%bd%d1%8b%d1%85 class="link-gray text-emphasized css-truncate-target"><span>Базы данных</span></a>
-<span class="text-right Counter">1</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/%d0%b1%d0%b5%d0%b7-%d1%80%d1%83%d0%b1%d1%80%d0%b8%d0%ba%d0%b8 class="link-gray text-emphasized css-truncate-target"><span>Без рубрики</span></a>
-<span class="text-right Counter">20</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/%d0%b1%d0%b5%d0%b7%d0%be%d0%bf%d0%b0%d1%81%d0%bd%d0%be%d1%81%d1%82%d1%8c class="link-gray text-emphasized css-truncate-target"><span>Безопасность</span></a>
-<span class="text-right Counter">2</span></span>
-<span class="css-truncate no-wrap m-1 pl-1"><a href=/categories/%d0%bf%d0%b5%d1%80%d0%b5%d0%b2%d0%be%d0%b4 class="link-gray text-emphasized css-truncate-target"><span>Перевод</span></a>
-<span class="text-right Counter">2</span></span></div></aside></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
+Есть варианта, чтобы это избежать:</p><ol><li>Дублировать все джобы через extends, чтобы разделить на запускаемые на МРах и на обычные</li><li>Не запускать CI на некоторых ветках, пока из них нет открытого МРа</li></ol><div><a href=/2020/06/gitlab-avoid-double-pipeline-run/>Открыть полностью…</a></div></div></div></div></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
 <a href=https://gohugo.io class=link-gray-dark>Hugo</a>.</span></div></div><script type=text/javascript src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type=text/x-mathjax-config>MathJax.Hub.Config({ tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']] } });</script></body></html>
