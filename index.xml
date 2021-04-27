@@ -120,7 +120,10 @@
 &lt;ol>
 &lt;li>Дублировать все джобы через extends, чтобы разделить на запускаемые на МРах и на обычные&lt;/li>
 &lt;li>Не запускать CI на некоторых ветках, пока из них нет открытого МРа&lt;/li>
-&lt;/ol></description></item><item><title>Организация деплоя в множество окружений с помощью helmfile</title><link>/2020/03/helmfile-ogranization/</link><pubDate>Wed, 04 Mar 2020 23:32:24 +0300</pubDate><guid>/2020/03/helmfile-ogranization/</guid><description>&lt;p>&lt;a href="https://github.com/roboll/helmfile">Helmfile&lt;/a> - обёртка для &lt;a href="https://github.com/helm/helm/">helm&lt;/a>, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.&lt;/p>
+&lt;/ol></description></item><item><title>Организация деплоя в множество окружений с помощью helmfile</title><link>/2020/03/helmfile-ogranization/</link><pubDate>Wed, 04 Mar 2020 23:32:24 +0300</pubDate><guid>/2020/03/helmfile-ogranization/</guid><description>&lt;blockquote>
+&lt;p>Эта статья на Хабре &lt;a href="https://habr.com/ru/post/491108/">https://habr.com/ru/post/491108/&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;a href="https://github.com/roboll/helmfile">Helmfile&lt;/a> - обёртка для &lt;a href="https://github.com/helm/helm/">helm&lt;/a>, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.&lt;/p>
 &lt;p>О самом helmfile и примерах его использования можно почитать в &lt;a href="https://github.com/roboll/helmfile/blob/master/README.md">readme&lt;/a> и &lt;a href="https://github.com/roboll/helmfile/blob/master/docs/writing-helmfile.md">best practices guide&lt;/a>.&lt;/p>
 &lt;p>Мы же познакомимся с неочевидными способами описать релизы в helmfile&lt;/p>
 &lt;p>Допустим, у нас есть пачка helm-чартов (для примера пусть будет postgres и некое backend приложение) и несколько окружений (несколько kubernetes кластеров, несколько namespace'ов или несколько и того, и другого). Берём helmfile, читаем документацию и начинаем описывать наши окружения и релизы:&lt;/p>
@@ -259,7 +262,13 @@
 &lt;/li>
 &lt;/ol></description></item><item><title>FreePBX + Asternic CDR Reports + Recordings</title><link>/2014/09/freepbx-asternic-cdr-reports-recordings/</link><pubDate>Wed, 10 Sep 2014 12:54:00 +0000</pubDate><guid>/2014/09/freepbx-asternic-cdr-reports-recordings/</guid><description>&lt;p>&lt;img src="/wp-content/uploads/2014/09/2018-03-30_11-01-58.png" alt="">&lt;/p>
 &lt;p>FreePBX, Asternic CDR Reports и записи звонков&lt;/p>
-&lt;p>&lt;strong>ВВЕДЕНИЕ&lt;/strong>&lt;/p>
+&lt;blockquote>
+&lt;p>Эта статья на Хабре &lt;a href="https://habr.com/ru/post/244321/">https://habr.com/ru/post/244321/&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;h1 id="-">Версии ПО&lt;/h1>
+&lt;p>FreePBX 2.11.0.41&lt;/p>
+&lt;p>Asternic CDR Reports 1.5.1&lt;/p>
+&lt;h1 id="heading">Введение&lt;/h1>
 &lt;p>Классический CDR Reports, &amp;ldquo;идущий в комплекте&amp;rdquo; с FreePBX умеет делать отчёты с проигрыванием аудиозаписи, если она велась, но не умеет разграничивать доступы по Extension`ам (Extension Range, который задаётся при создании новой учётной записи админа).&lt;/p>
 &lt;p>Модуль Asternic CDR Reports учитывает это, но не выводит аудиофайл.&lt;/p>
 &lt;p>Исправим это.&lt;/p>

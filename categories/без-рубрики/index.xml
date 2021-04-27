@@ -54,7 +54,13 @@
 &lt;/li>
 &lt;/ol></description></item><item><title>FreePBX + Asternic CDR Reports + Recordings</title><link>/2014/09/freepbx-asternic-cdr-reports-recordings/</link><pubDate>Wed, 10 Sep 2014 12:54:00 +0000</pubDate><guid>/2014/09/freepbx-asternic-cdr-reports-recordings/</guid><description>&lt;p>&lt;img src="/wp-content/uploads/2014/09/2018-03-30_11-01-58.png" alt="">&lt;/p>
 &lt;p>FreePBX, Asternic CDR Reports и записи звонков&lt;/p>
-&lt;p>&lt;strong>ВВЕДЕНИЕ&lt;/strong>&lt;/p>
+&lt;blockquote>
+&lt;p>Эта статья на Хабре &lt;a href="https://habr.com/ru/post/244321/">https://habr.com/ru/post/244321/&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;h1 id="-">Версии ПО&lt;/h1>
+&lt;p>FreePBX 2.11.0.41&lt;/p>
+&lt;p>Asternic CDR Reports 1.5.1&lt;/p>
+&lt;h1 id="heading">Введение&lt;/h1>
 &lt;p>Классический CDR Reports, &amp;ldquo;идущий в комплекте&amp;rdquo; с FreePBX умеет делать отчёты с проигрыванием аудиозаписи, если она велась, но не умеет разграничивать доступы по Extension`ам (Extension Range, который задаётся при создании новой учётной записи админа).&lt;/p>
 &lt;p>Модуль Asternic CDR Reports учитывает это, но не выводит аудиофайл.&lt;/p>
 &lt;p>Исправим это.&lt;/p>

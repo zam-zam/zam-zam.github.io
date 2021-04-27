@@ -8,6 +8,7 @@ body {
 }
 
 #holy {
+  max-width: 1012px;
   display: grid;
   /* auto: as wide as its content
    * fr: all available space */
@@ -23,7 +24,7 @@ body {
 }
 #main {
   grid-area: main;
-  /*max-width: 782px;*/
+  max-width: 1012px;
 }
 #side {
   grid-area: side;

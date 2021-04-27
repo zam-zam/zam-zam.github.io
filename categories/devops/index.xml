@@ -5,7 +5,10 @@
 &lt;ol>
 &lt;li>Дублировать все джобы через extends, чтобы разделить на запускаемые на МРах и на обычные&lt;/li>
 &lt;li>Не запускать CI на некоторых ветках, пока из них нет открытого МРа&lt;/li>
-&lt;/ol></description></item><item><title>Организация деплоя в множество окружений с помощью helmfile</title><link>/2020/03/helmfile-ogranization/</link><pubDate>Wed, 04 Mar 2020 23:32:24 +0300</pubDate><guid>/2020/03/helmfile-ogranization/</guid><description>&lt;p>&lt;a href="https://github.com/roboll/helmfile">Helmfile&lt;/a> - обёртка для &lt;a href="https://github.com/helm/helm/">helm&lt;/a>, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.&lt;/p>
+&lt;/ol></description></item><item><title>Организация деплоя в множество окружений с помощью helmfile</title><link>/2020/03/helmfile-ogranization/</link><pubDate>Wed, 04 Mar 2020 23:32:24 +0300</pubDate><guid>/2020/03/helmfile-ogranization/</guid><description>&lt;blockquote>
+&lt;p>Эта статья на Хабре &lt;a href="https://habr.com/ru/post/491108/">https://habr.com/ru/post/491108/&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;a href="https://github.com/roboll/helmfile">Helmfile&lt;/a> - обёртка для &lt;a href="https://github.com/helm/helm/">helm&lt;/a>, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.&lt;/p>
 &lt;p>О самом helmfile и примерах его использования можно почитать в &lt;a href="https://github.com/roboll/helmfile/blob/master/README.md">readme&lt;/a> и &lt;a href="https://github.com/roboll/helmfile/blob/master/docs/writing-helmfile.md">best practices guide&lt;/a>.&lt;/p>
 &lt;p>Мы же познакомимся с неочевидными способами описать релизы в helmfile&lt;/p>
 &lt;p>Допустим, у нас есть пачка helm-чартов (для примера пусть будет postgres и некое backend приложение) и несколько окружений (несколько kubernetes кластеров, несколько namespace'ов или несколько и того, и другого). Берём helmfile, читаем документацию и начинаем описывать наши окружения и релизы:&lt;/p>
