@@ -1,53 +1,77 @@
 <!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Пишем свой prometheus-exporter для sbercloud cdn на python &ndash; Of Code & Systems</title><meta name=description property="og:description" content="Описание Мы используем CDN для раздачи статичных файлов и хотим иметь статистику по этой раздаче (коды ответов, rps, полосу пропускания)
 Первый и самый главный вопрос - откуда получить эти данные? Конечно же из CDN API.
 Ищем&amp;hellip; Ага! Статистика по конкретному аккаунту с разбивкой по ресурсам
-|"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">Пишем свой prometheus-exporter для sbercloud cdn на python</div></div><div class=Subhead-description><div class=float-md-right><span title="Lastmod: 2022-03-11. Published at: 2022-03-11.">Published: 2022-03-11</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><div id=toc class="Box Box--blue mb-3"><b>Содержание</b><nav id=TableOfContents><ul><li><a href=#heading>Описание</a></li><li><a href=#heading1>Код</a><ul><li><ul><li><a href=#mainpy>main.py</a></li><li><a href=#metricspy>metrics.py</a></li></ul></li></ul></li><li><a href=#heading2>Результат</a></li></ul></nav></div><p><img src=/wp-content/uploads/2022/2022-03-11_02-59-48.png alt></p><h1 id=heading>Описание</h1><p>Мы используем CDN для раздачи статичных файлов и хотим иметь статистику по этой раздаче (коды ответов, rps, полосу пропускания)</p><p>Первый и самый главный вопрос - откуда получить эти данные? Конечно же из <a href=https://docs.sbercloud.ru/cdn/ug/topics/guides__api.html>CDN API</a>.</p><p>Ищем&mldr; Ага! <a href=https://docs.sbercloud.ru/cdn/ug/topics/api__statistics__realtime-bandwidth-stat.html#id4>Статистика по конкретному аккаунту с разбивкой по ресурсам</a></p><blockquote><p>Пример успешного ответа</p></blockquote><div class=highlight><pre class=chroma><code class=language-json data-lang=json><span class=p>[</span>
-    <span class=p>{</span>
-        <span class=nt>&#34;http_status_percent&#34;</span><span class=p>:</span> <span class=p>{</span>
-           <span class=nt>&#34;200&#34;</span><span class=p>:</span> <span class=mi>100</span>
-        <span class=p>}</span><span class=p>,</span>
-        <span class=nt>&#34;account&#34;</span><span class=p>:</span> <span class=s2>&#34;account1&#34;</span><span class=p>,</span>
-        <span class=nt>&#34;resource&#34;</span><span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
-        <span class=nt>&#34;cache_status_percent_by_requests&#34;</span><span class=p>:</span> <span class=p>{</span>
-          <span class=nt>&#34;HIT&#34;</span><span class=p>:</span> <span class=mi>100</span><span class=p>,</span>
-          <span class=nt>&#34;MISS&#34;</span><span class=p>:</span> <span class=mi>0</span>
-        <span class=p>}</span><span class=p>,</span>
-        <span class=nt>&#34;cache_status_percent_by_volume&#34;</span><span class=p>:</span> <span class=p>{</span>
-          <span class=nt>&#34;HIT&#34;</span><span class=p>:</span> <span class=mi>100</span><span class=p>,</span>
-          <span class=nt>&#34;MISS&#34;</span><span class=p>:</span> <span class=mi>0</span>
-        <span class=p>}</span><span class=p>,</span>
-        <span class=nt>&#34;requests_per_second&#34;</span><span class=p>:</span> <span class=mf>0.5443</span><span class=p>,</span>
-        <span class=nt>&#34;bandwidth_out_bits_per_second&#34;</span><span class=p>:</span> <span class=mf>2037575.4037</span>
-     <span class=p>}</span><span class=p>,</span>
-     <span class=p>{</span>
-        <span class=nt>&#34;http_status_percent&#34;</span><span class=p>:</span> <span class=p>{</span>
-           <span class=nt>&#34;200&#34;</span><span class=p>:</span> <span class=mi>100</span>
-        <span class=p>}</span><span class=p>,</span>
-        <span class=nt>&#34;account&#34;</span><span class=p>:</span> <span class=s2>&#34;account1&#34;</span><span class=p>,</span>
-        <span class=nt>&#34;resource&#34;</span><span class=p>:</span> <span class=s2>&#34;2&#34;</span><span class=p>,</span>
-        <span class=nt>&#34;cache_status_percent_by_requests&#34;</span><span class=p>:</span> <span class=p>{</span>
-          <span class=nt>&#34;HIT&#34;</span><span class=p>:</span> <span class=mi>100</span><span class=p>,</span>
-          <span class=nt>&#34;MISS&#34;</span><span class=p>:</span> <span class=mi>0</span>
-        <span class=p>}</span><span class=p>,</span>
-        <span class=nt>&#34;cache_status_percent_by_volume&#34;</span><span class=p>:</span> <span class=p>{</span>
-          <span class=nt>&#34;HIT&#34;</span><span class=p>:</span> <span class=mi>100</span><span class=p>,</span>
-          <span class=nt>&#34;MISS&#34;</span><span class=p>:</span> <span class=mi>0</span>
-        <span class=p>}</span><span class=p>,</span>
-        <span class=nt>&#34;requests_per_second&#34;</span><span class=p>:</span> <span class=mf>0.3443</span><span class=p>,</span>
-        <span class=nt>&#34;bandwidth_out_bits_per_second&#34;</span><span class=p>:</span> <span class=mf>1037575.1234</span>
-     <span class=p>}</span>
- <span class=p>]</span>
-</code></pre></div><p>В ответе есть, всё, что надо:</p><ul><li>http_status_percent. Коды ответов в процентном соотношении от общего числа ответов</li><li>requests_per_second. Запросы в секунду</li><li>bandwidth_out_bits_per_second. Исходящий канал</li></ul><h1 id=heading1>Код</h1><p>Нет смысла копировать в статью весь код. Разберём основные моменты.
-Исходники можно найти <a href=https://github.com/zam-zam/sbercloud-cdn-prometheus-exporter>здесь</a></p><h3 id=mainpy>main.py</h3><p>Запускаем http сервер с хэндлером из прометеевской либы, который уже умеет отдавать при запросе все добавленные в коде метрики.</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=k>class</span> <span class=nc>HttpHandler</span><span class=p>(</span><span class=n>MetricsHandler</span><span class=p>)</span>
+|"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">Пишем свой prometheus-exporter для sbercloud cdn на python</div></div><div class=Subhead-description><div class=float-md-right><span title="Lastmod: 2022-03-11. Published at: 2022-03-11.">Published: 2022-03-11</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><div id=toc class="Box Box--blue mb-3"><b>Содержание</b><nav id=TableOfContents><ul><li><a href=#heading>Описание</a></li><li><a href=#heading1>Код</a><ul><li><a href=#mainpy>main.py</a></li><li><a href=#metricspy>metrics.py</a></li></ul></li><li><a href=#heading2>Результат</a></li></ul></nav></div><p><img src=/wp-content/uploads/2022/2022-03-11_02-59-48.png alt></p><h1 id=heading>Описание</h1><p>Мы используем CDN для раздачи статичных файлов и хотим иметь статистику по этой раздаче (коды ответов, rps, полосу пропускания)</p><p>Первый и самый главный вопрос - откуда получить эти данные? Конечно же из <a href=https://docs.sbercloud.ru/cdn/ug/topics/guides__api.html>CDN API</a>.</p><p>Ищем&mldr; Ага! <a href=https://docs.sbercloud.ru/cdn/ug/topics/api__statistics__realtime-bandwidth-stat.html#id4>Статистика по конкретному аккаунту с разбивкой по ресурсам</a></p><blockquote><p>Пример успешного ответа realtimestat</p></blockquote><div class=highlight><pre class=chroma><code class=language-json data-lang=json><span class=p>[</span>
+  <span class=p>{</span>
+    <span class=nt>&#34;http_status_percent&#34;</span><span class=p>:</span> <span class=p>{</span>
+      <span class=nt>&#34;200&#34;</span><span class=p>:</span> <span class=mf>8.3333</span><span class=p>,</span>
+      <span class=nt>&#34;304&#34;</span><span class=p>:</span> <span class=mf>91.6667</span>
+    <span class=p>}</span><span class=p>,</span>
+    <span class=nt>&#34;account&#34;</span><span class=p>:</span> <span class=s2>&#34;aoprc3vtj4&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;cache_status_percent_by_requests&#34;</span><span class=p>:</span> <span class=p>{</span>
+      <span class=nt>&#34;HIT&#34;</span><span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+      <span class=nt>&#34;MISS&#34;</span><span class=p>:</span> <span class=mi>100</span>
+    <span class=p>}</span><span class=p>,</span>
+    <span class=nt>&#34;cache_status_percent_by_volume&#34;</span><span class=p>:</span> <span class=p>{</span>
+      <span class=nt>&#34;HIT&#34;</span><span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+      <span class=nt>&#34;MISS&#34;</span><span class=p>:</span> <span class=mi>100</span>
+    <span class=p>}</span><span class=p>,</span>
+    <span class=nt>&#34;requests_per_second&#34;</span><span class=p>:</span> <span class=mf>1.1903</span><span class=p>,</span>
+    <span class=nt>&#34;bandwidth_out_bits_per_second&#34;</span><span class=p>:</span> <span class=mf>3656.8472</span><span class=p>,</span>
+    <span class=nt>&#34;resource&#34;</span><span class=p>:</span> <span class=s2>&#34;u7qy39gwbj&#34;</span>
+  <span class=p>}</span><span class=p>,</span>
+  <span class=p>{</span>
+    <span class=nt>&#34;http_status_percent&#34;</span><span class=p>:</span> <span class=p>{</span>
+      <span class=nt>&#34;200&#34;</span><span class=p>:</span> <span class=mf>9.1443</span><span class=p>,</span>
+      <span class=nt>&#34;304&#34;</span><span class=p>:</span> <span class=mf>90.8557</span>
+    <span class=p>}</span><span class=p>,</span>
+    <span class=nt>&#34;account&#34;</span><span class=p>:</span> <span class=s2>&#34;aoprc3vtj4&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;cache_status_percent_by_requests&#34;</span><span class=p>:</span> <span class=p>{</span>
+      <span class=nt>&#34;HIT&#34;</span><span class=p>:</span> <span class=mf>5.5746</span><span class=p>,</span>
+      <span class=nt>&#34;MISS&#34;</span><span class=p>:</span> <span class=mf>94.4254</span>
+    <span class=p>}</span><span class=p>,</span>
+    <span class=nt>&#34;cache_status_percent_by_volume&#34;</span><span class=p>:</span> <span class=p>{</span>
+      <span class=nt>&#34;HIT&#34;</span><span class=p>:</span> <span class=mf>99.7363</span><span class=p>,</span>
+      <span class=nt>&#34;MISS&#34;</span><span class=p>:</span> <span class=mf>0.2637</span>
+    <span class=p>}</span><span class=p>,</span>
+    <span class=nt>&#34;requests_per_second&#34;</span><span class=p>:</span> <span class=mf>101.3832</span><span class=p>,</span>
+    <span class=nt>&#34;bandwidth_out_bits_per_second&#34;</span><span class=p>:</span> <span class=mf>129778356.037</span><span class=p>,</span>
+    <span class=nt>&#34;resource&#34;</span><span class=p>:</span> <span class=s2>&#34;bgc2555isn&#34;</span>
+  <span class=p>}</span>
+<span class=p>]</span>
+</code></pre></div><p>В ответе есть, всё, что надо:</p><ul><li>http_status_percent. Коды ответов в процентном соотношении от общего числа ответов</li><li>requests_per_second. Запросы в секунду</li><li>bandwidth_out_bits_per_second. Исходящий канал</li></ul><h1 id=heading1>Код</h1><p>Нет смысла копировать весь код в статью. Исходники можно найти <a href=https://github.com/zam-zam/sbercloud-cdn-prometheus-exporter>здесь</a></p><p>Разберём основные моменты.</p><h2 id=mainpy>main.py</h2><p>Запускаем http сервер с хэндлером из прометеевской либы, который уже умеет отдавать при запросе все добавленные в коде метрики.</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=k>class</span> <span class=nc>HttpHandler</span><span class=p>(</span><span class=n>MetricsHandler</span><span class=p>)</span>
 </code></pre></div><pre><code>HTTPServer((&quot;0.0.0.0&quot;, settings.get(&quot;WEB_PORT&quot;, 8080)), HttpHandler).serve_forever()
-</code></pre><p>При этом в нашем хэндлере мы:</p><ul><li>Инициализируем класс для обновления метрик</li></ul><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=n>metrics</span> <span class=o>=</span> <span class=n>Metrics</span><span class=p>(</span><span class=p>)</span>
-</code></pre></div><ul><li>Переопределяем метод <code>do_GET</code>, чтобы прямо при запросе обновлять метрики при запросе <code>/metrics</code>, но при этом не забывая вызвать родительский метод через <code>super().do_GET()</code>, чтобы отдать метрики</li></ul><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=k>def</span> <span class=nf>do_GET</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span><span class=p>:</span>
+</code></pre><p>При этом в нашем хэндлере мы:</p><ul><li>Инициализируем класс для обновления метрик<pre><code>metrics = Metrics()
+</code></pre></li><li>Переопределяем метод <code>do_GET</code>, чтобы прямо при обработке запроса на путь <code>/metrics</code> обновлять метрики с помощью <code>self.metrics.refresh_metrics()</code>. При этом не забываем вызвать <a href=https://github.com/prometheus/client_python/blob/v0.12.0/prometheus_client/exposition.py#L233>родительский метод <code>do_GET()</code></a> через <code>super()</code>, чтобы отдать метрики в формате прометея.<div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=k>def</span> <span class=nf>do_GET</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span><span class=p>:</span>
     <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>path</span> <span class=o>==</span> <span class=sa></span><span class=s2>&#34;</span><span class=s2>/metrics</span><span class=s2>&#34;</span><span class=p>:</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>metrics</span><span class=o>.</span><span class=n>refresh_metrics</span><span class=p>(</span><span class=p>)</span>
         <span class=nb>super</span><span class=p>(</span><span class=p>)</span><span class=o>.</span><span class=n>do_GET</span><span class=p>(</span><span class=p>)</span>
     <span class=k>else</span><span class=p>:</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>send_error</span><span class=p>(</span><span class=mi>404</span><span class=p>)</span>
-</code></pre></div><h3 id=metricspy>metrics.py</h3><p>Пара важных моментов:</p><ul><li>Метрики надо сбрасывать перед обновлением, т.к. коды ответов мы получаем уже в процентном соотношении к общему числу ответов и не хотим накапливать старые данные в gauge'ах.</li><li>Т.к. мы не следим за свежестью токена, то просто делаем пару ретраев при попытке обновить метрики. В том числе пробуем обновить токен</li></ul><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=k>def</span> <span class=nf>refresh_metrics</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span><span class=p>:</span>
+</code></pre></div></li></ul><h2 id=metricspy>metrics.py</h2><p>В этом файле описан класс для непосредственного обновления метрик прометея</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=k>class</span> <span class=nc>Metrics</span><span class=p>(</span><span class=p>)</span><span class=p>:</span>
+    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span><span class=p>:</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>cdn</span> <span class=o>=</span> <span class=n>CDN</span><span class=p>(</span>
+                <span class=n>username</span><span class=o>=</span><span class=n>settings</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=sa></span><span class=s2>&#34;</span><span class=s2>CDN_USERNAME</span><span class=s2>&#34;</span><span class=p>)</span><span class=p>,</span>
+                <span class=n>password</span><span class=o>=</span><span class=n>settings</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=sa></span><span class=s2>&#34;</span><span class=s2>CDN_PASSWORD</span><span class=s2>&#34;</span><span class=p>)</span><span class=p>,</span>
+                <span class=n>account_name</span><span class=o>=</span><span class=n>settings</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=sa></span><span class=s2>&#34;</span><span class=s2>CDN_ACCOUNT_NAME</span><span class=s2>&#34;</span><span class=p>)</span><span class=p>,</span>
+                <span class=n>url</span><span class=o>=</span><span class=n>settings</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=sa></span><span class=s2>&#34;</span><span class=s2>CDN_URL</span><span class=s2>&#34;</span><span class=p>)</span><span class=p>)</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>resources_map</span> <span class=o>=</span> <span class=p>{</span><span class=p>}</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>labels_map</span> <span class=o>=</span> <span class=p>{</span>
+            <span class=sa></span><span class=s2>&#34;</span><span class=s2>http_status_percent</span><span class=s2>&#34;</span><span class=p>:</span> <span class=sa></span><span class=s2>&#34;</span><span class=s2>code</span><span class=s2>&#34;</span><span class=p>,</span>
+            <span class=sa></span><span class=s2>&#34;</span><span class=s2>cache_status_percent_by_requests</span><span class=s2>&#34;</span><span class=p>:</span> <span class=sa></span><span class=s2>&#34;</span><span class=s2>status</span><span class=s2>&#34;</span><span class=p>,</span>
+            <span class=sa></span><span class=s2>&#34;</span><span class=s2>cache_status_percent_by_volume</span><span class=s2>&#34;</span><span class=p>:</span> <span class=sa></span><span class=s2>&#34;</span><span class=s2>status</span><span class=s2>&#34;</span>
+        <span class=p>}</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>gauges</span> <span class=o>=</span> <span class=p>{</span><span class=p>}</span>
+
+        <span class=bp>self</span><span class=o>.</span><span class=n>update_errors_count</span> <span class=o>=</span> <span class=mi>0</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>update_resources</span><span class=p>(</span><span class=p>)</span>
+</code></pre></div><ul><li><p>При инициализации создаём инстанс <code>cdn = CDN(...)</code>, чтобы через него работать с CDN API</p></li><li><p>В <code>resources_map</code> при инициализации вызовом <code>update_resources()</code> мы сохраняем соответствие id ресурса и его имени</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=k>def</span> <span class=nf>update_resources</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span><span class=p>:</span>
+    <span class=k>for</span> <span class=n>resource</span> <span class=ow>in</span> <span class=bp>self</span><span class=o>.</span><span class=n>cdn</span><span class=o>.</span><span class=n>get_resource</span><span class=p>(</span><span class=p>)</span><span class=p>:</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>resources_map</span><span class=p>[</span><span class=n>resource</span><span class=p>[</span><span class=sa></span><span class=s2>&#34;</span><span class=s2>id</span><span class=s2>&#34;</span><span class=p>]</span><span class=p>]</span> <span class=o>=</span> <span class=n>resource</span><span class=p>[</span><span class=sa></span><span class=s2>&#34;</span><span class=s2>name</span><span class=s2>&#34;</span><span class=p>]</span>
+</code></pre></div><p>Это нужно для того, чтобы в лейблах метрик было читаемое название ресурса, а не id, который отдаётся в ответе API (см. выше <em>Пример успешного ответа realtimestat</em>).</p></li><li><p>С помощью <code>labels_map</code> мы преобразуем ключи полей ответов в значения соответсвующих лейблов. К примеру, чтобы из <code>"http_status_percent": { "200": 8.3333, "304": 91.6667 }</code> получить <code>http_status_percent{code="200"} 8.3333</code> и <code>http_status_percent{code="304"} 91.6667</code></p></li><li><p>В <code>gauges</code> по соответствующим ключам мы храним объекты метрик <a href=https://github.com/prometheus/client_python/blob/v0.12.0/prometheus_client/metrics.py#L301>Gauge</a>, которые обновляются в методе <code>update_metrics()</code></p></li></ul><p>Пара важных моментов:</p><ul><li><p>Метрики мы сбрасываем перед обновлением методом <code>clear_metrics</code>, т.к. коды ответов мы получаем уже в процентном соотношении к общему числу ответов и не хотим накапливать старые данные в gauge'ах</p><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=k>def</span> <span class=nf>clear_metrics</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span><span class=p>:</span>
+    <span class=k>for</span> <span class=n>gauge</span> <span class=ow>in</span> <span class=bp>self</span><span class=o>.</span><span class=n>gauges</span><span class=o>.</span><span class=n>values</span><span class=p>(</span><span class=p>)</span><span class=p>:</span>
+        <span class=n>gauge</span><span class=o>.</span><span class=n>clear</span><span class=p>(</span><span class=p>)</span>
+</code></pre></div></li><li><p>Т.к. мы не следим за свежестью токена, то просто делаем пару ретраев при попытке обновить метрики. В том числе пробуем обновить токен</p></li></ul><div class=highlight><pre class=chroma><code class=language-python data-lang=python><span class=k>def</span> <span class=nf>refresh_metrics</span><span class=p>(</span><span class=bp>self</span><span class=p>)</span><span class=p>:</span>
     <span class=bp>self</span><span class=o>.</span><span class=n>clear_metrics</span><span class=p>(</span><span class=p>)</span>
     <span class=k>try</span><span class=p>:</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>update_metrics</span><span class=p>(</span><span class=p>)</span>
@@ -58,7 +82,7 @@
             <span class=n>sys</span><span class=o>.</span><span class=n>exit</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>update_errors_count</span> <span class=o>+</span><span class=o>=</span> <span class=mi>1</span>
         <span class=n>log</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=n>f</span><span class=sa></span><span class=s1>&#39;</span><span class=s1>#{self.update_errors_count} Update metrics error </span><span class=s1>&#34;</span><span class=s1>{e}</span><span class=s1>&#34;</span><span class=s1>. I will try to update token and continue</span><span class=s1>&#39;</span><span class=p>)</span>
-        <span class=bp>self</span><span class=o>.</span><span class=n>metrics</span><span class=o>.</span><span class=n>_cdn</span><span class=o>.</span><span class=n>_refresh_token</span><span class=p>(</span><span class=p>)</span>
+        <span class=bp>self</span><span class=o>.</span><span class=n>metrics</span><span class=o>.</span><span class=n>cdn</span><span class=o>.</span><span class=n>_refresh_token</span><span class=p>(</span><span class=p>)</span>
         <span class=bp>self</span><span class=o>.</span><span class=n>refresh_metrics</span><span class=p>(</span><span class=p>)</span>
 </code></pre></div><h1 id=heading2>Результат</h1><p>Пример отдаваемых метрик</p><pre><code># HELP http_status_percent http_status_percent
 # TYPE http_status_percent gauge
@@ -87,7 +111,7 @@ requests_per_second{account=&quot;aoprc3vtj4&quot;,resource_id=&quot;bgc2555isn&
 # TYPE bandwidth_out_bits_per_second gauge
 bandwidth_out_bits_per_second{account=&quot;aoprc3vtj4&quot;,resource_id=&quot;u7qy39gwbj&quot;,resource_name=&quot;static_example_com&quot;} 118.7743
 bandwidth_out_bits_per_second{account=&quot;aoprc3vtj4&quot;,resource_id=&quot;bgc2555isn&quot;,resource_name=&quot;images_example_com&quot;} 7.6798019124e+06
-</code></pre><p>Пример дашборда для grafana можно увидеть в начале статьи</p></section><section><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+</code></pre></section><section><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
 var d=document,s=d.createElement('script');s.async=true;s.src='//'+"blog-zamolod-ru"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></section></article></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
 <a href=https://gohugo.io class=link-gray-dark>Hugo</a>.</span></div></div></body></html>
