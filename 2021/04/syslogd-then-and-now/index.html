@@ -5,7 +5,7 @@
 <title>
 Как syslog обрабатывает логи &ndash; Of Code & Systems
 </title>
-<meta name=description property="og:description" content="Как syslog обрабатывает логи Оригинальный syslogd Cвязка journald + rsyslogd Форматы syslog сообщений RFC 3164 (устаревший) RFC 3164 - The BSD Syslog Protocol
+<meta name=description property="og:description" content="Оригинальный syslogd Cвязка journald + rsyslogd Форматы syslog сообщений RFC 3164 (устаревший) RFC 3164 - The BSD Syslog Protocol
 Описание формата сообщения The first part is called the PRI, the second part is the HEADER, and the third part is the MSG. The total length of the packet MUST be 1024 bytes or less
 |">
 <meta name=apple-mobile-web-app-title content="Of Code & Systems">
@@ -40,12 +40,8 @@ Published: 2021-04-27
 <div id=toc class="Box Box--blue mb-3">
 <b>Содержание</b><nav id=TableOfContents>
 <ul>
-<li><a href=#как-syslog-обрабатывает-логи>Как syslog обрабатывает логи</a>
-<ul>
 <li><a href=#оригинальный-syslogd>Оригинальный syslogd</a></li>
 <li><a href=#cвязка-journald--rsyslogd>Cвязка journald + rsyslogd</a></li>
-</ul>
-</li>
 <li><a href=#форматы-syslog-сообщений>Форматы syslog сообщений</a>
 <ul>
 <li><a href=#rfc-3164-устаревший>RFC 3164 (устаревший)</a>
@@ -64,12 +60,11 @@ Published: 2021-04-27
 </li>
 </ul>
 </nav></div>
-<h1 id=как-syslog-обрабатывает-логи>Как syslog обрабатывает логи</h1>
-<h2 id=оригинальный-syslogd>Оригинальный syslogd</h2>
+<h1 id=оригинальный-syslogd>Оригинальный syslogd</h1>
 <p>
 <a href=/2021/04/syslogd-then-and-now/syslogd01.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2021/04/syslogd-then-and-now/syslogd01.png width=611 height=409></a>
 </p>
-<h2 id=cвязка-journald--rsyslogd>Cвязка journald + rsyslogd</h2>
+<h1 id=cвязка-journald--rsyslogd>Cвязка journald + rsyslogd</h1>
 <p>
 <a href=/2021/04/syslogd-then-and-now/syslogd02.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2021/04/syslogd-then-and-now/syslogd02.png width=871 height=419></a>
 </p>
