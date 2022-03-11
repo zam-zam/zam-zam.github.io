@@ -5,7 +5,7 @@
 <title>
 map в nginx &ndash; Of Code & Systems
 </title>
-<meta name=description property="og:description" content="Кейс следующий:
+<meta name=description property="og:description" content="Кейс следующий:
 Есть запросы к API с передачей уникального токена в GET параметре. По этому токену (user_token=) имеются лимиты на запросы через limit_req_zone, типа такого:
 limit_req_zone $arg_user_token zone=token5:10m rate=12r/m; Необходимо для некоторых токенов отключить лимиты. Тут на помощь и приходит модуль map nginx. Он позволяет динамически получать переменную, значение которой будет зависеть от значений других, входных, переменных. Т.е., грубо говоря, мы имеем
 |">
@@ -46,7 +46,9 @@ Published: 2017-08-16
 <section class="pb-6 mb-3 border-bottom">
 <div id=toc class="Box Box--blue mb-3">
 <b>Содержание</b><nav id=TableOfContents></nav></div>
-<p><img src=/wp-content/uploads/2017/08/nginx.png alt></p>
+<p>
+<a href=/2017/08/map-v-nginx/nginx-logo.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2017/08/map-v-nginx/nginx-logo_hua8d6dd98fb390227b6559b23a8e61e5a_31065_320x0_resize_box_3.png width=320 height=67></a>
+</p>
 <p>Кейс следующий:</p>
 <p>Есть запросы к API с передачей уникального токена в GET параметре. По этому токену (user_token=) имеются лимиты на запросы через <a href=https://nginx.org/ru/docs/http/ngx_http_limit_req_module.html>limit_req_zone</a>, типа такого:</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=k>limit_req_zone</span> <span class=nv>$arg_user_token</span> <span class=s>zone=token5:10m</span> <span class=s>rate=12r/m</span><span class=p>;</span>

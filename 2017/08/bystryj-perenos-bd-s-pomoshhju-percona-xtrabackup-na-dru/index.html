@@ -5,7 +5,7 @@
 <title>
 Быстрый перенос базы mysql на другой сервер с помощью percona xtrabackup &ndash; Of Code & Systems
 </title>
-<meta name=description property="og:description" content="По мотивам официального мануала
+<meta name=description property="og:description" content="По мотивам официального мануала
 Скорость переноса данных, по сравнению с обычными консольными dump / restore просто колоссальная, т.к. переносятся целиком файлы таблиц.
 Особенность в том, что на целевом сервере не должно быть рабочей mysql с нужными данными
 На серверах должен быть установлен Percona XtraBackup
@@ -49,7 +49,9 @@ Published: 2017-08-19
 <section class="pb-6 mb-3 border-bottom">
 <div id=toc class="Box Box--blue mb-3">
 <b>Содержание</b><nav id=TableOfContents></nav></div>
-<p><img src=/wp-content/uploads/2017/08/pxb-logo.png alt></p>
+<p>
+<a href=/2017/08/bystryj-perenos-bd-s-pomoshhju-percona-xtrabackup-na-dru/percona-logo.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2017/08/bystryj-perenos-bd-s-pomoshhju-percona-xtrabackup-na-dru/percona-logo_hu77e204cc11d8bac396181228fe786bc4_52528_320x0_resize_box_3.png width=320 height=95></a>
+</p>
 <p>По мотивам <a href=https://www.percona.com/doc/percona-xtrabackup/LATEST/innobackupex/partial_backups_innobackupex.html>официального мануала</a></p>
 <p>Скорость переноса данных, по сравнению с обычными консольными dump / restore просто колоссальная, т.к. переносятся целиком файлы таблиц.</p>
 <p>Особенность в том, что на целевом сервере не должно быть рабочей mysql с нужными данными</p>
