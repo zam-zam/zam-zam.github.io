@@ -16,7 +16,7 @@
 &lt;h2 id="rfc-3164-устаревший">RFC 3164 (устаревший)&lt;/h2>
 &lt;p>&lt;a href="https://tools.ietf.org/html/rfc3164">RFC 3164 - The BSD Syslog Protocol&lt;/a>&lt;/p>
 &lt;h3 id="описание-формата-сообщения">Описание формата сообщения&lt;/h3>
-&lt;p>The first part is called the &lt;code>PRI&lt;/code>, the second part is the &lt;code>HEADER&lt;/code>, and the third part is the &lt;code>MSG&lt;/code>. The total length of the packet MUST be 1024 bytes or less&lt;/p></description></item><item><title>Docker build options on CI</title><link>/2021/04/docker-build-options-on-ci/</link><pubDate>Mon, 26 Apr 2021 11:33:00 +0300</pubDate><guid>/2021/04/docker-build-options-on-ci/</guid><description>&lt;h1 id="варианты-запуска-сборок">Варианты запуска сборок&lt;/h1>
+&lt;p>The first part is called the &lt;code>PRI&lt;/code>, the second part is the &lt;code>HEADER&lt;/code>, and the third part is the &lt;code>MSG&lt;/code>. The total length of the packet MUST be 1024 bytes or less&lt;/p></description></item><item><title>Как можно собирать образы контейнеров</title><link>/2021/04/docker-build-options-on-ci/</link><pubDate>Mon, 26 Apr 2021 11:33:00 +0300</pubDate><guid>/2021/04/docker-build-options-on-ci/</guid><description>&lt;h1 id="варианты-запуска-сборок">Варианты запуска сборок&lt;/h1>
 &lt;ol>
 &lt;li>
 &lt;p>&lt;strong>Shell executor&lt;/strong>&lt;/p>
