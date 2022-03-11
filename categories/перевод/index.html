@@ -1,20 +1,117 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>перевод &ndash; Of Code & Systems</title><meta name=description property="og:description" content><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div><h1>перевод</h1><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2019/12/problema-bezopasnosti-ssh-agent-forwarding/><div class="h2 mt-1 mb-1">Проблема безопасности SSH Agent Forwarding</div></a></div><div class=Subhead-description><a href=/categories/%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C class=muted-link><span class="Label Label--gray-darker">безопасность</span></a>
-<a href=/categories/%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B4 class=muted-link><span class="Label Label--gray-darker">перевод</span></a><div class=float-md-right><span>2019-12-06</span></div></div></div><div class=text-gray><p>Вот что говорит нам <code>man ssh_config</code> про <code>ForwardAgent</code>(перевод):</p><blockquote><p>Agent forwarding нужно включать с осторожностью. Пользователи, которые смогут обойти настройки разрешений файлов на удалённом хосте (в частности для unix-socket агента (ssh-agent)) могут получить доступ к локальному агенту через перенаправленное(forwarded)-соединение. Атакующий не сможет вытащить сами ключи из агента, однако получит возможность проводить с ключами действия, позволяющие ему проходить аутентификацию, используя загруженные в агент идентификаторы</p></blockquote><p>Просто запомните: если ваш бастион(<em>прим. пер.:</em> <a href=https://en.wikipedia.org/wiki/Jump_server>jump box</a> - сервер-бастион для доступа в закрытый сетевой контур) скомпроментирован, и вы используете SSH agent forwarding, чтобы через него подключаться к другим машинам, то высок риск компроментации и этих удалённых машин.</p><p>Вместо этого лучше используйте <code>ProxyCommand</code> или <code>ProxyJump</code> (добавлен в OpenSSH 7.3). В таком случае ssh перенаправит TCP-соединение на удалённую машину через бастион, а само соединение будет установлено с вашей локальной машины. Если кто-нибудь на бастионе попробует провести MITM (man-in-the-middle) атаку на ваше соединение, то ssh об этом предупредит (<em>прим. пер.: видимо, речь идёт о предупреждении об изменившимся ssh fingerprint(отпечатке)</em>)</p><div><a href=/2019/12/problema-bezopasnosti-ssh-agent-forwarding/>Открыть полностью…</a></div></div></div><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2019/01/kubernetes-nodeport-loadbalancer-ingress-kogda-chto-ispolzovat/><div class="h2 mt-1 mb-1">Kubernetes NodePort / LoadBalancer / Ingress? Когда что использовать?</div></a></div><div class=Subhead-description><a href=/categories/devops class=muted-link><span class="Label Label--gray-darker">devops</span></a>
-<a href=/categories/kubernetes class=muted-link><span class="Label Label--gray-darker">kubernetes</span></a>
-<a href=/categories/%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B4 class=muted-link><span class="Label Label--gray-darker">перевод</span></a>
-<a href=/tags/devops class=muted-link><span class="Label Label--gray">devops</span></a><div class=float-md-right><span>2019-01-07</span></div></div></div><div class=text-gray><p>Чем отличаются всякие там <strong>NodePorts</strong>, <strong>LoadBalancer</strong> и <strong>Ingress</strong>? Все они дают возможность внешнему трафику попасть в ваш кластер, но дают эту возможность по-разному. Давайте-ка разберёмся, как они это делают и когда какой тип сервиса лучше использовать.</p><h1 id=clusterip>ClusterIP</h1><p>ClusterIP — это дефолтный тип сервиса в кубах, он поднимает вам сервис внутри кластера на внутрекластеровом IP. Доступа для внешнего трафика нет, только внутри кластера.</p><p>YAML для ClusterIP выглядит как-то так:</p><div class=highlight><pre class=chroma><code class=language-yaml data-lang=yaml>apiVersion<span class=p>:</span><span class=w> </span>v1<span class=w>
-</span><span class=w></span>kind<span class=p>:</span><span class=w> </span>Service<span class=w>
-</span><span class=w></span>metadata<span class=p>:</span><span class=w>  
-</span><span class=w>  </span>name<span class=p>:</span><span class=w> </span>my-internal-service<span class=w>
-</span><span class=w></span>spec<span class=p>:</span><span class=w>
-</span><span class=w>  </span>selector<span class=p>:</span><span class=w>    
-</span><span class=w>    </span>app<span class=p>:</span><span class=w> </span>my-app<span class=w>
-</span><span class=w>  </span>type<span class=p>:</span><span class=w> </span>ClusterIP<span class=w>
-</span><span class=w>  </span>ports<span class=p>:</span><span class=w>  
-</span><span class=w>  </span>-<span class=w> </span>name<span class=p>:</span><span class=w> </span>http<span class=w>
-</span><span class=w>    </span>port<span class=p>:</span><span class=w> </span><span class=m>80</span><span class=w>
-</span><span class=w>    </span>targetPort<span class=p>:</span><span class=w> </span><span class=m>80</span><span class=w>
-</span><span class=w>    </span>protocol<span class=p>:</span><span class=w> </span>TCP<span class=w>
-</span></code></pre></div><p>&ldquo;Так, ну и зачем же рассказывать нам о ClusterIP, если он не принимает внешний трафик?&rdquo; — спросите вы. А всё потому, что попасть на этот сервис можно через Kubernetes proxy!</p><div><a href=/2019/01/kubernetes-nodeport-loadbalancer-ingress-kogda-chto-ispolzovat/>Открыть полностью…</a></div></div></div></div></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
+<!doctype html><html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>
+перевод &ndash; Of Code & Systems
+</title>
+<meta name=description property="og:description" content>
+<meta name=apple-mobile-web-app-title content="Of Code & Systems">
+<link rel=stylesheet href=/assets/syntax.css>
+<link rel=stylesheet href=/assets/primer-build.css>
+<link rel=stylesheet href=/assets/style.css>
+</head>
+<body class=bg-gray style=background-color:#fdf6e3!important>
+<div id=holy class="container-lg bg-white h-100">
+<div id=header class="px-1 bg-white">
+<nav class="UnderlineNav UnderlineNav--right px-2">
+<a class="UnderlineNav-actions muted-link h2" href=/>
+Of Code & Systems
+</a>
+</nav>
+</div>
+<div role=main id=main class="holy-main markdown-body px-4 bg-white">
+<div>
+<h1>перевод</h1>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/2019/12/problema-bezopasnosti-ssh-agent-forwarding/>
+<div class="h2 mt-1 mb-1">Проблема безопасности SSH Agent Forwarding</div>
+</a>
+</div>
+<div class=Subhead-description>
+<a href=/categories/%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C class=muted-link>
+<span class="Label Label--gray-darker">безопасность</span>
+</a>
+<a href=/categories/%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B4 class=muted-link>
+<span class="Label Label--gray-darker">перевод</span>
+</a>
+<div class=float-md-right>
+<span>2019-12-06</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<p>Вот что говорит нам <code>man ssh_config</code> про <code>ForwardAgent</code>(перевод):</p>
+<blockquote>
+<p>Agent forwarding нужно включать с осторожностью. Пользователи, которые смогут обойти настройки разрешений файлов на удалённом хосте (в частности для unix-socket агента (ssh-agent)) могут получить доступ к локальному агенту через перенаправленное(forwarded)-соединение. Атакующий не сможет вытащить сами ключи из агента, однако получит возможность проводить с ключами действия, позволяющие ему проходить аутентификацию, используя загруженные в агент идентификаторы</p>
+</blockquote>
+<p>Просто запомните: если ваш бастион(<em>прим. пер.:</em> <a href=https://en.wikipedia.org/wiki/Jump_server>jump box</a> - сервер-бастион для доступа в закрытый сетевой контур) скомпроментирован, и вы используете SSH agent forwarding, чтобы через него подключаться к другим машинам, то высок риск компроментации и этих удалённых машин.</p>
+<p>Вместо этого лучше используйте <code>ProxyCommand</code> или <code>ProxyJump</code> (добавлен в OpenSSH 7.3). В таком случае ssh перенаправит TCP-соединение на удалённую машину через бастион, а само соединение будет установлено с вашей локальной машины. Если кто-нибудь на бастионе попробует провести MITM (man-in-the-middle) атаку на ваше соединение, то ssh об этом предупредит (<em>прим. пер.: видимо, речь идёт о предупреждении об изменившимся ssh fingerprint(отпечатке)</em>)</p>
+<div>
+<a href=/2019/12/problema-bezopasnosti-ssh-agent-forwarding/>Открыть полностью…</a>
+</div>
+</div>
+</div>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/2019/01/kubernetes-nodeport-loadbalancer-ingress-kogda-chto-ispolzovat/>
+<div class="h2 mt-1 mb-1">Kubernetes NodePort / LoadBalancer / Ingress? Когда что использовать?</div>
+</a>
+</div>
+<div class=Subhead-description>
+<a href=/categories/devops class=muted-link>
+<span class="Label Label--gray-darker">devops</span>
+</a>
+<a href=/categories/kubernetes class=muted-link>
+<span class="Label Label--gray-darker">kubernetes</span>
+</a>
+<a href=/categories/%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B4 class=muted-link>
+<span class="Label Label--gray-darker">перевод</span>
+</a>
+<a href=/tags/devops class=muted-link>
+<span class="Label Label--gray">devops</span>
+</a>
+<div class=float-md-right>
+<span>2019-01-07</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<p>Чем отличаются всякие там <strong>NodePorts</strong>, <strong>LoadBalancer</strong> и <strong>Ingress</strong>? Все они дают возможность внешнему трафику попасть в ваш кластер, но дают эту возможность по-разному. Давайте-ка разберёмся, как они это делают и когда какой тип сервиса лучше использовать.</p>
+<h1 id=clusterip>ClusterIP</h1>
+<p>ClusterIP — это дефолтный тип сервиса в кубах, он поднимает вам сервис внутри кластера на внутрекластеровом IP. Доступа для внешнего трафика нет, только внутри кластера.</p>
+<p>YAML для ClusterIP выглядит как-то так:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Service</span><span class=w>
+</span><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>  
+</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>my-internal-service</span><span class=w>
+</span><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=nt>selector</span><span class=p>:</span><span class=w>    
+</span><span class=w>    </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>my-app</span><span class=w>
+</span><span class=w>  </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>ClusterIP</span><span class=w>
+</span><span class=w>  </span><span class=nt>ports</span><span class=p>:</span><span class=w>  
+</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>http</span><span class=w>
+</span><span class=w>    </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=m>80</span><span class=w>
+</span><span class=w>    </span><span class=nt>targetPort</span><span class=p>:</span><span class=w> </span><span class=m>80</span><span class=w>
+</span><span class=w>    </span><span class=nt>protocol</span><span class=p>:</span><span class=w> </span><span class=l>TCP</span><span class=w>
+</span></code></pre></div><p>&ldquo;Так, ну и зачем же рассказывать нам о ClusterIP, если он не принимает внешний трафик?&rdquo; — спросите вы. А всё потому, что попасть на этот сервис можно через Kubernetes proxy!</p>
+<div>
+<a href=/2019/01/kubernetes-nodeport-loadbalancer-ingress-kogda-chto-ispolzovat/>Открыть полностью…</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id=footer class="pt-2 pb-3 bg-white text-center">
+<span class="text-small text-gray">
+Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
-<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.</span></div></div></body></html>
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.
+</span>
+</div>
+</div>
+</body>
+</html>

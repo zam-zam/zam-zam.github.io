@@ -7,17 +7,17 @@
 &lt;h1 id="clusterip">ClusterIP&lt;/h1>
 &lt;p>ClusterIP — это дефолтный тип сервиса в кубах, он поднимает вам сервис внутри кластера на внутрекластеровом IP. Доступа для внешнего трафика нет, только внутри кластера.&lt;/p>
 &lt;p>YAML для ClusterIP выглядит как-то так:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">apiVersion&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>v1&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>kind&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>Service&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>metadata&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>my-internal-service&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>spec&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>selector&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>app&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>my-app&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>type&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>ClusterIP&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>ports&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>-&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>http&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>port&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>targetPort&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>protocol&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>TCP&lt;span class="w">
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">my-internal-service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">selector&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">app&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">my-app&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ClusterIP&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">http&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">targetPort&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">protocol&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">TCP&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&amp;ldquo;Так, ну и зачем же рассказывать нам о ClusterIP, если он не принимает внешний трафик?&amp;rdquo; — спросите вы. А всё потому, что попасть на этот сервис можно через Kubernetes proxy!&lt;/p></description></item></channel></rss>

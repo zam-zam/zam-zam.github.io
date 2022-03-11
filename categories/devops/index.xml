@@ -11,8 +11,8 @@
 &lt;p>&lt;a href="https://github.com/roboll/helmfile">Helmfile&lt;/a> - обёртка для &lt;a href="https://github.com/helm/helm/">helm&lt;/a>, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.&lt;/p>
 &lt;p>О самом helmfile и примерах его использования можно почитать в &lt;a href="https://github.com/roboll/helmfile/blob/master/README.md">readme&lt;/a> и &lt;a href="https://github.com/roboll/helmfile/blob/master/docs/writing-helmfile.md">best practices guide&lt;/a>.&lt;/p>
 &lt;p>Мы же познакомимся с неочевидными способами описать релизы в helmfile&lt;/p>
-&lt;p>Допустим, у нас есть пачка helm-чартов (для примера пусть будет postgres и некое backend приложение) и несколько окружений (несколько kubernetes кластеров, несколько namespace'ов или несколько и того, и другого). Берём helmfile, читаем документацию и начинаем описывать наши окружения и релизы:&lt;/p>
-&lt;pre>&lt;code> .
+&lt;p>Допустим, у нас есть пачка helm-чартов (для примера пусть будет postgres и некое backend приложение) и несколько окружений (несколько kubernetes кластеров, несколько namespace&amp;rsquo;ов или несколько и того, и другого). Берём helmfile, читаем документацию и начинаем описывать наши окружения и релизы:&lt;/p>
+&lt;pre tabindex="0">&lt;code> .
 ├── envs
 │   ├── devel
 │   │   └── values
@@ -27,21 +27,20 @@
 &lt;h1 id="clusterip">ClusterIP&lt;/h1>
 &lt;p>ClusterIP — это дефолтный тип сервиса в кубах, он поднимает вам сервис внутри кластера на внутрекластеровом IP. Доступа для внешнего трафика нет, только внутри кластера.&lt;/p>
 &lt;p>YAML для ClusterIP выглядит как-то так:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">apiVersion&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>v1&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>kind&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>Service&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>metadata&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>my-internal-service&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>spec&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>selector&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>app&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>my-app&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>type&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>ClusterIP&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>ports&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>-&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>http&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>port&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>targetPort&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>protocol&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>TCP&lt;span class="w">
-&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&amp;ldquo;Так, ну и зачем же рассказывать нам о ClusterIP, если он не принимает внешний трафик?&amp;rdquo; — спросите вы. А всё потому, что попасть на этот сервис можно через Kubernetes proxy!&lt;/p></description></item><item><title>dapp — утилита для сборки и деплоя контейнеров. Особенности работы</title><link>/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</link><pubDate>Mon, 03 Dec 2018 22:54:56 +0000</pubDate><guid>/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</guid><description>&lt;figure class="img">
-&lt;img src="/wp-content/uploads/2018/12/logo_og-e1543878630388.png"/>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">my-internal-service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">selector&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">app&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">my-app&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ClusterIP&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">http&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">targetPort&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">protocol&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">TCP&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&amp;ldquo;Так, ну и зачем же рассказывать нам о ClusterIP, если он не принимает внешний трафик?&amp;rdquo; — спросите вы. А всё потому, что попасть на этот сервис можно через Kubernetes proxy!&lt;/p></description></item><item><title>dapp — утилита для сборки и деплоя контейнеров. Особенности работы</title><link>/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</link><pubDate>Mon, 03 Dec 2018 22:54:56 +0000</pubDate><guid>/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</guid><description>&lt;figure class="img">&lt;img src="/wp-content/uploads/2018/12/logo_og-e1543878630388.png"/>
 &lt;/figure>
 &lt;p>&lt;a href="https://github.com/flant/dapp">dapp&lt;/a> — утилита от российской компании Флант, которая занимается внедрением devops-практик (kubernetes, ci/cd и всё такое, ну вы в курсе) Подробное описание можно прочитать на &lt;a href="https://habr.com/company/flant/blog/333682/">Хабре&lt;/a>, а я бы хотел остановиться на некоторых особенностях работы с ней при сборке образов (здесь и далее под образом подразумевается docker image)&lt;/p>
 &lt;p>На момент написания статьи актуальная версия dapp 0.36.*&lt;/p>

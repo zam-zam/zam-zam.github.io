@@ -1,26 +1,349 @@
-<!doctype html><html><head><meta name=generator content="Hugo 0.60.1"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Of Code & Systems &ndash; Of Code & Systems</title><meta name=description property="og:description" content><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div><nav class=paginate-container><div class=pagination><ul><span class="previous_page disabled">Prev</span>
+<!doctype html><html>
+<head>
+<meta name=generator content="Hugo 0.92.2">
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>
+Of Code & Systems &ndash; Of Code & Systems
+</title>
+<meta name=description property="og:description" content>
+<meta name=apple-mobile-web-app-title content="Of Code & Systems">
+<link rel=stylesheet href=/assets/syntax.css>
+<link rel=stylesheet href=/assets/primer-build.css>
+<link rel=stylesheet href=/assets/style.css>
+</head>
+<body class=bg-gray style=background-color:#fdf6e3!important>
+<div id=holy class="container-lg bg-white h-100">
+<div id=header class="px-1 bg-white">
+<nav class="UnderlineNav UnderlineNav--right px-2">
+<a class="UnderlineNav-actions muted-link h2" href=/>
+Of Code & Systems
+</a>
+</nav>
+</div>
+<div role=main id=main class="holy-main markdown-body px-4 bg-white">
+<div>
+<nav class=paginate-container>
+<div class=pagination>
+<ul>
+<span class="previous_page disabled">Prev</span>
 <em class="current selected" aria-current=true>1</em>
 <a href=/page/2/>2</a>
 <a href=/page/3/>3</a>
 <a href=/page/4/>4</a>
-<a href=/page/2/ class=next_page>Next</a></ul></div></nav><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/posts/2022/2022-03-11-sbercloud-cdn-prometheus-exporter-python/><div class="h2 mt-1 mb-1">Пишем свой prometheus-exporter для sbercloud cdn на python</div></a></div><div class=Subhead-description><div class=float-md-right><span>2022-03-11</span></div></div></div><div class=text-gray><p><a href=/posts/2022/2022-03-11-sbercloud-cdn-prometheus-exporter-python/grafana.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/posts/2022/2022-03-11-sbercloud-cdn-prometheus-exporter-python/grafana_hu7948ee00652d222b3608baa32af8a6e7_100192_1024x0_resize_box_2.png width=1024 height=534></a></p><h1 id=heading>Описание</h1><p>Мы используем CDN для раздачи статичных файлов и хотим иметь статистику по этой раздаче (коды ответов, rps, полосу пропускания)</p><p>Первый и самый главный вопрос - откуда получить эти данные? Конечно же из <a href=https://docs.sbercloud.ru/cdn/ug/topics/guides__api.html>CDN API</a>.</p><p>Ищем&mldr; Ага! <a href=https://docs.sbercloud.ru/cdn/ug/topics/api__statistics__realtime-bandwidth-stat.html#id4>Статистика по конкретному аккаунту с разбивкой по ресурсам</a></p><div><a href=/posts/2022/2022-03-11-sbercloud-cdn-prometheus-exporter-python/>Открыть полностью…</a></div></div></div><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2021/04/syslogd-then-and-now/><div class="h2 mt-1 mb-1">Syslogd then and now</div></a></div><div class=Subhead-description><div class=float-md-right><span>2021-04-27</span></div></div></div><div class=text-gray><h1 id=-->Как обрабатываются логи</h1><h2 id=----syslogd>Как обрабатывает логи оригинальный syslogd</h2><p><a href=/2021/04/syslogd-then-and-now/syslogd01.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2021/04/syslogd-then-and-now/syslogd01.png width=611 height=409></a></p><h2 id=----journald--rsyslogd>Как обрабатывает логи связка journald + rsyslogd</h2><p><a href=/2021/04/syslogd-then-and-now/syslogd02.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2021/04/syslogd-then-and-now/syslogd02.png width=871 height=419></a></p><h1 id=-syslog->Форматы syslog сообщений</h1><h2 id=rfc-3164->RFC 3164 (устаревший)</h2><p><a href=https://tools.ietf.org/html/rfc3164>RFC 3164 - The BSD Syslog Protocol</a></p><h3 id=--1>Описание формата сообщения</h3><p>The first part is called the <code>PRI</code>, the second part is the <code>HEADER</code>, and the third part is the <code>MSG</code>. The total length of the packet MUST be 1024 bytes or less</p><div><a href=/2021/04/syslogd-then-and-now/>Открыть полностью…</a></div></div></div><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2021/04/docker-build-options-on-ci/><div class="h2 mt-1 mb-1">Docker build options on CI</div></a></div><div class=Subhead-description><div class=float-md-right><span>2021-04-26</span></div></div></div><div class=text-gray><h1 id=-->Варианты запуска сборок</h1><ol><li><p><strong>Shell executor</strong></p><ul><li>Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры</li></ul></li><li><p><strong>docker-in-docker</strong></p><ul><li>Изолированные друг от друга контейнеры, т.к. здесь child контейнеры от контейнера dind, а не от хостового docker.sock</li><li>Необходим запуск с privileged (небезопасно)</li></ul></li><li><p><strong>Проброс docker.sock</strong></p><ul><li>Все контейнеры - siblings (видят друг друга), т.к. запускается через хостовый docker</li><li>Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры</li></ul></li><li><p><strong>buildah/buildkit/img</strong></p><ul><li>Позволяют внутри докер контейнера запускать сборку образа без докер-демона</li><li>Требуется unprivileged_userns_clone (user namespaces), у которого свои security-риски</li><li>Синтаксис запуска отличается -> переучивать команду</li></ul></li><li><p><strong>kaniko</strong></p><ul><li>Позволяют внутри докер контейнера запускать сборку образа без докер-демона</li><li>Не поддерживается установка бинарника в свой образ. Необходимо использовать официальный образ</li><li>Синтаксис запуска отличается -> переучивать команду</li></ul></li></ol><h1 id=--1>Потенциальные векторы атаки</h1><ol><li><p><strong>Источник</strong></p><ul><li>В сборке используется публичный образ, в котором в entrypoint выполняется команда проверки docker.sock и запуск контейнера через него</li><li>При сборке в зависимостях (напрмер, node) скачивается зловред, который запускается в процессе сборки. Далее проверка docker.sock и запуск контейнера через него</li></ul></li><li><p><strong>Цель</strong></p><ul><li>Закрепиться в системе. Через докер возможно установить свои бинарники и сервисы в систему</li><li>Дальнейший скан сети и поиск уязвимостей для распространения и закрепления</li></ul></li></ol></div></div><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2020/09/kubernetes-what-if/><div class="h2 mt-1 mb-1">Kubernetes What If...?</div></a></div><div class=Subhead-description><a href=/categories/kubernetes class=muted-link><span class="Label Label--gray-darker">kubernetes</span></a><div class=float-md-right><span>2020-09-29</span></div></div></div><div class=text-gray><h1 id=-->Что произойдёт, если</h1><h2 id=-kubelet>Перезапустить kubelet</h2><p>Контейнеры продолжают работать, но в момент синхронизации состояния подов с api-server поды могут переходить в состояние 0/1 Running, когда трафик на них перестаёт направляться</p><h2 id=-kubelet1>Остановить kubelet</h2><p>Нода переходит в состояние NotReady, никаких событий на подах не происходит - они продолжают пребывать в состоянии 1/1 Running, но трафик на них перестаёт идти (из endpoint'ов сервисов удаляются IP адрес подов, которые находятся на &ldquo;мёртвой&rdquo; ноде).</p><p>Спустя указанный pod-eviction-timeout (5m по-умолчанию) для <a href=https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/>kube-controller-manager</a> поды переходят в статус Terminating и начинают запускаться на живых воркерках. Поды <a href=https://github.com/kubernetes/kubernetes/issues/55713>будут продолжать</a> находиться в статусе Terminating либо до старта kubelet, либо до удаления ноды из кластера. При этом не выгоняются поды DaemonSet и поды, поднятые kubelet'ом(kube-proxy, nginx-proxy, kube-flannel, nodelocaldns и т.п.)</p><div><a href=/2020/09/kubernetes-what-if/>Открыть полностью…</a></div></div></div><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2020/09/scala-akka-graceful-shutdown/><div class="h2 mt-1 mb-1">Graceful Shutdown в Akka HTTP</div></a></div><div class=Subhead-description><a href=/categories/scala class=muted-link><span class="Label Label--gray-darker">scala</span></a><div class=float-md-right><span>2020-09-22</span></div></div></div><div class=text-gray><p>Атуально для Akka HTTP начиная с версии <a href=https://doc.akka.io/docs/akka-http/current/release-notes/10.2.x.html>10.2.0</a></p><p>Github Issue: <a href=https://github.com/akka/akka-http/pull/3142>Add coordinated shutdown support</a></p><p>По-умолчанию, Akka при завершении (в т.ч. получении SIGTERM) запускает процесс <a href=https://doc.akka.io/docs/akka/current/coordinated-shutdown.html>Coordinated Shutdown</a>, в рамках которого происходят последовательно несколько фаз:</p><ul><li>before-service-unbind</li><li>service-unbind</li><li>service-requests-done</li><li>service-stop</li><li>before-cluster-shutdown</li><li>cluster-sharding-shutdown-region</li><li>cluster-leave</li><li>cluster-exiting</li><li>cluster-exiting-done</li><li>cluster-shutdown</li><li>before-actor-system-terminate</li><li>actor-system-terminate</li></ul><p>В каждой фазе выполняются определённые действия и настроен таймаут, который можно переопределить и в течение которого эти действия должны завершиться. Если действия не успевают завершаться, то фаза заканчивается и начинается следующая</p><p>В рамках Akka HTTP нас в первую очередь интересуют следующие фазы</p><ul><li>service-unbind #перестаёт слушаться tcp порт и перестают приниматься новые соединения. Установленные соединения не разрываются</li><li>service-requests-done #ожидается окончание запросов, которые в данный момент обрабатываются кодом и клиент ожидает на них ответ</li><li>service-stop #закрываются все установленные соединения</li></ul><p>По-умолчанию (<a href=https://github.com/akka/akka/blob/master/akka-actor/src/main/resources/reference.conf#L1162>default-phase-timeout = 5s</a>), после unbind есть 5 секунд на завершение текущих запросов</p><p>При использовании Kubernetes, стоит принимать во внимание также его таймаут <a href=https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#podspec-v1-core>terminationGracePeriodSeconds</a>, в течение которого будет ожидаться реакция на SIGTERM, после чего будет послан SIGKILL. По-умолчанию, он равен 30s</p></div></div><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2020/06/kubernetes-rbac-add-user/><div class="h2 mt-1 mb-1">Как определяются права пользователя в kubernetes?</div></a></div><div class=Subhead-description><a href=/categories/kubernetes class=muted-link><span class="Label Label--gray-darker">kubernetes</span></a><div class=float-md-right><span>2020-06-15</span></div></div></div><div class=text-gray><h1 id=--rbac>Немного о RBAC</h1><p>В kubernetes есть сущность, которая называется <code>RoleBinding</code>. Она определяет, каким субъектам какая роль будет назначена. <code>RoleBinding</code> действует в рамках <code>namespace</code>, в котором она создана. Для разрешения действий во всех <code>namespace</code> без ограничений необходимо создавать <code>ClusterRoleBinding</code>, который является cluster-wide объектом.</p><p>Пример RoleBinding</p><div class=highlight><pre class=chroma><code class=language-yaml data-lang=yaml>apiVersion<span class=p>:</span><span class=w> </span>rbac.authorization.k8s.io/v1<span class=w>
-</span><span class=w></span>kind<span class=p>:</span><span class=w> </span>RoleBinding<span class=w>
-</span><span class=w></span>metadata<span class=p>:</span><span class=w>
-</span><span class=w>  </span>name<span class=p>:</span><span class=w> </span>edit<span class=w>
-</span><span class=w>  </span>namespace<span class=p>:</span><span class=w> </span>project-a-devel<span class=w>
-</span><span class=w></span>subjects<span class=p>:</span><span class=w>
-</span><span class=w></span>-<span class=w> </span>kind<span class=p>:</span><span class=w> </span>Group<span class=w>
-</span><span class=w>  </span>name<span class=p>:</span><span class=w> </span>sre<span class=w>
-</span><span class=w>  </span>apiGroup<span class=p>:</span><span class=w> </span>rbac.authorization.k8s.io<span class=w>
-</span><span class=w></span>roleRef<span class=p>:</span><span class=w>
-</span><span class=w>  </span>kind<span class=p>:</span><span class=w> </span>ClusterRole<span class=w>
-</span><span class=w>  </span>name<span class=p>:</span><span class=w> </span>edit<span class=w>
-</span><span class=w>  </span>apiGroup<span class=p>:</span><span class=w> </span>rbac.authorization.k8s.io<span class=w>
-</span></code></pre></div><p>Эта роль:</p><ul><li>Действует в рамках namespace <code>project-a-devel</code> - (metadata:)</li><li>Применяется к пользователям в группе <code>sre</code> (<code>/O=sre</code>) - (subjects:)</li><li>Разрешает действия, описанные в созданной по-умолчанию кластерной роли (ClusterRole) <code>edit</code> - (roleRef:)</li></ul><div><a href=/2020/06/kubernetes-rbac-add-user/>Открыть полностью…</a></div></div></div><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2020/06/gitlab-avoid-double-pipeline-run/><div class="h2 mt-1 mb-1">Как избежать запуска двойного pipeline при использовании merge requests pipelines?</div></a></div><div class=Subhead-description><a href=/categories/gitlab class=muted-link><span class="Label Label--gray-darker">gitlab</span></a>
-<a href=/categories/devops class=muted-link><span class="Label Label--gray-darker">devops</span></a><div class=float-md-right><span>2020-06-15</span></div></div></div><div class=text-gray><p><a href=https://docs.gitlab.com/ee/ci/merge_request_pipelines/>Пайплайны для Merge Requests</a> существуют отдельно (имеют лейбл detached) и запускается независимо от основного pipeline. Из-за этого если сделать push в репу в ветку, из которой в гитлабе есть открытый МР, то запускаются 2 одинаковых пайплайна</p><p><img src=/wp-content/uploads/2020/06/double-pipeline.png alt>
+<a href=/page/2/ class=next_page>Next</a>
+</ul>
+</div>
+</nav>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/posts/2022/2022-03-11-sbercloud-cdn-prometheus-exporter-python/>
+<div class="h2 mt-1 mb-1">Пишем свой prometheus-exporter для sbercloud cdn на python</div>
+</a>
+</div>
+<div class=Subhead-description>
+<div class=float-md-right>
+<span>2022-03-11</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<p>
+<a href=/posts/2022/2022-03-11-sbercloud-cdn-prometheus-exporter-python/grafana.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/posts/2022/2022-03-11-sbercloud-cdn-prometheus-exporter-python/grafana_hu7948ee00652d222b3608baa32af8a6e7_100192_1024x0_resize_box_3.png width=1024 height=534></a>
+</p>
+<h1 id=описание>Описание</h1>
+<p>Мы используем CDN для раздачи статичных файлов и хотим иметь статистику по этой раздаче (коды ответов, rps, полосу пропускания)</p>
+<p>Первый и самый главный вопрос - откуда получить эти данные? Конечно же из <a href=https://docs.sbercloud.ru/cdn/ug/topics/guides__api.html>CDN API</a>.</p>
+<p>Ищем&mldr; Ага! <a href=https://docs.sbercloud.ru/cdn/ug/topics/api__statistics__realtime-bandwidth-stat.html#id4>Статистика по конкретному аккаунту с разбивкой по ресурсам</a></p>
+<div>
+<a href=/posts/2022/2022-03-11-sbercloud-cdn-prometheus-exporter-python/>Открыть полностью…</a>
+</div>
+</div>
+</div>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/2021/04/syslogd-then-and-now/>
+<div class="h2 mt-1 mb-1">Syslogd then and now</div>
+</a>
+</div>
+<div class=Subhead-description>
+<div class=float-md-right>
+<span>2021-04-27</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<h1 id=как-обрабатываются-логи>Как обрабатываются логи</h1>
+<h2 id=как-обрабатывает-логи-оригинальный-syslogd>Как обрабатывает логи оригинальный syslogd</h2>
+<p>
+<a href=/2021/04/syslogd-then-and-now/syslogd01.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2021/04/syslogd-then-and-now/syslogd01.png width=611 height=409></a>
+</p>
+<h2 id=как-обрабатывает-логи-связка-journald--rsyslogd>Как обрабатывает логи связка journald + rsyslogd</h2>
+<p>
+<a href=/2021/04/syslogd-then-and-now/syslogd02.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2021/04/syslogd-then-and-now/syslogd02.png width=871 height=419></a>
+</p>
+<h1 id=форматы-syslog-сообщений>Форматы syslog сообщений</h1>
+<h2 id=rfc-3164-устаревший>RFC 3164 (устаревший)</h2>
+<p><a href=https://tools.ietf.org/html/rfc3164>RFC 3164 - The BSD Syslog Protocol</a></p>
+<h3 id=описание-формата-сообщения>Описание формата сообщения</h3>
+<p>The first part is called the <code>PRI</code>, the second part is the <code>HEADER</code>, and the third part is the <code>MSG</code>. The total length of the packet MUST be 1024 bytes or less</p>
+<div>
+<a href=/2021/04/syslogd-then-and-now/>Открыть полностью…</a>
+</div>
+</div>
+</div>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/2021/04/docker-build-options-on-ci/>
+<div class="h2 mt-1 mb-1">Docker build options on CI</div>
+</a>
+</div>
+<div class=Subhead-description>
+<div class=float-md-right>
+<span>2021-04-26</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<h1 id=варианты-запуска-сборок>Варианты запуска сборок</h1>
+<ol>
+<li>
+<p><strong>Shell executor</strong></p>
+<ul>
+<li>Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры</li>
+</ul>
+</li>
+<li>
+<p><strong>docker-in-docker</strong></p>
+<ul>
+<li>Изолированные друг от друга контейнеры, т.к. здесь child контейнеры от контейнера dind, а не от хостового docker.sock</li>
+<li>Необходим запуск с privileged (небезопасно)</li>
+</ul>
+</li>
+<li>
+<p><strong>Проброс docker.sock</strong></p>
+<ul>
+<li>Все контейнеры - siblings (видят друг друга), т.к. запускается через хостовый docker</li>
+<li>Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры</li>
+</ul>
+</li>
+<li>
+<p><strong>buildah/buildkit/img</strong></p>
+<ul>
+<li>Позволяют внутри докер контейнера запускать сборку образа без докер-демона</li>
+<li>Требуется unprivileged_userns_clone (user namespaces), у которого свои security-риски</li>
+<li>Синтаксис запуска отличается -> переучивать команду</li>
+</ul>
+</li>
+<li>
+<p><strong>kaniko</strong></p>
+<ul>
+<li>Позволяют внутри докер контейнера запускать сборку образа без докер-демона</li>
+<li>Не поддерживается установка бинарника в свой образ. Необходимо использовать официальный образ</li>
+<li>Синтаксис запуска отличается -> переучивать команду</li>
+</ul>
+</li>
+</ol>
+<h1 id=потенциальные-векторы-атаки>Потенциальные векторы атаки</h1>
+<ol>
+<li>
+<p><strong>Источник</strong></p>
+<ul>
+<li>В сборке используется публичный образ, в котором в entrypoint выполняется команда проверки docker.sock и запуск контейнера через него</li>
+<li>При сборке в зависимостях (напрмер, node) скачивается зловред, который запускается в процессе сборки. Далее проверка docker.sock и запуск контейнера через него</li>
+</ul>
+</li>
+<li>
+<p><strong>Цель</strong></p>
+<ul>
+<li>Закрепиться в системе. Через докер возможно установить свои бинарники и сервисы в систему</li>
+<li>Дальнейший скан сети и поиск уязвимостей для распространения и закрепления</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/2020/09/kubernetes-what-if/>
+<div class="h2 mt-1 mb-1">Kubernetes What If...?</div>
+</a>
+</div>
+<div class=Subhead-description>
+<a href=/categories/kubernetes class=muted-link>
+<span class="Label Label--gray-darker">kubernetes</span>
+</a>
+<div class=float-md-right>
+<span>2020-09-29</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<h1 id=что-произойдёт-если>Что произойдёт, если</h1>
+<h2 id=перезапустить-kubelet>Перезапустить kubelet</h2>
+<p>Контейнеры продолжают работать, но в момент синхронизации состояния подов с api-server поды могут переходить в состояние 0/1 Running, когда трафик на них перестаёт направляться</p>
+<h2 id=остановить-kubelet>Остановить kubelet</h2>
+<p>Нода переходит в состояние NotReady, никаких событий на подах не происходит - они продолжают пребывать в состоянии 1/1 Running, но трафик на них перестаёт идти (из endpoint&rsquo;ов сервисов удаляются IP адрес подов, которые находятся на &ldquo;мёртвой&rdquo; ноде).</p>
+<p>Спустя указанный pod-eviction-timeout (5m по-умолчанию) для <a href=https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/>kube-controller-manager</a> поды переходят в статус Terminating и начинают запускаться на живых воркерках. Поды <a href=https://github.com/kubernetes/kubernetes/issues/55713>будут продолжать</a> находиться в статусе Terminating либо до старта kubelet, либо до удаления ноды из кластера. При этом не выгоняются поды DaemonSet и поды, поднятые kubelet&rsquo;ом(kube-proxy, nginx-proxy, kube-flannel, nodelocaldns и т.п.)</p>
+<div>
+<a href=/2020/09/kubernetes-what-if/>Открыть полностью…</a>
+</div>
+</div>
+</div>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/2020/09/scala-akka-graceful-shutdown/>
+<div class="h2 mt-1 mb-1">Graceful Shutdown в Akka HTTP</div>
+</a>
+</div>
+<div class=Subhead-description>
+<a href=/categories/scala class=muted-link>
+<span class="Label Label--gray-darker">scala</span>
+</a>
+<div class=float-md-right>
+<span>2020-09-22</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<p>Атуально для Akka HTTP начиная с версии <a href=https://doc.akka.io/docs/akka-http/current/release-notes/10.2.x.html>10.2.0</a></p>
+<p>Github Issue: <a href=https://github.com/akka/akka-http/pull/3142>Add coordinated shutdown support</a></p>
+<p>По-умолчанию, Akka при завершении (в т.ч. получении SIGTERM) запускает процесс <a href=https://doc.akka.io/docs/akka/current/coordinated-shutdown.html>Coordinated Shutdown</a>, в рамках которого происходят последовательно несколько фаз:</p>
+<ul>
+<li>before-service-unbind</li>
+<li>service-unbind</li>
+<li>service-requests-done</li>
+<li>service-stop</li>
+<li>before-cluster-shutdown</li>
+<li>cluster-sharding-shutdown-region</li>
+<li>cluster-leave</li>
+<li>cluster-exiting</li>
+<li>cluster-exiting-done</li>
+<li>cluster-shutdown</li>
+<li>before-actor-system-terminate</li>
+<li>actor-system-terminate</li>
+</ul>
+<p>В каждой фазе выполняются определённые действия и настроен таймаут, который можно переопределить и в течение которого эти действия должны завершиться. Если действия не успевают завершаться, то фаза заканчивается и начинается следующая</p>
+<p>В рамках Akka HTTP нас в первую очередь интересуют следующие фазы</p>
+<ul>
+<li>service-unbind #перестаёт слушаться tcp порт и перестают приниматься новые соединения. Установленные соединения не разрываются</li>
+<li>service-requests-done #ожидается окончание запросов, которые в данный момент обрабатываются кодом и клиент ожидает на них ответ</li>
+<li>service-stop #закрываются все установленные соединения</li>
+</ul>
+<p>По-умолчанию (<a href=https://github.com/akka/akka/blob/master/akka-actor/src/main/resources/reference.conf#L1162>default-phase-timeout = 5s</a>), после unbind есть 5 секунд на завершение текущих запросов</p>
+<p>При использовании Kubernetes, стоит принимать во внимание также его таймаут <a href=https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#podspec-v1-core>terminationGracePeriodSeconds</a>, в течение которого будет ожидаться реакция на SIGTERM, после чего будет послан SIGKILL. По-умолчанию, он равен 30s</p>
+</div>
+</div>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/2020/06/kubernetes-rbac-add-user/>
+<div class="h2 mt-1 mb-1">Как определяются права пользователя в kubernetes?</div>
+</a>
+</div>
+<div class=Subhead-description>
+<a href=/categories/kubernetes class=muted-link>
+<span class="Label Label--gray-darker">kubernetes</span>
+</a>
+<div class=float-md-right>
+<span>2020-06-15</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<h1 id=немного-о-rbac>Немного о RBAC</h1>
+<p>В kubernetes есть сущность, которая называется <code>RoleBinding</code>. Она определяет, каким субъектам какая роль будет назначена. <code>RoleBinding</code> действует в рамках <code>namespace</code>, в котором она создана. Для разрешения действий во всех <code>namespace</code> без ограничений необходимо создавать <code>ClusterRoleBinding</code>, который является cluster-wide объектом.</p>
+<p>Пример RoleBinding</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>RoleBinding</span><span class=w>
+</span><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>edit</span><span class=w>
+</span><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>project-a-devel</span><span class=w>
+</span><span class=w></span><span class=nt>subjects</span><span class=p>:</span><span class=w>
+</span><span class=w></span>- <span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Group</span><span class=w>
+</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>sre</span><span class=w>
+</span><span class=w>  </span><span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io</span><span class=w>
+</span><span class=w></span><span class=nt>roleRef</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRole</span><span class=w>
+</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>edit</span><span class=w>
+</span><span class=w>  </span><span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io</span><span class=w>
+</span></code></pre></div><p>Эта роль:</p>
+<ul>
+<li>Действует в рамках namespace <code>project-a-devel</code> - (metadata:)</li>
+<li>Применяется к пользователям в группе <code>sre</code> (<code>/O=sre</code>) - (subjects:)</li>
+<li>Разрешает действия, описанные в созданной по-умолчанию кластерной роли (ClusterRole) <code>edit</code> - (roleRef:)</li>
+</ul>
+<div>
+<a href=/2020/06/kubernetes-rbac-add-user/>Открыть полностью…</a>
+</div>
+</div>
+</div>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/2020/06/gitlab-avoid-double-pipeline-run/>
+<div class="h2 mt-1 mb-1">Как избежать запуска двойного pipeline при использовании merge requests pipelines?</div>
+</a>
+</div>
+<div class=Subhead-description>
+<a href=/categories/gitlab class=muted-link>
+<span class="Label Label--gray-darker">gitlab</span>
+</a>
+<a href=/categories/devops class=muted-link>
+<span class="Label Label--gray-darker">devops</span>
+</a>
+<div class=float-md-right>
+<span>2020-06-15</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<p><a href=https://docs.gitlab.com/ee/ci/merge_request_pipelines/>Пайплайны для Merge Requests</a> существуют отдельно (имеют лейбл detached) и запускается независимо от основного pipeline. Из-за этого если сделать push в репу в ветку, из которой в гитлабе есть открытый МР, то запускаются 2 одинаковых пайплайна</p>
+<p><img src=/wp-content/uploads/2020/06/double-pipeline.png alt>
  
-Есть варианта, чтобы это избежать:</p><ol><li>Дублировать все джобы через extends, чтобы разделить на запускаемые на МРах и на обычные</li><li>Не запускать CI на некоторых ветках, пока из них нет открытого МРа</li></ol><div><a href=/2020/06/gitlab-avoid-double-pipeline-run/>Открыть полностью…</a></div></div></div><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2020/03/helmfile-ogranization/><div class="h2 mt-1 mb-1">Организация деплоя в множество окружений с помощью helmfile</div></a></div><div class=Subhead-description><a href=/categories/helm class=muted-link><span class="Label Label--gray-darker">helm</span></a>
-<a href=/categories/devops class=muted-link><span class="Label Label--gray-darker">devops</span></a><div class=float-md-right><span>2020-03-04</span></div></div></div><div class=text-gray><blockquote><p>Эта статья на Хабре <a href=https://habr.com/ru/post/491108/>https://habr.com/ru/post/491108/</a></p></blockquote><p><a href=https://github.com/roboll/helmfile>Helmfile</a> - обёртка для <a href=https://github.com/helm/helm/>helm</a>, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.</p><p>О самом helmfile и примерах его использования можно почитать в <a href=https://github.com/roboll/helmfile/blob/master/README.md>readme</a> и <a href=https://github.com/roboll/helmfile/blob/master/docs/writing-helmfile.md>best practices guide</a>.</p><p>Мы же познакомимся с неочевидными способами описать релизы в helmfile</p><p>Допустим, у нас есть пачка helm-чартов (для примера пусть будет postgres и некое backend приложение) и несколько окружений (несколько kubernetes кластеров, несколько namespace'ов или несколько и того, и другого). Берём helmfile, читаем документацию и начинаем описывать наши окружения и релизы:</p><pre><code>    .
+Есть варианта, чтобы это избежать:</p>
+<ol>
+<li>Дублировать все джобы через extends, чтобы разделить на запускаемые на МРах и на обычные</li>
+<li>Не запускать CI на некоторых ветках, пока из них нет открытого МРа</li>
+</ol>
+<div>
+<a href=/2020/06/gitlab-avoid-double-pipeline-run/>Открыть полностью…</a>
+</div>
+</div>
+</div>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/2020/03/helmfile-ogranization/>
+<div class="h2 mt-1 mb-1">Организация деплоя в множество окружений с помощью helmfile</div>
+</a>
+</div>
+<div class=Subhead-description>
+<a href=/categories/helm class=muted-link>
+<span class="Label Label--gray-darker">helm</span>
+</a>
+<a href=/categories/devops class=muted-link>
+<span class="Label Label--gray-darker">devops</span>
+</a>
+<div class=float-md-right>
+<span>2020-03-04</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<blockquote>
+<p>Эта статья на Хабре <a href=https://habr.com/ru/post/491108/>https://habr.com/ru/post/491108/</a></p>
+</blockquote>
+<p><a href=https://github.com/roboll/helmfile>Helmfile</a> - обёртка для <a href=https://github.com/helm/helm/>helm</a>, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.</p>
+<p>О самом helmfile и примерах его использования можно почитать в <a href=https://github.com/roboll/helmfile/blob/master/README.md>readme</a> и <a href=https://github.com/roboll/helmfile/blob/master/docs/writing-helmfile.md>best practices guide</a>.</p>
+<p>Мы же познакомимся с неочевидными способами описать релизы в helmfile</p>
+<p>Допустим, у нас есть пачка helm-чартов (для примера пусть будет postgres и некое backend приложение) и несколько окружений (несколько kubernetes кластеров, несколько namespace&rsquo;ов или несколько и того, и другого). Берём helmfile, читаем документацию и начинаем описывать наши окружения и релизы:</p>
+<pre tabindex=0><code>    .
     ├── envs
     │   ├── devel
     │   │   └── values
@@ -31,12 +354,89 @@
     │           ├── backend.yaml
     │           └── postgres.yaml
     └── helmfile.yaml
-</code></pre><div><a href=/2020/03/helmfile-ogranization/>Открыть полностью…</a></div></div></div><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2020/03/kafka-recommendations/><div class="h2 mt-1 mb-1">Немного о настройках при работе с Kafka, на которые стоит обратить внимание</div></a></div><div class=Subhead-description><a href=/categories/kafka class=muted-link><span class="Label Label--gray-darker">kafka</span></a><div class=float-md-right><span>2020-03-02</span></div></div></div><div class=text-gray><figure class=img><img src=/wp-content/uploads/2020/03/kafka-logo.png width=325px height=97px></figure><p>Этот пост - небольшой конспект доклада с Highload <a href="https://www.youtube.com/watch?v=m5CDfrQLzrs"><strong>Кафка. &ldquo;Описание одной борьбы&rdquo; / Денис Карасик (Badoo)</strong></a>. Как ясно из заголовка статьи, здесь будет рассказано о некоторых важных параметрах конфигурации брокеров, топиков и producer'ов</p><div><a href=/2020/03/kafka-recommendations/>Открыть полностью…</a></div></div></div><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2019/12/problema-bezopasnosti-ssh-agent-forwarding/><div class="h2 mt-1 mb-1">Проблема безопасности SSH Agent Forwarding</div></a></div><div class=Subhead-description><a href=/categories/%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C class=muted-link><span class="Label Label--gray-darker">безопасность</span></a>
-<a href=/categories/%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B4 class=muted-link><span class="Label Label--gray-darker">перевод</span></a><div class=float-md-right><span>2019-12-06</span></div></div></div><div class=text-gray><p>Вот что говорит нам <code>man ssh_config</code> про <code>ForwardAgent</code>(перевод):</p><blockquote><p>Agent forwarding нужно включать с осторожностью. Пользователи, которые смогут обойти настройки разрешений файлов на удалённом хосте (в частности для unix-socket агента (ssh-agent)) могут получить доступ к локальному агенту через перенаправленное(forwarded)-соединение. Атакующий не сможет вытащить сами ключи из агента, однако получит возможность проводить с ключами действия, позволяющие ему проходить аутентификацию, используя загруженные в агент идентификаторы</p></blockquote><p>Просто запомните: если ваш бастион(<em>прим. пер.:</em> <a href=https://en.wikipedia.org/wiki/Jump_server>jump box</a> - сервер-бастион для доступа в закрытый сетевой контур) скомпроментирован, и вы используете SSH agent forwarding, чтобы через него подключаться к другим машинам, то высок риск компроментации и этих удалённых машин.</p><p>Вместо этого лучше используйте <code>ProxyCommand</code> или <code>ProxyJump</code> (добавлен в OpenSSH 7.3). В таком случае ssh перенаправит TCP-соединение на удалённую машину через бастион, а само соединение будет установлено с вашей локальной машины. Если кто-нибудь на бастионе попробует провести MITM (man-in-the-middle) атаку на ваше соединение, то ssh об этом предупредит (<em>прим. пер.: видимо, речь идёт о предупреждении об изменившимся ssh fingerprint(отпечатке)</em>)</p><div><a href=/2019/12/problema-bezopasnosti-ssh-agent-forwarding/>Открыть полностью…</a></div></div></div><nav class=paginate-container><div class=pagination><ul><span class="previous_page disabled">Prev</span>
+</code></pre>
+<div>
+<a href=/2020/03/helmfile-ogranization/>Открыть полностью…</a>
+</div>
+</div>
+</div>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/2020/03/kafka-recommendations/>
+<div class="h2 mt-1 mb-1">Немного о настройках при работе с Kafka, на которые стоит обратить внимание</div>
+</a>
+</div>
+<div class=Subhead-description>
+<a href=/categories/kafka class=muted-link>
+<span class="Label Label--gray-darker">kafka</span>
+</a>
+<div class=float-md-right>
+<span>2020-03-02</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<figure class=img><img src=/wp-content/uploads/2020/03/kafka-logo.png width=325px height=97px>
+</figure>
+<p>Этот пост - небольшой конспект доклада с Highload <a href="https://www.youtube.com/watch?v=m5CDfrQLzrs"><strong>Кафка. &ldquo;Описание одной борьбы&rdquo; / Денис Карасик (Badoo)</strong></a>. Как ясно из заголовка статьи, здесь будет рассказано о некоторых важных параметрах конфигурации брокеров, топиков и producer&rsquo;ов</p>
+<div>
+<a href=/2020/03/kafka-recommendations/>Открыть полностью…</a>
+</div>
+</div>
+</div>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/2019/12/problema-bezopasnosti-ssh-agent-forwarding/>
+<div class="h2 mt-1 mb-1">Проблема безопасности SSH Agent Forwarding</div>
+</a>
+</div>
+<div class=Subhead-description>
+<a href=/categories/%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D1%8C class=muted-link>
+<span class="Label Label--gray-darker">безопасность</span>
+</a>
+<a href=/categories/%D0%BF%D0%B5%D1%80%D0%B5%D0%B2%D0%BE%D0%B4 class=muted-link>
+<span class="Label Label--gray-darker">перевод</span>
+</a>
+<div class=float-md-right>
+<span>2019-12-06</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<p>Вот что говорит нам <code>man ssh_config</code> про <code>ForwardAgent</code>(перевод):</p>
+<blockquote>
+<p>Agent forwarding нужно включать с осторожностью. Пользователи, которые смогут обойти настройки разрешений файлов на удалённом хосте (в частности для unix-socket агента (ssh-agent)) могут получить доступ к локальному агенту через перенаправленное(forwarded)-соединение. Атакующий не сможет вытащить сами ключи из агента, однако получит возможность проводить с ключами действия, позволяющие ему проходить аутентификацию, используя загруженные в агент идентификаторы</p>
+</blockquote>
+<p>Просто запомните: если ваш бастион(<em>прим. пер.:</em> <a href=https://en.wikipedia.org/wiki/Jump_server>jump box</a> - сервер-бастион для доступа в закрытый сетевой контур) скомпроментирован, и вы используете SSH agent forwarding, чтобы через него подключаться к другим машинам, то высок риск компроментации и этих удалённых машин.</p>
+<p>Вместо этого лучше используйте <code>ProxyCommand</code> или <code>ProxyJump</code> (добавлен в OpenSSH 7.3). В таком случае ssh перенаправит TCP-соединение на удалённую машину через бастион, а само соединение будет установлено с вашей локальной машины. Если кто-нибудь на бастионе попробует провести MITM (man-in-the-middle) атаку на ваше соединение, то ssh об этом предупредит (<em>прим. пер.: видимо, речь идёт о предупреждении об изменившимся ssh fingerprint(отпечатке)</em>)</p>
+<div>
+<a href=/2019/12/problema-bezopasnosti-ssh-agent-forwarding/>Открыть полностью…</a>
+</div>
+</div>
+</div>
+<nav class=paginate-container>
+<div class=pagination>
+<ul>
+<span class="previous_page disabled">Prev</span>
 <em class="current selected" aria-current=true>1</em>
 <a href=/page/2/>2</a>
 <a href=/page/3/>3</a>
 <a href=/page/4/>4</a>
-<a href=/page/2/ class=next_page>Next</a></ul></div></nav></div></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
+<a href=/page/2/ class=next_page>Next</a>
+</ul>
+</div>
+</nav>
+</div>
+</div>
+<div id=footer class="pt-2 pb-3 bg-white text-center">
+<span class="text-small text-gray">
+Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
-<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.</span></div></div></body></html>
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.
+</span>
+</div>
+</div>
+</body>
+</html>

@@ -1,11 +1,126 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Docker build options on CI &ndash; Of Code & Systems</title><meta name=description property="og:description" content="Варианты запуска сборок   Shell executor
+<!doctype html><html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>
+Docker build options on CI &ndash; Of Code & Systems
+</title>
+<meta name=description property="og:description" content="Варианты запуска сборок   Shell executor
  Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры    docker-in-docker
  Изолированные друг от друга контейнеры, т.к. здесь child контейнеры от контейнера dind, а не от хостового docker.sock Необходим запуск с privileged (небезопасно)    Проброс docker.sock
  Все контейнеры - siblings (видят друг друга), т.к. запускается через хостовый docker Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры    buildah/buildkit/img
  Позволяют внутри докер контейнера запускать сборку образа без докер-демона Требуется unprivileged_userns_clone (user namespaces), у которого свои security-риски Синтаксис запуска отличается -&amp;gt; переучивать команду    kaniko
  Позволяют внутри докер контейнера запускать сборку образа без докер-демона Не поддерживается установка бинарника в свой образ. Необходимо использовать официальный образ Синтаксис запуска отличается -&amp;gt; переучивать команду    Потенциальные векторы атаки   Источник
  В сборке используется публичный образ, в котором в entrypoint выполняется команда проверки docker.sock и запуск контейнера через него При сборке в зависимостях (напрмер, node) скачивается зловред, который запускается в процессе сборки. Далее проверка docker.sock и запуск контейнера через него    Цель
- Закрепиться в системе. Через докер возможно установить свои бинарники и сервисы в систему Дальнейший скан сети и поиск уязвимостей для распространения и закрепления   |"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">Docker build options on CI</div></div><div class=Subhead-description><div class=float-md-right><span title="Lastmod: 2021-04-26. Published at: 2021-04-26.">Published: 2021-04-26</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><div id=toc class="Box Box--blue mb-3"><b>Содержание</b><nav id=TableOfContents><ul><li><a href=#-->Варианты запуска сборок</a></li><li><a href=#--1>Потенциальные векторы атаки</a></li></ul></nav></div><h1 id=-->Варианты запуска сборок</h1><ol><li><p><strong>Shell executor</strong></p><ul><li>Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры</li></ul></li><li><p><strong>docker-in-docker</strong></p><ul><li>Изолированные друг от друга контейнеры, т.к. здесь child контейнеры от контейнера dind, а не от хостового docker.sock</li><li>Необходим запуск с privileged (небезопасно)</li></ul></li><li><p><strong>Проброс docker.sock</strong></p><ul><li>Все контейнеры - siblings (видят друг друга), т.к. запускается через хостовый docker</li><li>Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры</li></ul></li><li><p><strong>buildah/buildkit/img</strong></p><ul><li>Позволяют внутри докер контейнера запускать сборку образа без докер-демона</li><li>Требуется unprivileged_userns_clone (user namespaces), у которого свои security-риски</li><li>Синтаксис запуска отличается -> переучивать команду</li></ul></li><li><p><strong>kaniko</strong></p><ul><li>Позволяют внутри докер контейнера запускать сборку образа без докер-демона</li><li>Не поддерживается установка бинарника в свой образ. Необходимо использовать официальный образ</li><li>Синтаксис запуска отличается -> переучивать команду</li></ul></li></ol><h1 id=--1>Потенциальные векторы атаки</h1><ol><li><p><strong>Источник</strong></p><ul><li>В сборке используется публичный образ, в котором в entrypoint выполняется команда проверки docker.sock и запуск контейнера через него</li><li>При сборке в зависимостях (напрмер, node) скачивается зловред, который запускается в процессе сборки. Далее проверка docker.sock и запуск контейнера через него</li></ul></li><li><p><strong>Цель</strong></p><ul><li>Закрепиться в системе. Через докер возможно установить свои бинарники и сервисы в систему</li><li>Дальнейший скан сети и поиск уязвимостей для распространения и закрепления</li></ul></li></ol></section><section><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
-var d=document,s=d.createElement('script');s.async=true;s.src='//'+"blog-zamolod-ru"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></section></article></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
+ Закрепиться в системе. Через докер возможно установить свои бинарники и сервисы в систему Дальнейший скан сети и поиск уязвимостей для распространения и закрепления   |">
+<meta name=apple-mobile-web-app-title content="Of Code & Systems">
+<link rel=stylesheet href=/assets/syntax.css>
+<link rel=stylesheet href=/assets/primer-build.css>
+<link rel=stylesheet href=/assets/style.css>
+</head>
+<body class=bg-gray style=background-color:#fdf6e3!important>
+<div id=holy class="container-lg bg-white h-100">
+<div id=header class="px-1 bg-white">
+<nav class="UnderlineNav UnderlineNav--right px-2">
+<a class="UnderlineNav-actions muted-link h2" href=/>
+Of Code & Systems
+</a>
+</nav>
+</div>
+<div role=main id=main class="holy-main markdown-body px-4 bg-white">
+<div class=Subhead>
+<div class=Subhead-heading>
+<div class="h1 mt-3 mb-1">Docker build options on CI</div>
+</div>
+<div class=Subhead-description>
+<div class=float-md-right>
+<span title="Lastmod: 2021-04-26. Published at: 2021-04-26.">
+Published: 2021-04-26
+</span>
+</div>
+</div>
+</div>
+<article>
+<section class="pb-6 mb-3 border-bottom">
+<div id=toc class="Box Box--blue mb-3">
+<b>Содержание</b><nav id=TableOfContents>
+<ul>
+<li><a href=#варианты-запуска-сборок>Варианты запуска сборок</a></li>
+<li><a href=#потенциальные-векторы-атаки>Потенциальные векторы атаки</a></li>
+</ul>
+</nav></div>
+<h1 id=варианты-запуска-сборок>Варианты запуска сборок</h1>
+<ol>
+<li>
+<p><strong>Shell executor</strong></p>
+<ul>
+<li>Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры</li>
+</ul>
+</li>
+<li>
+<p><strong>docker-in-docker</strong></p>
+<ul>
+<li>Изолированные друг от друга контейнеры, т.к. здесь child контейнеры от контейнера dind, а не от хостового docker.sock</li>
+<li>Необходим запуск с privileged (небезопасно)</li>
+</ul>
+</li>
+<li>
+<p><strong>Проброс docker.sock</strong></p>
+<ul>
+<li>Все контейнеры - siblings (видят друг друга), т.к. запускается через хостовый docker</li>
+<li>Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры</li>
+</ul>
+</li>
+<li>
+<p><strong>buildah/buildkit/img</strong></p>
+<ul>
+<li>Позволяют внутри докер контейнера запускать сборку образа без докер-демона</li>
+<li>Требуется unprivileged_userns_clone (user namespaces), у которого свои security-риски</li>
+<li>Синтаксис запуска отличается -> переучивать команду</li>
+</ul>
+</li>
+<li>
+<p><strong>kaniko</strong></p>
+<ul>
+<li>Позволяют внутри докер контейнера запускать сборку образа без докер-демона</li>
+<li>Не поддерживается установка бинарника в свой образ. Необходимо использовать официальный образ</li>
+<li>Синтаксис запуска отличается -> переучивать команду</li>
+</ul>
+</li>
+</ol>
+<h1 id=потенциальные-векторы-атаки>Потенциальные векторы атаки</h1>
+<ol>
+<li>
+<p><strong>Источник</strong></p>
+<ul>
+<li>В сборке используется публичный образ, в котором в entrypoint выполняется команда проверки docker.sock и запуск контейнера через него</li>
+<li>При сборке в зависимостях (напрмер, node) скачивается зловред, который запускается в процессе сборки. Далее проверка docker.sock и запуск контейнера через него</li>
+</ul>
+</li>
+<li>
+<p><strong>Цель</strong></p>
+<ul>
+<li>Закрепиться в системе. Через докер возможно установить свои бинарники и сервисы в систему</li>
+<li>Дальнейший скан сети и поиск уязвимостей для распространения и закрепления</li>
+</ul>
+</li>
+</ol>
+</section>
+<section>
+<div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//blog-zamolod-ru.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</section>
+</article>
+</div>
+<div id=footer class="pt-2 pb-3 bg-white text-center">
+<span class="text-small text-gray">
+Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
-<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.</span></div></div></body></html>
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.
+</span>
+</div>
+</div>
+</body>
+</html>

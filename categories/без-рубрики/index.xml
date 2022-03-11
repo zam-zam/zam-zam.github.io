@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Без рубрики on Of Code &amp; Systems</title><link>/categories/%D0%B1%D0%B5%D0%B7-%D1%80%D1%83%D0%B1%D1%80%D0%B8%D0%BA%D0%B8/</link><description>Recent content in Без рубрики on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Fri, 06 Dec 2019 18:23:35 +0000</lastBuildDate><atom:link href="/categories/%D0%B1%D0%B5%D0%B7-%D1%80%D1%83%D0%B1%D1%80%D0%B8%D0%BA%D0%B8/index.xml" rel="self" type="application/rss+xml"/><item><title>Планирование резервного копирования с использованием backupninja</title><link>/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/</link><pubDate>Fri, 06 Dec 2019 18:23:35 +0000</pubDate><guid>/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/</guid><description>&lt;figure class="img">
-&lt;img src="/wp-content/uploads/2019/12/rect33301.png" width="120px" height="120px"/>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Без рубрики on Of Code &amp; Systems</title><link>/categories/%D0%B1%D0%B5%D0%B7-%D1%80%D1%83%D0%B1%D1%80%D0%B8%D0%BA%D0%B8/</link><description>Recent content in Без рубрики on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Fri, 06 Dec 2019 18:23:35 +0000</lastBuildDate><atom:link href="/categories/%D0%B1%D0%B5%D0%B7-%D1%80%D1%83%D0%B1%D1%80%D0%B8%D0%BA%D0%B8/index.xml" rel="self" type="application/rss+xml"/><item><title>Планирование резервного копирования с использованием backupninja</title><link>/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/</link><pubDate>Fri, 06 Dec 2019 18:23:35 +0000</pubDate><guid>/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/</guid><description>&lt;figure class="img">&lt;img src="/wp-content/uploads/2019/12/rect33301.png" width="120px" height="120px"/>
 &lt;/figure>
 &lt;blockquote>
 &lt;p>Эта заметка - перепечатка своего ответа на &lt;a href="https://toster.ru/answer?answer_id=1007582">вопрос в сервисе toster.ru&lt;/a>&lt;/p>
@@ -17,32 +16,32 @@
 &lt;ol>
 &lt;li>
 &lt;p>Качаем обновлённый certbot v0.22, разархивируем, переходим в папку&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">wget &lt;span class="s1">&amp;#39;https://github.com/certbot/certbot/archive/v0.22.2.tar.gz&amp;#39;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">wget &lt;span class="s1">&amp;#39;https://github.com/certbot/certbot/archive/v0.22.2.tar.gz&amp;#39;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
 &lt;/span>&lt;span class="se">&lt;/span>tar -xvf v0.22.2.tar.gz &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
 &lt;/span>&lt;span class="se">&lt;/span>&lt;span class="nb">cd&lt;/span> certbot-0.22.2
 &lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ol></description></item><item><title>Digital Ocean представил новые дроплеты с высокопроизводительными CPU</title><link>/2017/05/digital-ocean-predstavil-novye-droplety-s-vysoko/</link><pubDate>Tue, 02 May 2017 20:59:35 +0000</pubDate><guid>/2017/05/digital-ocean-predstavil-novye-droplety-s-vysoko/</guid><description>&lt;p>&lt;img src="/wp-content/uploads/2017/05/1200px-DigitalOcean_logo.svg_.png" alt="">&lt;/p>
 &lt;p>Упало письмо с рассылкой от DO, в котором говорится что они анонсируют ранний доступ, по запросу, к новым типам дроплетов&lt;/p>
 &lt;blockquote>
-&lt;p>We're excited to share some big new products and capabilities, and other improvements you may have missed&lt;/p>
+&lt;p>We&amp;rsquo;re excited to share some big new products and capabilities, and other improvements you may have missed&lt;/p>
 &lt;p>&lt;strong>High CPU Droplets: Early Access&lt;/strong>&lt;/p>
 &lt;p>We are now offering early access to a new set Droplet Plans: High CPU Droplets.&lt;/p>
-&lt;p>Focused on reliable high performance, High CPU Droplets are backed by a more powerful, best-in-class CPU, and won't have any overcommitment on the underlying physical resources.&lt;/p>
+&lt;p>Focused on reliable high performance, High CPU Droplets are backed by a more powerful, best-in-class CPU, and won&amp;rsquo;t have any overcommitment on the underlying physical resources.&lt;/p>
 &lt;/blockquote></description></item><item><title>Thinstation 5. Делаем окно подключения для rdesktop</title><link>/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/</link><pubDate>Thu, 12 Mar 2015 18:00:00 +0000</pubDate><guid>/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/</guid><description>&lt;p>&lt;img src="/wp-content/uploads/2015/03/2018-03-30_10-58-24.png" alt="">&lt;/p>
 &lt;p>Thinstation - великолепная платформа для сборки тонкого клиента. Но вот некоторые вещи приходится допиливать руками&amp;hellip;&lt;/p>
 &lt;p>Ситуация такая: есть несколько серверов windows terminal server, где работают наши юзеры, и нам надо сделать балансировку при подключении юзеров. Для балансировки используем &lt;strong>haproxy&lt;/strong>. Нюанс в том, что мы хотим использовать балансировку по rdp-cookie, в котором в том числе передаётся **username. **Это нам даст попадание попадание пользователя на тот же сервер в ту же сессию, если у его тонкого клиента поменялся IP или пользователь заходит с соседнего тонкого клиента.&lt;/p>
 &lt;p>Так в чём проблема? Мы не хотим использовать полноценный оконный менеджер, а по-умолчанию, окно подключения в thinstation есть только у freerdp, а вот при загрузке в сессию rdesktop нам через балансировщик бросает сразу на терминальный сервер в сессию, где уже выводится стандартная виндовая форма ввода логина-пароля. А нам нужен именно rdesktop&lt;/p>
 &lt;p>Хитрость всего лишь в том, что необходимо подменить бинарник freerdp на бинарник rdesktop и добавить в сборку keymaps, чтобы в rdesktop корректно работала клавиатура&lt;/p></description></item><item><title>MS Exchange 2013. Пограничный сервер</title><link>/2015/03/ms-exchange-2013-pogranichnyj-server/</link><pubDate>Thu, 12 Mar 2015 17:43:00 +0000</pubDate><guid>/2015/03/ms-exchange-2013-pogranichnyj-server/</guid><description>&lt;p>&lt;img src="/wp-content/uploads/2015/03/microsoft-exchange-2013.png" alt="">&lt;/p>
-&lt;h1 id="-edge--exchange-2013">Роль EDGE для Exchange 2013&lt;/h1>
-&lt;h2 id="heading">Описание&lt;/h2>
+&lt;h1 id="роль-edge-для-exchange-2013">Роль EDGE для Exchange 2013&lt;/h1>
+&lt;h2 id="описание">Описание&lt;/h2>
 &lt;p>Пограничный сервер, анализирующий соединения и письма, помечающий спам, блокирующий недоверенные внешние сервера и т.п.&lt;/p>
-&lt;h2 id="heading1">Безопасность&lt;/h2>
-&lt;h3 id="----">Чёрные и белые списки серверов&lt;/h3>
+&lt;h2 id="безопасность">Безопасность&lt;/h2>
+&lt;h3 id="чёрные-и-белые-списки-серверов">Чёрные и белые списки серверов&lt;/h3>
 &lt;p>Пожалуй, самый простой, но не самый надёжный способ обезопасить себя от писем с &amp;ldquo;левых&amp;rdquo; почтовых серверов. При получении письма проверяется, не присутствует ли IP отправителя в одном списков.&lt;/p>
 &lt;p>IP-адреса в списки можно добавлять вручную через powershell, также существуют сторонние сервисы, которые собирают информацию по доверенным и недоверенным IP-адресам.&lt;/p>
 &lt;p>Сначала IP ищется в вручную созданных списках и только затем в списках сторонних провайдеров&lt;/p></description></item><item><title>Рекомендации по работе с Symantec Backup Exec 2010 R3</title><link>/2015/03/rekomendacii-po-rabote-s-symantec-backup-exec-2010-r3/</link><pubDate>Thu, 12 Mar 2015 17:36:00 +0000</pubDate><guid>/2015/03/rekomendacii-po-rabote-s-symantec-backup-exec-2010-r3/</guid><description>&lt;p>&lt;img src="/wp-content/uploads/2015/03/2018-03-30_11-00-18.png" alt="">&lt;/p>
-&lt;h1 id="heading">Описание&lt;/h1>
-&lt;h2 id="-devices">Устройства (Devices)&lt;/h2>
+&lt;h1 id="описание">Описание&lt;/h1>
+&lt;h2 id="устройства-devices">Устройства (Devices)&lt;/h2>
 &lt;p>&lt;strong>Устройство&lt;/strong> - это физическое (магнитная лента, роботизированная библиотека) или виртуальное устройство (папка на жёстком диске), на которое происходит резервное копирование.&lt;/p>
 &lt;p>На любом подключённом в Windows жёстком диске через Backup Exec можно создать такую папку, которая будет являться &lt;strong>устройством&lt;/strong> и будет иметь 2 важных параметра:&lt;/p>
 &lt;ol>
@@ -57,18 +56,18 @@
 &lt;blockquote>
 &lt;p>Эта статья на Хабре &lt;a href="https://habr.com/ru/post/244321/">https://habr.com/ru/post/244321/&lt;/a>&lt;/p>
 &lt;/blockquote>
-&lt;h1 id="-">Версии ПО&lt;/h1>
+&lt;h1 id="версии-по">Версии ПО&lt;/h1>
 &lt;p>FreePBX 2.11.0.41&lt;/p>
 &lt;p>Asternic CDR Reports 1.5.1&lt;/p>
-&lt;h1 id="heading">Введение&lt;/h1>
+&lt;h1 id="введение">Введение&lt;/h1>
 &lt;p>Классический CDR Reports, &amp;ldquo;идущий в комплекте&amp;rdquo; с FreePBX умеет делать отчёты с проигрыванием аудиозаписи, если она велась, но не умеет разграничивать доступы по Extension`ам (Extension Range, который задаётся при создании новой учётной записи админа).&lt;/p>
 &lt;p>Модуль Asternic CDR Reports учитывает это, но не выводит аудиофайл.&lt;/p>
 &lt;p>Исправим это.&lt;/p>
 &lt;p>Информация о звонках в Asterisk`е хранится в mysql базе данных asteriskcdrdb, таблица cdr.&lt;/p></description></item><item><title>openSUSE 13.1 NetworkManager-l2tp</title><link>/2014/07/opensuse-13-1-networkmanager-l2tp/</link><pubDate>Wed, 02 Jul 2014 19:19:00 +0000</pubDate><guid>/2014/07/opensuse-13-1-networkmanager-l2tp/</guid><description>&lt;p>Исходники &lt;a href="https://github.com/seriyps/NetworkManager-l2tp">https://github.com/seriyps/NetworkManager-l2tp&lt;/a>&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">git clone https://github.com/seriyps/NetworkManager-l2tp.git
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">git clone https://github.com/seriyps/NetworkManager-l2tp.git
 &lt;span class="nb">cd&lt;/span> NetworkManager-l2tp
 ./autogen.sh
-&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Nine Eagles 181 TOY NE RC 510A/512A</title><link>/2014/04/nine-eagles-181-toy-ne-rc-510a512a/</link><pubDate>Wed, 09 Apr 2014 19:50:00 +0000</pubDate><guid>/2014/04/nine-eagles-181-toy-ne-rc-510a512a/</guid><description>&lt;p>&lt;em>Этот пост написан, потому что по этой модели квадрокоптера в рунете ну очень мало информации, а мне пришлось столкнуться с мелким ремонтом и настройкой данного аппарата. Так что пускай изыскания не пропадут даром и помогут какому-нибудь &amp;ldquo;гуглящему&amp;rdquo;&amp;rdquo; человеку&lt;/em>&lt;/p>
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Nine Eagles 181 TOY NE RC 510A/512A</title><link>/2014/04/nine-eagles-181-toy-ne-rc-510a512a/</link><pubDate>Wed, 09 Apr 2014 19:50:00 +0000</pubDate><guid>/2014/04/nine-eagles-181-toy-ne-rc-510a512a/</guid><description>&lt;p>&lt;em>Этот пост написан, потому что по этой модели квадрокоптера в рунете ну очень мало информации, а мне пришлось столкнуться с мелким ремонтом и настройкой данного аппарата. Так что пускай изыскания не пропадут даром и помогут какому-нибудь &amp;ldquo;гуглящему&amp;rdquo;&amp;quot; человеку&lt;/em>&lt;/p>
 &lt;p>Получил в подарок такой квадрокоптер:&lt;/p>
 &lt;p>&lt;strong>Nine Eagles 181 TOY NE RC 512A&lt;/strong>*&lt;/p>
 &lt;p>&lt;img src="/wp-content/uploads/2014/04/radioupravlyaemyj-kvadrokopter-nine-eagles-181-toy.jpg" alt="">&lt;/p>

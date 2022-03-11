@@ -1,8 +1,103 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>web &ndash; Of Code & Systems</title><meta name=description property="og:description" content><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div><h1>web</h1><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2017/08/php-profajler-tideways-xhgui/><div class="h2 mt-1 mb-1">PHP профайлер tideways + xhgui</div></a></div><div class=Subhead-description><a href=/categories/backend class=muted-link><span class="Label Label--gray-darker">backend</span></a>
-<a href=/categories/php class=muted-link><span class="Label Label--gray-darker">php</span></a>
-<a href=/categories/web class=muted-link><span class="Label Label--gray-darker">web</span></a>
-<a href=/tags/php class=muted-link><span class="Label Label--gray">php</span></a><div class=float-md-right><span>2017-08-16</span></div></div></div><div class=text-gray><p><img src=/wp-content/uploads/2017/08/kstawdh9qq_e7ocb6wk-izoxqmg.png alt></p><h2 id=heading>Введение</h2><p>Об удобстве использования профайлера, да ещё с графическим интерфейсом и говорить нечего, особенно когда надо найти узкие места под нагрузкой.</p><p><a href=https://github.com/tideways/php-profiler-extension>tideways</a> - само расширение php для сбора данных о производительности кода</p><p><a href=https://github.com/perftools/xhgui>xhgui</a> - графический веб-интерфейс (см. скриншот выше), который, помимо всего прочего, сохраняет данные профилирования в mongodb и затем использует их для вывода статистики</p><div><a href=/2017/08/php-profajler-tideways-xhgui/>Открыть полностью…</a></div></div></div><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2017/08/map-v-nginx/><div class="h2 mt-1 mb-1">map в nginx</div></a></div><div class=Subhead-description><a href=/categories/web class=muted-link><span class="Label Label--gray-darker">web</span></a>
-<a href=/tags/nginx class=muted-link><span class="Label Label--gray">nginx</span></a><div class=float-md-right><span>2017-08-16</span></div></div></div><div class=text-gray><p><img src=/wp-content/uploads/2017/08/nginx.png alt></p><p>Кейс следующий:</p><p>Есть запросы к API с передачей уникального токена в GET параметре. По этому токену (user_token=) имеются лимиты на запросы через <a href=https://nginx.org/ru/docs/http/ngx_http_limit_req_module.html>limit_req_zone</a>, типа такого:</p><div class=highlight><pre class=chroma><code class=language-nginx data-lang=nginx><span class=k>limit_req_zone</span> <span class=nv>$arg_user_token</span> <span class=s>zone=token5:10m</span> <span class=s>rate=12r/m</span><span class=p>;</span>
-</code></pre></div><p>Необходимо для некоторых токенов отключить лимиты. Тут на помощь и приходит модуль <a href=https://nginx.org/ru/docs/http/ngx_http_map_module.html>map</a> nginx. Он позволяет динамически получать переменную, значение которой будет зависеть от значений других, входных, переменных. Т.е., грубо говоря, мы имеем</p><div><a href=/2017/08/map-v-nginx/>Открыть полностью…</a></div></div></div></div></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
+<!doctype html><html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>
+web &ndash; Of Code & Systems
+</title>
+<meta name=description property="og:description" content>
+<meta name=apple-mobile-web-app-title content="Of Code & Systems">
+<link rel=stylesheet href=/assets/syntax.css>
+<link rel=stylesheet href=/assets/primer-build.css>
+<link rel=stylesheet href=/assets/style.css>
+</head>
+<body class=bg-gray style=background-color:#fdf6e3!important>
+<div id=holy class="container-lg bg-white h-100">
+<div id=header class="px-1 bg-white">
+<nav class="UnderlineNav UnderlineNav--right px-2">
+<a class="UnderlineNav-actions muted-link h2" href=/>
+Of Code & Systems
+</a>
+</nav>
+</div>
+<div role=main id=main class="holy-main markdown-body px-4 bg-white">
+<div>
+<h1>web</h1>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/2017/08/php-profajler-tideways-xhgui/>
+<div class="h2 mt-1 mb-1">PHP профайлер tideways + xhgui</div>
+</a>
+</div>
+<div class=Subhead-description>
+<a href=/categories/backend class=muted-link>
+<span class="Label Label--gray-darker">backend</span>
+</a>
+<a href=/categories/php class=muted-link>
+<span class="Label Label--gray-darker">php</span>
+</a>
+<a href=/categories/web class=muted-link>
+<span class="Label Label--gray-darker">web</span>
+</a>
+<a href=/tags/php class=muted-link>
+<span class="Label Label--gray">php</span>
+</a>
+<div class=float-md-right>
+<span>2017-08-16</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<p><img src=/wp-content/uploads/2017/08/kstawdh9qq_e7ocb6wk-izoxqmg.png alt></p>
+<h2 id=введение>Введение</h2>
+<p>Об удобстве использования профайлера, да ещё с графическим интерфейсом и говорить нечего, особенно когда надо найти узкие места под нагрузкой.</p>
+<p><a href=https://github.com/tideways/php-profiler-extension>tideways</a> - само расширение php для сбора данных о производительности кода</p>
+<p><a href=https://github.com/perftools/xhgui>xhgui</a> - графический веб-интерфейс (см. скриншот выше), который, помимо всего прочего, сохраняет данные профилирования в mongodb и затем использует их для вывода статистики</p>
+<div>
+<a href=/2017/08/php-profajler-tideways-xhgui/>Открыть полностью…</a>
+</div>
+</div>
+</div>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/2017/08/map-v-nginx/>
+<div class="h2 mt-1 mb-1">map в nginx</div>
+</a>
+</div>
+<div class=Subhead-description>
+<a href=/categories/web class=muted-link>
+<span class="Label Label--gray-darker">web</span>
+</a>
+<a href=/tags/nginx class=muted-link>
+<span class="Label Label--gray">nginx</span>
+</a>
+<div class=float-md-right>
+<span>2017-08-16</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<p><img src=/wp-content/uploads/2017/08/nginx.png alt></p>
+<p>Кейс следующий:</p>
+<p>Есть запросы к API с передачей уникального токена в GET параметре. По этому токену (user_token=) имеются лимиты на запросы через <a href=https://nginx.org/ru/docs/http/ngx_http_limit_req_module.html>limit_req_zone</a>, типа такого:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=k>limit_req_zone</span> <span class=nv>$arg_user_token</span> <span class=s>zone=token5:10m</span> <span class=s>rate=12r/m</span><span class=p>;</span>
+</code></pre></div><p>Необходимо для некоторых токенов отключить лимиты. Тут на помощь и приходит модуль <a href=https://nginx.org/ru/docs/http/ngx_http_map_module.html>map</a> nginx. Он позволяет динамически получать переменную, значение которой будет зависеть от значений других, входных, переменных. Т.е., грубо говоря, мы имеем</p>
+<div>
+<a href=/2017/08/map-v-nginx/>Открыть полностью…</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id=footer class="pt-2 pb-3 bg-white text-center">
+<span class="text-small text-gray">
+Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
-<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.</span></div></div></body></html>
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.
+</span>
+</div>
+</div>
+</body>
+</html>

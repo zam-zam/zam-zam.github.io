@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Of Code &amp; Systems</title><link>/</link><description>Recent content on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Fri, 11 Mar 2022 03:37:05 +0300</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Пишем свой prometheus-exporter для sbercloud cdn на python</title><link>/posts/2022/2022-03-11-sbercloud-cdn-prometheus-exporter-python/</link><pubDate>Fri, 11 Mar 2022 03:37:05 +0300</pubDate><guid>/posts/2022/2022-03-11-sbercloud-cdn-prometheus-exporter-python/</guid><description>&lt;p>
-&lt;a href="/posts/2022/2022-03-11-sbercloud-cdn-prometheus-exporter-python/grafana.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="/posts/2022/2022-03-11-sbercloud-cdn-prometheus-exporter-python/grafana_hu7948ee00652d222b3608baa32af8a6e7_100192_1024x0_resize_box_2.png" width="1024" height="534">&lt;/a>
+&lt;a href="/posts/2022/2022-03-11-sbercloud-cdn-prometheus-exporter-python/grafana.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="/posts/2022/2022-03-11-sbercloud-cdn-prometheus-exporter-python/grafana_hu7948ee00652d222b3608baa32af8a6e7_100192_1024x0_resize_box_3.png" width="1024" height="534">&lt;/a>
 &lt;/p>
-&lt;h1 id="heading">Описание&lt;/h1>
+&lt;h1 id="описание">Описание&lt;/h1>
 &lt;p>Мы используем CDN для раздачи статичных файлов и хотим иметь статистику по этой раздаче (коды ответов, rps, полосу пропускания)&lt;/p>
 &lt;p>Первый и самый главный вопрос - откуда получить эти данные? Конечно же из &lt;a href="https://docs.sbercloud.ru/cdn/ug/topics/guides__api.html">CDN API&lt;/a>.&lt;/p>
-&lt;p>Ищем&amp;hellip; Ага! &lt;a href="https://docs.sbercloud.ru/cdn/ug/topics/api__statistics__realtime-bandwidth-stat.html#id4">Статистика по конкретному аккаунту с разбивкой по ресурсам&lt;/a>&lt;/p></description></item><item><title>Syslogd then and now</title><link>/2021/04/syslogd-then-and-now/</link><pubDate>Tue, 27 Apr 2021 17:15:00 +0300</pubDate><guid>/2021/04/syslogd-then-and-now/</guid><description>&lt;h1 id="--">Как обрабатываются логи&lt;/h1>
-&lt;h2 id="----syslogd">Как обрабатывает логи оригинальный syslogd&lt;/h2>
+&lt;p>Ищем&amp;hellip; Ага! &lt;a href="https://docs.sbercloud.ru/cdn/ug/topics/api__statistics__realtime-bandwidth-stat.html#id4">Статистика по конкретному аккаунту с разбивкой по ресурсам&lt;/a>&lt;/p></description></item><item><title>Syslogd then and now</title><link>/2021/04/syslogd-then-and-now/</link><pubDate>Tue, 27 Apr 2021 17:15:00 +0300</pubDate><guid>/2021/04/syslogd-then-and-now/</guid><description>&lt;h1 id="как-обрабатываются-логи">Как обрабатываются логи&lt;/h1>
+&lt;h2 id="как-обрабатывает-логи-оригинальный-syslogd">Как обрабатывает логи оригинальный syslogd&lt;/h2>
 &lt;p>
 &lt;a href="/2021/04/syslogd-then-and-now/syslogd01.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="/2021/04/syslogd-then-and-now/syslogd01.png" width="611" height="409">&lt;/a>
 &lt;/p>
-&lt;h2 id="----journald--rsyslogd">Как обрабатывает логи связка journald + rsyslogd&lt;/h2>
+&lt;h2 id="как-обрабатывает-логи-связка-journald--rsyslogd">Как обрабатывает логи связка journald + rsyslogd&lt;/h2>
 &lt;p>
 &lt;a href="/2021/04/syslogd-then-and-now/syslogd02.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="/2021/04/syslogd-then-and-now/syslogd02.png" width="871" height="419">&lt;/a>
 &lt;/p>
-&lt;h1 id="-syslog-">Форматы syslog сообщений&lt;/h1>
-&lt;h2 id="rfc-3164-">RFC 3164 (устаревший)&lt;/h2>
+&lt;h1 id="форматы-syslog-сообщений">Форматы syslog сообщений&lt;/h1>
+&lt;h2 id="rfc-3164-устаревший">RFC 3164 (устаревший)&lt;/h2>
 &lt;p>&lt;a href="https://tools.ietf.org/html/rfc3164">RFC 3164 - The BSD Syslog Protocol&lt;/a>&lt;/p>
-&lt;h3 id="--1">Описание формата сообщения&lt;/h3>
-&lt;p>The first part is called the &lt;code>PRI&lt;/code>, the second part is the &lt;code>HEADER&lt;/code>, and the third part is the &lt;code>MSG&lt;/code>. The total length of the packet MUST be 1024 bytes or less&lt;/p></description></item><item><title>Docker build options on CI</title><link>/2021/04/docker-build-options-on-ci/</link><pubDate>Mon, 26 Apr 2021 11:33:00 +0300</pubDate><guid>/2021/04/docker-build-options-on-ci/</guid><description>&lt;h1 id="--">Варианты запуска сборок&lt;/h1>
+&lt;h3 id="описание-формата-сообщения">Описание формата сообщения&lt;/h3>
+&lt;p>The first part is called the &lt;code>PRI&lt;/code>, the second part is the &lt;code>HEADER&lt;/code>, and the third part is the &lt;code>MSG&lt;/code>. The total length of the packet MUST be 1024 bytes or less&lt;/p></description></item><item><title>Docker build options on CI</title><link>/2021/04/docker-build-options-on-ci/</link><pubDate>Mon, 26 Apr 2021 11:33:00 +0300</pubDate><guid>/2021/04/docker-build-options-on-ci/</guid><description>&lt;h1 id="варианты-запуска-сборок">Варианты запуска сборок&lt;/h1>
 &lt;ol>
 &lt;li>
 &lt;p>&lt;strong>Shell executor&lt;/strong>&lt;/p>
@@ -56,7 +56,7 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ol>
-&lt;h1 id="--1">Потенциальные векторы атаки&lt;/h1>
+&lt;h1 id="потенциальные-векторы-атаки">Потенциальные векторы атаки&lt;/h1>
 &lt;ol>
 &lt;li>
 &lt;p>&lt;strong>Источник&lt;/strong>&lt;/p>
@@ -72,12 +72,12 @@
 &lt;li>Дальнейший скан сети и поиск уязвимостей для распространения и закрепления&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ol></description></item><item><title>Kubernetes What If...?</title><link>/2020/09/kubernetes-what-if/</link><pubDate>Tue, 29 Sep 2020 15:29:00 +0300</pubDate><guid>/2020/09/kubernetes-what-if/</guid><description>&lt;h1 id="--">Что произойдёт, если&lt;/h1>
-&lt;h2 id="-kubelet">Перезапустить kubelet&lt;/h2>
+&lt;/ol></description></item><item><title>Kubernetes What If...?</title><link>/2020/09/kubernetes-what-if/</link><pubDate>Tue, 29 Sep 2020 15:29:00 +0300</pubDate><guid>/2020/09/kubernetes-what-if/</guid><description>&lt;h1 id="что-произойдёт-если">Что произойдёт, если&lt;/h1>
+&lt;h2 id="перезапустить-kubelet">Перезапустить kubelet&lt;/h2>
 &lt;p>Контейнеры продолжают работать, но в момент синхронизации состояния подов с api-server поды могут переходить в состояние 0/1 Running, когда трафик на них перестаёт направляться&lt;/p>
-&lt;h2 id="-kubelet1">Остановить kubelet&lt;/h2>
-&lt;p>Нода переходит в состояние NotReady, никаких событий на подах не происходит - они продолжают пребывать в состоянии 1/1 Running, но трафик на них перестаёт идти (из endpoint'ов сервисов удаляются IP адрес подов, которые находятся на &amp;ldquo;мёртвой&amp;rdquo; ноде).&lt;/p>
-&lt;p>Спустя указанный pod-eviction-timeout (5m по-умолчанию) для &lt;a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/">kube-controller-manager&lt;/a> поды переходят в статус Terminating и начинают запускаться на живых воркерках. Поды &lt;a href="https://github.com/kubernetes/kubernetes/issues/55713">будут продолжать&lt;/a> находиться в статусе Terminating либо до старта kubelet, либо до удаления ноды из кластера. При этом не выгоняются поды DaemonSet и поды, поднятые kubelet'ом(kube-proxy, nginx-proxy, kube-flannel, nodelocaldns и т.п.)&lt;/p></description></item><item><title>Graceful Shutdown в Akka HTTP</title><link>/2020/09/scala-akka-graceful-shutdown/</link><pubDate>Tue, 22 Sep 2020 18:53:00 +0300</pubDate><guid>/2020/09/scala-akka-graceful-shutdown/</guid><description>&lt;p>Атуально для Akka HTTP начиная с версии &lt;a href="https://doc.akka.io/docs/akka-http/current/release-notes/10.2.x.html">10.2.0&lt;/a>&lt;/p>
+&lt;h2 id="остановить-kubelet">Остановить kubelet&lt;/h2>
+&lt;p>Нода переходит в состояние NotReady, никаких событий на подах не происходит - они продолжают пребывать в состоянии 1/1 Running, но трафик на них перестаёт идти (из endpoint&amp;rsquo;ов сервисов удаляются IP адрес подов, которые находятся на &amp;ldquo;мёртвой&amp;rdquo; ноде).&lt;/p>
+&lt;p>Спустя указанный pod-eviction-timeout (5m по-умолчанию) для &lt;a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/">kube-controller-manager&lt;/a> поды переходят в статус Terminating и начинают запускаться на живых воркерках. Поды &lt;a href="https://github.com/kubernetes/kubernetes/issues/55713">будут продолжать&lt;/a> находиться в статусе Terminating либо до старта kubelet, либо до удаления ноды из кластера. При этом не выгоняются поды DaemonSet и поды, поднятые kubelet&amp;rsquo;ом(kube-proxy, nginx-proxy, kube-flannel, nodelocaldns и т.п.)&lt;/p></description></item><item><title>Graceful Shutdown в Akka HTTP</title><link>/2020/09/scala-akka-graceful-shutdown/</link><pubDate>Tue, 22 Sep 2020 18:53:00 +0300</pubDate><guid>/2020/09/scala-akka-graceful-shutdown/</guid><description>&lt;p>Атуально для Akka HTTP начиная с версии &lt;a href="https://doc.akka.io/docs/akka-http/current/release-notes/10.2.x.html">10.2.0&lt;/a>&lt;/p>
 &lt;p>Github Issue: &lt;a href="https://github.com/akka/akka-http/pull/3142">Add coordinated shutdown support&lt;/a>&lt;/p>
 &lt;p>По-умолчанию, Akka при завершении (в т.ч. получении SIGTERM) запускает процесс &lt;a href="https://doc.akka.io/docs/akka/current/coordinated-shutdown.html">Coordinated Shutdown&lt;/a>, в рамках которого происходят последовательно несколько фаз:&lt;/p>
 &lt;ul>
@@ -102,22 +102,22 @@
 &lt;li>service-stop #закрываются все установленные соединения&lt;/li>
 &lt;/ul>
 &lt;p>По-умолчанию (&lt;a href="https://github.com/akka/akka/blob/master/akka-actor/src/main/resources/reference.conf#L1162">default-phase-timeout = 5s&lt;/a>), после unbind есть 5 секунд на завершение текущих запросов&lt;/p>
-&lt;p>При использовании Kubernetes, стоит принимать во внимание также его таймаут &lt;a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#podspec-v1-core">terminationGracePeriodSeconds&lt;/a>, в течение которого будет ожидаться реакция на SIGTERM, после чего будет послан SIGKILL. По-умолчанию, он равен 30s&lt;/p></description></item><item><title>Как определяются права пользователя в kubernetes?</title><link>/2020/06/kubernetes-rbac-add-user/</link><pubDate>Mon, 15 Jun 2020 22:00:24 +0300</pubDate><guid>/2020/06/kubernetes-rbac-add-user/</guid><description>&lt;h1 id="--rbac">Немного о RBAC&lt;/h1>
+&lt;p>При использовании Kubernetes, стоит принимать во внимание также его таймаут &lt;a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#podspec-v1-core">terminationGracePeriodSeconds&lt;/a>, в течение которого будет ожидаться реакция на SIGTERM, после чего будет послан SIGKILL. По-умолчанию, он равен 30s&lt;/p></description></item><item><title>Как определяются права пользователя в kubernetes?</title><link>/2020/06/kubernetes-rbac-add-user/</link><pubDate>Mon, 15 Jun 2020 22:00:24 +0300</pubDate><guid>/2020/06/kubernetes-rbac-add-user/</guid><description>&lt;h1 id="немного-о-rbac">Немного о RBAC&lt;/h1>
 &lt;p>В kubernetes есть сущность, которая называется &lt;code>RoleBinding&lt;/code>. Она определяет, каким субъектам какая роль будет назначена. &lt;code>RoleBinding&lt;/code> действует в рамках &lt;code>namespace&lt;/code>, в котором она создана. Для разрешения действий во всех &lt;code>namespace&lt;/code> без ограничений необходимо создавать &lt;code>ClusterRoleBinding&lt;/code>, который является cluster-wide объектом.&lt;/p>
 &lt;p>Пример RoleBinding&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">apiVersion&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>rbac.authorization.k8s.io/v1&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>kind&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>RoleBinding&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>metadata&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>edit&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>namespace&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>project-a-devel&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>subjects&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>-&lt;span class="w"> &lt;/span>kind&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>Group&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>sre&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>apiGroup&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>rbac.authorization.k8s.io&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>roleRef&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>kind&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>ClusterRole&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>edit&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>apiGroup&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>rbac.authorization.k8s.io&lt;span class="w">
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io/v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">RoleBinding&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">edit&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">namespace&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">project-a-devel&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">subjects&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>- &lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Group&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">sre&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">apiGroup&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">roleRef&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ClusterRole&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">edit&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">apiGroup&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Эта роль:&lt;/p>
 &lt;ul>
 &lt;li>Действует в рамках namespace &lt;code>project-a-devel&lt;/code> - (metadata:)&lt;/li>
@@ -136,8 +136,8 @@
 &lt;p>&lt;a href="https://github.com/roboll/helmfile">Helmfile&lt;/a> - обёртка для &lt;a href="https://github.com/helm/helm/">helm&lt;/a>, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.&lt;/p>
 &lt;p>О самом helmfile и примерах его использования можно почитать в &lt;a href="https://github.com/roboll/helmfile/blob/master/README.md">readme&lt;/a> и &lt;a href="https://github.com/roboll/helmfile/blob/master/docs/writing-helmfile.md">best practices guide&lt;/a>.&lt;/p>
 &lt;p>Мы же познакомимся с неочевидными способами описать релизы в helmfile&lt;/p>
-&lt;p>Допустим, у нас есть пачка helm-чартов (для примера пусть будет postgres и некое backend приложение) и несколько окружений (несколько kubernetes кластеров, несколько namespace'ов или несколько и того, и другого). Берём helmfile, читаем документацию и начинаем описывать наши окружения и релизы:&lt;/p>
-&lt;pre>&lt;code> .
+&lt;p>Допустим, у нас есть пачка helm-чартов (для примера пусть будет postgres и некое backend приложение) и несколько окружений (несколько kubernetes кластеров, несколько namespace&amp;rsquo;ов или несколько и того, и другого). Берём helmfile, читаем документацию и начинаем описывать наши окружения и релизы:&lt;/p>
+&lt;pre tabindex="0">&lt;code> .
 ├── envs
 │   ├── devel
 │   │   └── values
@@ -148,16 +148,14 @@
 │   ├── backend.yaml
 │   └── postgres.yaml
 └── helmfile.yaml
-&lt;/code>&lt;/pre></description></item><item><title>Немного о настройках при работе с Kafka, на которые стоит обратить внимание</title><link>/2020/03/kafka-recommendations/</link><pubDate>Mon, 02 Mar 2020 08:32:24 +0300</pubDate><guid>/2020/03/kafka-recommendations/</guid><description>&lt;figure class="img">
-&lt;img src="/wp-content/uploads/2020/03/kafka-logo.png" width="325px" height="97px"/>
+&lt;/code>&lt;/pre></description></item><item><title>Немного о настройках при работе с Kafka, на которые стоит обратить внимание</title><link>/2020/03/kafka-recommendations/</link><pubDate>Mon, 02 Mar 2020 08:32:24 +0300</pubDate><guid>/2020/03/kafka-recommendations/</guid><description>&lt;figure class="img">&lt;img src="/wp-content/uploads/2020/03/kafka-logo.png" width="325px" height="97px"/>
 &lt;/figure>
-&lt;p>Этот пост - небольшой конспект доклада с Highload &lt;a href="https://www.youtube.com/watch?v=m5CDfrQLzrs">&lt;strong>Кафка. &amp;ldquo;Описание одной борьбы&amp;rdquo; / Денис Карасик (Badoo)&lt;/strong>&lt;/a>. Как ясно из заголовка статьи, здесь будет рассказано о некоторых важных параметрах конфигурации брокеров, топиков и producer'ов&lt;/p></description></item><item><title>Проблема безопасности SSH Agent Forwarding</title><link>/2019/12/problema-bezopasnosti-ssh-agent-forwarding/</link><pubDate>Fri, 06 Dec 2019 19:02:24 +0000</pubDate><guid>/2019/12/problema-bezopasnosti-ssh-agent-forwarding/</guid><description>&lt;p>Вот что говорит нам &lt;code>man ssh_config&lt;/code> про &lt;code>ForwardAgent&lt;/code>(перевод):&lt;/p>
+&lt;p>Этот пост - небольшой конспект доклада с Highload &lt;a href="https://www.youtube.com/watch?v=m5CDfrQLzrs">&lt;strong>Кафка. &amp;ldquo;Описание одной борьбы&amp;rdquo; / Денис Карасик (Badoo)&lt;/strong>&lt;/a>. Как ясно из заголовка статьи, здесь будет рассказано о некоторых важных параметрах конфигурации брокеров, топиков и producer&amp;rsquo;ов&lt;/p></description></item><item><title>Проблема безопасности SSH Agent Forwarding</title><link>/2019/12/problema-bezopasnosti-ssh-agent-forwarding/</link><pubDate>Fri, 06 Dec 2019 19:02:24 +0000</pubDate><guid>/2019/12/problema-bezopasnosti-ssh-agent-forwarding/</guid><description>&lt;p>Вот что говорит нам &lt;code>man ssh_config&lt;/code> про &lt;code>ForwardAgent&lt;/code>(перевод):&lt;/p>
 &lt;blockquote>
 &lt;p>Agent forwarding нужно включать с осторожностью. Пользователи, которые смогут обойти настройки разрешений файлов на удалённом хосте (в частности для unix-socket агента (ssh-agent)) могут получить доступ к локальному агенту через перенаправленное(forwarded)-соединение. Атакующий не сможет вытащить сами ключи из агента, однако получит возможность проводить с ключами действия, позволяющие ему проходить аутентификацию, используя загруженные в агент идентификаторы&lt;/p>
 &lt;/blockquote>
 &lt;p>Просто запомните: если ваш бастион(&lt;em>прим. пер.:&lt;/em> &lt;a href="https://en.wikipedia.org/wiki/Jump_server">jump box&lt;/a> - сервер-бастион для доступа в закрытый сетевой контур) скомпроментирован, и вы используете SSH agent forwarding, чтобы через него подключаться к другим машинам, то высок риск компроментации и этих удалённых машин.&lt;/p>
-&lt;p>Вместо этого лучше используйте &lt;code>ProxyCommand&lt;/code> или &lt;code>ProxyJump&lt;/code> (добавлен в OpenSSH 7.3). В таком случае ssh перенаправит TCP-соединение на удалённую машину через бастион, а само соединение будет установлено с вашей локальной машины. Если кто-нибудь на бастионе попробует провести MITM (man-in-the-middle) атаку на ваше соединение, то ssh об этом предупредит (&lt;em>прим. пер.: видимо, речь идёт о предупреждении об изменившимся ssh fingerprint(отпечатке)&lt;/em>)&lt;/p></description></item><item><title>Планирование резервного копирования с использованием backupninja</title><link>/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/</link><pubDate>Fri, 06 Dec 2019 18:23:35 +0000</pubDate><guid>/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/</guid><description>&lt;figure class="img">
-&lt;img src="/wp-content/uploads/2019/12/rect33301.png" width="120px" height="120px"/>
+&lt;p>Вместо этого лучше используйте &lt;code>ProxyCommand&lt;/code> или &lt;code>ProxyJump&lt;/code> (добавлен в OpenSSH 7.3). В таком случае ssh перенаправит TCP-соединение на удалённую машину через бастион, а само соединение будет установлено с вашей локальной машины. Если кто-нибудь на бастионе попробует провести MITM (man-in-the-middle) атаку на ваше соединение, то ssh об этом предупредит (&lt;em>прим. пер.: видимо, речь идёт о предупреждении об изменившимся ssh fingerprint(отпечатке)&lt;/em>)&lt;/p></description></item><item><title>Планирование резервного копирования с использованием backupninja</title><link>/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/</link><pubDate>Fri, 06 Dec 2019 18:23:35 +0000</pubDate><guid>/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/</guid><description>&lt;figure class="img">&lt;img src="/wp-content/uploads/2019/12/rect33301.png" width="120px" height="120px"/>
 &lt;/figure>
 &lt;blockquote>
 &lt;p>Эта заметка - перепечатка своего ответа на &lt;a href="https://toster.ru/answer?answer_id=1007582">вопрос в сервисе toster.ru&lt;/a>&lt;/p>
@@ -170,21 +168,20 @@
 &lt;h1 id="clusterip">ClusterIP&lt;/h1>
 &lt;p>ClusterIP — это дефолтный тип сервиса в кубах, он поднимает вам сервис внутри кластера на внутрекластеровом IP. Доступа для внешнего трафика нет, только внутри кластера.&lt;/p>
 &lt;p>YAML для ClusterIP выглядит как-то так:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">apiVersion&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>v1&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>kind&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>Service&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>metadata&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>my-internal-service&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>spec&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>selector&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>app&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>my-app&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>type&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>ClusterIP&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>ports&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>-&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>http&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>port&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>targetPort&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>protocol&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>TCP&lt;span class="w">
-&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&amp;ldquo;Так, ну и зачем же рассказывать нам о ClusterIP, если он не принимает внешний трафик?&amp;rdquo; — спросите вы. А всё потому, что попасть на этот сервис можно через Kubernetes proxy!&lt;/p></description></item><item><title>dapp — утилита для сборки и деплоя контейнеров. Особенности работы</title><link>/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</link><pubDate>Mon, 03 Dec 2018 22:54:56 +0000</pubDate><guid>/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</guid><description>&lt;figure class="img">
-&lt;img src="/wp-content/uploads/2018/12/logo_og-e1543878630388.png"/>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">my-internal-service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">selector&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">app&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">my-app&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ClusterIP&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">http&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">targetPort&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">protocol&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">TCP&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&amp;ldquo;Так, ну и зачем же рассказывать нам о ClusterIP, если он не принимает внешний трафик?&amp;rdquo; — спросите вы. А всё потому, что попасть на этот сервис можно через Kubernetes proxy!&lt;/p></description></item><item><title>dapp — утилита для сборки и деплоя контейнеров. Особенности работы</title><link>/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</link><pubDate>Mon, 03 Dec 2018 22:54:56 +0000</pubDate><guid>/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</guid><description>&lt;figure class="img">&lt;img src="/wp-content/uploads/2018/12/logo_og-e1543878630388.png"/>
 &lt;/figure>
 &lt;p>&lt;a href="https://github.com/flant/dapp">dapp&lt;/a> — утилита от российской компании Флант, которая занимается внедрением devops-практик (kubernetes, ci/cd и всё такое, ну вы в курсе) Подробное описание можно прочитать на &lt;a href="https://habr.com/company/flant/blog/333682/">Хабре&lt;/a>, а я бы хотел остановиться на некоторых особенностях работы с ней при сборке образов (здесь и далее под образом подразумевается docker image)&lt;/p>
 &lt;p>На момент написания статьи актуальная версия dapp 0.36.*&lt;/p>
@@ -197,7 +194,7 @@
 &lt;ol>
 &lt;li>
 &lt;p>Качаем обновлённый certbot v0.22, разархивируем, переходим в папку&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">wget &lt;span class="s1">&amp;#39;https://github.com/certbot/certbot/archive/v0.22.2.tar.gz&amp;#39;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">wget &lt;span class="s1">&amp;#39;https://github.com/certbot/certbot/archive/v0.22.2.tar.gz&amp;#39;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
 &lt;/span>&lt;span class="se">&lt;/span>tar -xvf v0.22.2.tar.gz &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
 &lt;/span>&lt;span class="se">&lt;/span>&lt;span class="nb">cd&lt;/span> certbot-0.22.2
 &lt;/code>&lt;/pre>&lt;/div>&lt;/li>
@@ -209,20 +206,20 @@
 &lt;p>На серверах должен быть установлен &lt;a href="https://www.percona.com/software/mysql-database/percona-xtrabackup">Percona XtraBackup&lt;/a>&lt;/p>
 &lt;p>&lt;strong>Source server&lt;/strong>&lt;/p>
 &lt;p>Делаем частичный бэкап (partial backup), указывая опцию -database, где через пробел перечисляем базы для бэкапа. Важным моментов является то, что необходимо забрать и базу mysql для сохранения учётных записей и разрешений&lt;/p></description></item><item><title>PHP профайлер tideways + xhgui</title><link>/2017/08/php-profajler-tideways-xhgui/</link><pubDate>Wed, 16 Aug 2017 18:47:54 +0000</pubDate><guid>/2017/08/php-profajler-tideways-xhgui/</guid><description>&lt;p>&lt;img src="/wp-content/uploads/2017/08/kstawdh9qq_e7ocb6wk-izoxqmg.png" alt="">&lt;/p>
-&lt;h2 id="heading">Введение&lt;/h2>
+&lt;h2 id="введение">Введение&lt;/h2>
 &lt;p>Об удобстве использования профайлера, да ещё с графическим интерфейсом и говорить нечего, особенно когда надо найти узкие места под нагрузкой.&lt;/p>
 &lt;p>&lt;a href="https://github.com/tideways/php-profiler-extension">tideways&lt;/a> - само расширение php для сбора данных о производительности кода&lt;/p>
 &lt;p>&lt;a href="https://github.com/perftools/xhgui">xhgui&lt;/a> - графический веб-интерфейс (см. скриншот выше), который, помимо всего прочего, сохраняет данные профилирования в mongodb и затем использует их для вывода статистики&lt;/p></description></item><item><title>map в nginx</title><link>/2017/08/map-v-nginx/</link><pubDate>Wed, 16 Aug 2017 15:32:59 +0000</pubDate><guid>/2017/08/map-v-nginx/</guid><description>&lt;p>&lt;img src="/wp-content/uploads/2017/08/nginx.png" alt="">&lt;/p>
 &lt;p>Кейс следующий:&lt;/p>
 &lt;p>Есть запросы к API с передачей уникального токена в GET параметре. По этому токену (user_token=) имеются лимиты на запросы через &lt;a href="https://nginx.org/ru/docs/http/ngx_http_limit_req_module.html">limit_req_zone&lt;/a>, типа такого:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-nginx" data-lang="nginx">&lt;span class="k">limit_req_zone&lt;/span> &lt;span class="nv">$arg_user_token&lt;/span> &lt;span class="s">zone=token5:10m&lt;/span> &lt;span class="s">rate=12r/m&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-nginx" data-lang="nginx">&lt;span class="k">limit_req_zone&lt;/span> &lt;span class="nv">$arg_user_token&lt;/span> &lt;span class="s">zone=token5:10m&lt;/span> &lt;span class="s">rate=12r/m&lt;/span>&lt;span class="p">;&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>Необходимо для некоторых токенов отключить лимиты. Тут на помощь и приходит модуль &lt;a href="https://nginx.org/ru/docs/http/ngx_http_map_module.html">map&lt;/a> nginx. Он позволяет динамически получать переменную, значение которой будет зависеть от значений других, входных, переменных. Т.е., грубо говоря, мы имеем&lt;/p></description></item><item><title>Digital Ocean представил новые дроплеты с высокопроизводительными CPU</title><link>/2017/05/digital-ocean-predstavil-novye-droplety-s-vysoko/</link><pubDate>Tue, 02 May 2017 20:59:35 +0000</pubDate><guid>/2017/05/digital-ocean-predstavil-novye-droplety-s-vysoko/</guid><description>&lt;p>&lt;img src="/wp-content/uploads/2017/05/1200px-DigitalOcean_logo.svg_.png" alt="">&lt;/p>
 &lt;p>Упало письмо с рассылкой от DO, в котором говорится что они анонсируют ранний доступ, по запросу, к новым типам дроплетов&lt;/p>
 &lt;blockquote>
-&lt;p>We're excited to share some big new products and capabilities, and other improvements you may have missed&lt;/p>
+&lt;p>We&amp;rsquo;re excited to share some big new products and capabilities, and other improvements you may have missed&lt;/p>
 &lt;p>&lt;strong>High CPU Droplets: Early Access&lt;/strong>&lt;/p>
 &lt;p>We are now offering early access to a new set Droplet Plans: High CPU Droplets.&lt;/p>
-&lt;p>Focused on reliable high performance, High CPU Droplets are backed by a more powerful, best-in-class CPU, and won't have any overcommitment on the underlying physical resources.&lt;/p>
+&lt;p>Focused on reliable high performance, High CPU Droplets are backed by a more powerful, best-in-class CPU, and won&amp;rsquo;t have any overcommitment on the underlying physical resources.&lt;/p>
 &lt;/blockquote></description></item><item><title>CentOS 7. Kernel panic — not syncing: Fatal machine check on current CPU</title><link>/2017/05/centos-7-kernel-panic-not-syncing-fatal-machine-check-on-current-cpu/</link><pubDate>Mon, 01 May 2017 18:55:07 +0000</pubDate><guid>/2017/05/centos-7-kernel-panic-not-syncing-fatal-machine-check-on-current-cpu/</guid><description>&lt;p>&lt;img src="/wp-content/uploads/2017/05/install-centos-7-logo.png" alt="">&lt;/p>
 &lt;p>&lt;strong>Провайдер услуг&lt;/strong>: ovh&lt;/p>
 &lt;p>&lt;strong>Проц&lt;/strong>: Intel Xeon D-1521&lt;/p>
@@ -235,12 +232,12 @@
 &lt;p>Проверить установленные недоверенные сертификаты можно с помощью утилиты RCC (&lt;a href="https://www.trustprobe.com/fs1/apps.html">https://www.trustprobe.com/fs1/apps.html&lt;/a>). Утилита запускается в юзер-спейсе без запроса админских прав и только читает сертификаты.&lt;/p>
 &lt;p>&lt;strong>До установки средств электронной подписи&lt;/strong>&lt;/p>
 &lt;p>&lt;img src="/wp-content/uploads/2017/08/01.png" alt="">&lt;/p>
-&lt;p>&lt;strong>После установки средств электронной подписи&lt;/strong> появляется аж четыре корневых УЦ&lt;/p></description></item><item><title>SELinux на веб-сервере</title><link>/2017/04/selinux-na-veb-servere/</link><pubDate>Wed, 19 Apr 2017 15:00:10 +0000</pubDate><guid>/2017/04/selinux-na-veb-servere/</guid><description>&lt;h3 id="heading">Введение&lt;/h3>
+&lt;p>&lt;strong>После установки средств электронной подписи&lt;/strong> появляется аж четыре корневых УЦ&lt;/p></description></item><item><title>SELinux на веб-сервере</title><link>/2017/04/selinux-na-veb-servere/</link><pubDate>Wed, 19 Apr 2017 15:00:10 +0000</pubDate><guid>/2017/04/selinux-na-veb-servere/</guid><description>&lt;h3 id="введение">Введение&lt;/h3>
 &lt;p>Когда-то, настраивая nginx+php-fpm, я просто делал &lt;strong>setenforce 0&lt;/strong> или правил &lt;strong>/etc/selinux/config&lt;/strong>, перманентно отключая selinux на сервере&lt;/p>
 &lt;blockquote>
 &lt;p>&lt;strong>/etc/selinux/config&lt;/strong>&lt;/p>
 &lt;/blockquote>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="c1"># This file controls the state of SELinux on the system.&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="c1"># This file controls the state of SELinux on the system.&lt;/span>
 &lt;span class="c1"># SELINUX= can take one of these three values:&lt;/span>
 &lt;span class="c1"># enforcing - SELinux security policy is enforced.&lt;/span>
 &lt;span class="c1"># permissive - SELinux prints warnings instead of enforcing.&lt;/span>
@@ -251,16 +248,16 @@
 &lt;p>Ситуация такая: есть несколько серверов windows terminal server, где работают наши юзеры, и нам надо сделать балансировку при подключении юзеров. Для балансировки используем &lt;strong>haproxy&lt;/strong>. Нюанс в том, что мы хотим использовать балансировку по rdp-cookie, в котором в том числе передаётся **username. **Это нам даст попадание попадание пользователя на тот же сервер в ту же сессию, если у его тонкого клиента поменялся IP или пользователь заходит с соседнего тонкого клиента.&lt;/p>
 &lt;p>Так в чём проблема? Мы не хотим использовать полноценный оконный менеджер, а по-умолчанию, окно подключения в thinstation есть только у freerdp, а вот при загрузке в сессию rdesktop нам через балансировщик бросает сразу на терминальный сервер в сессию, где уже выводится стандартная виндовая форма ввода логина-пароля. А нам нужен именно rdesktop&lt;/p>
 &lt;p>Хитрость всего лишь в том, что необходимо подменить бинарник freerdp на бинарник rdesktop и добавить в сборку keymaps, чтобы в rdesktop корректно работала клавиатура&lt;/p></description></item><item><title>MS Exchange 2013. Пограничный сервер</title><link>/2015/03/ms-exchange-2013-pogranichnyj-server/</link><pubDate>Thu, 12 Mar 2015 17:43:00 +0000</pubDate><guid>/2015/03/ms-exchange-2013-pogranichnyj-server/</guid><description>&lt;p>&lt;img src="/wp-content/uploads/2015/03/microsoft-exchange-2013.png" alt="">&lt;/p>
-&lt;h1 id="-edge--exchange-2013">Роль EDGE для Exchange 2013&lt;/h1>
-&lt;h2 id="heading">Описание&lt;/h2>
+&lt;h1 id="роль-edge-для-exchange-2013">Роль EDGE для Exchange 2013&lt;/h1>
+&lt;h2 id="описание">Описание&lt;/h2>
 &lt;p>Пограничный сервер, анализирующий соединения и письма, помечающий спам, блокирующий недоверенные внешние сервера и т.п.&lt;/p>
-&lt;h2 id="heading1">Безопасность&lt;/h2>
-&lt;h3 id="----">Чёрные и белые списки серверов&lt;/h3>
+&lt;h2 id="безопасность">Безопасность&lt;/h2>
+&lt;h3 id="чёрные-и-белые-списки-серверов">Чёрные и белые списки серверов&lt;/h3>
 &lt;p>Пожалуй, самый простой, но не самый надёжный способ обезопасить себя от писем с &amp;ldquo;левых&amp;rdquo; почтовых серверов. При получении письма проверяется, не присутствует ли IP отправителя в одном списков.&lt;/p>
 &lt;p>IP-адреса в списки можно добавлять вручную через powershell, также существуют сторонние сервисы, которые собирают информацию по доверенным и недоверенным IP-адресам.&lt;/p>
 &lt;p>Сначала IP ищется в вручную созданных списках и только затем в списках сторонних провайдеров&lt;/p></description></item><item><title>Рекомендации по работе с Symantec Backup Exec 2010 R3</title><link>/2015/03/rekomendacii-po-rabote-s-symantec-backup-exec-2010-r3/</link><pubDate>Thu, 12 Mar 2015 17:36:00 +0000</pubDate><guid>/2015/03/rekomendacii-po-rabote-s-symantec-backup-exec-2010-r3/</guid><description>&lt;p>&lt;img src="/wp-content/uploads/2015/03/2018-03-30_11-00-18.png" alt="">&lt;/p>
-&lt;h1 id="heading">Описание&lt;/h1>
-&lt;h2 id="-devices">Устройства (Devices)&lt;/h2>
+&lt;h1 id="описание">Описание&lt;/h1>
+&lt;h2 id="устройства-devices">Устройства (Devices)&lt;/h2>
 &lt;p>&lt;strong>Устройство&lt;/strong> - это физическое (магнитная лента, роботизированная библиотека) или виртуальное устройство (папка на жёстком диске), на которое происходит резервное копирование.&lt;/p>
 &lt;p>На любом подключённом в Windows жёстком диске через Backup Exec можно создать такую папку, которая будет являться &lt;strong>устройством&lt;/strong> и будет иметь 2 важных параметра:&lt;/p>
 &lt;ol>
@@ -275,18 +272,18 @@
 &lt;blockquote>
 &lt;p>Эта статья на Хабре &lt;a href="https://habr.com/ru/post/244321/">https://habr.com/ru/post/244321/&lt;/a>&lt;/p>
 &lt;/blockquote>
-&lt;h1 id="-">Версии ПО&lt;/h1>
+&lt;h1 id="версии-по">Версии ПО&lt;/h1>
 &lt;p>FreePBX 2.11.0.41&lt;/p>
 &lt;p>Asternic CDR Reports 1.5.1&lt;/p>
-&lt;h1 id="heading">Введение&lt;/h1>
+&lt;h1 id="введение">Введение&lt;/h1>
 &lt;p>Классический CDR Reports, &amp;ldquo;идущий в комплекте&amp;rdquo; с FreePBX умеет делать отчёты с проигрыванием аудиозаписи, если она велась, но не умеет разграничивать доступы по Extension`ам (Extension Range, который задаётся при создании новой учётной записи админа).&lt;/p>
 &lt;p>Модуль Asternic CDR Reports учитывает это, но не выводит аудиофайл.&lt;/p>
 &lt;p>Исправим это.&lt;/p>
 &lt;p>Информация о звонках в Asterisk`е хранится в mysql базе данных asteriskcdrdb, таблица cdr.&lt;/p></description></item><item><title>openSUSE 13.1 NetworkManager-l2tp</title><link>/2014/07/opensuse-13-1-networkmanager-l2tp/</link><pubDate>Wed, 02 Jul 2014 19:19:00 +0000</pubDate><guid>/2014/07/opensuse-13-1-networkmanager-l2tp/</guid><description>&lt;p>Исходники &lt;a href="https://github.com/seriyps/NetworkManager-l2tp">https://github.com/seriyps/NetworkManager-l2tp&lt;/a>&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-bash" data-lang="bash">git clone https://github.com/seriyps/NetworkManager-l2tp.git
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">git clone https://github.com/seriyps/NetworkManager-l2tp.git
 &lt;span class="nb">cd&lt;/span> NetworkManager-l2tp
 ./autogen.sh
-&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Nine Eagles 181 TOY NE RC 510A/512A</title><link>/2014/04/nine-eagles-181-toy-ne-rc-510a512a/</link><pubDate>Wed, 09 Apr 2014 19:50:00 +0000</pubDate><guid>/2014/04/nine-eagles-181-toy-ne-rc-510a512a/</guid><description>&lt;p>&lt;em>Этот пост написан, потому что по этой модели квадрокоптера в рунете ну очень мало информации, а мне пришлось столкнуться с мелким ремонтом и настройкой данного аппарата. Так что пускай изыскания не пропадут даром и помогут какому-нибудь &amp;ldquo;гуглящему&amp;rdquo;&amp;rdquo; человеку&lt;/em>&lt;/p>
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Nine Eagles 181 TOY NE RC 510A/512A</title><link>/2014/04/nine-eagles-181-toy-ne-rc-510a512a/</link><pubDate>Wed, 09 Apr 2014 19:50:00 +0000</pubDate><guid>/2014/04/nine-eagles-181-toy-ne-rc-510a512a/</guid><description>&lt;p>&lt;em>Этот пост написан, потому что по этой модели квадрокоптера в рунете ну очень мало информации, а мне пришлось столкнуться с мелким ремонтом и настройкой данного аппарата. Так что пускай изыскания не пропадут даром и помогут какому-нибудь &amp;ldquo;гуглящему&amp;rdquo;&amp;quot; человеку&lt;/em>&lt;/p>
 &lt;p>Получил в подарок такой квадрокоптер:&lt;/p>
 &lt;p>&lt;strong>Nine Eagles 181 TOY NE RC 512A&lt;/strong>*&lt;/p>
 &lt;p>&lt;img src="/wp-content/uploads/2014/04/radioupravlyaemyj-kvadrokopter-nine-eagles-181-toy.jpg" alt="">&lt;/p>

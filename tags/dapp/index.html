@@ -1,7 +1,76 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>dapp &ndash; Of Code & Systems</title><meta name=description property="og:description" content><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div><h1>dapp</h1><div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3"><div class="Subhead mb-2"><div class=Subhead-heading><a href=/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/><div class="h2 mt-1 mb-1">dapp — утилита для сборки и деплоя контейнеров. Особенности работы</div></a></div><div class=Subhead-description><a href=/categories/devops class=muted-link><span class="Label Label--gray-darker">devops</span></a>
-<a href=/categories/linux class=muted-link><span class="Label Label--gray-darker">linux</span></a>
-<a href=/tags/dapp class=muted-link><span class="Label Label--gray">dapp</span></a>
-<a href=/tags/devops class=muted-link><span class="Label Label--gray">devops</span></a>
-<a href=/tags/linux class=muted-link><span class="Label Label--gray">linux</span></a><div class=float-md-right><span>2018-12-03</span></div></div></div><div class=text-gray><figure class=img><img src=/wp-content/uploads/2018/12/logo_og-e1543878630388.png></figure><p><a href=https://github.com/flant/dapp>dapp</a> — утилита от российской компании Флант, которая занимается внедрением devops-практик (kubernetes, ci/cd и всё такое, ну вы в курсе) Подробное описание можно прочитать на <a href=https://habr.com/company/flant/blog/333682/>Хабре</a>, а я бы хотел остановиться на некоторых особенностях работы с ней при сборке образов (здесь и далее под образом подразумевается docker image)</p><p>На момент написания статьи актуальная версия dapp 0.36.*</p><p>В качестве примера для наглядности и понимания общей картины возьмём за основу немного урезанное содержимое <strong>dappfile.yaml</strong> из <a href=https://flant.github.io/dapp/how_to/getting_started.html>официальной документации</a></p><div><a href=/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/>Открыть полностью…</a></div></div></div></div></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
+<!doctype html><html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>
+dapp &ndash; Of Code & Systems
+</title>
+<meta name=description property="og:description" content>
+<meta name=apple-mobile-web-app-title content="Of Code & Systems">
+<link rel=stylesheet href=/assets/syntax.css>
+<link rel=stylesheet href=/assets/primer-build.css>
+<link rel=stylesheet href=/assets/style.css>
+</head>
+<body class=bg-gray style=background-color:#fdf6e3!important>
+<div id=holy class="container-lg bg-white h-100">
+<div id=header class="px-1 bg-white">
+<nav class="UnderlineNav UnderlineNav--right px-2">
+<a class="UnderlineNav-actions muted-link h2" href=/>
+Of Code & Systems
+</a>
+</nav>
+</div>
+<div role=main id=main class="holy-main markdown-body px-4 bg-white">
+<div>
+<h1>dapp</h1>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
+<a href=/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/>
+<div class="h2 mt-1 mb-1">dapp — утилита для сборки и деплоя контейнеров. Особенности работы</div>
+</a>
+</div>
+<div class=Subhead-description>
+<a href=/categories/devops class=muted-link>
+<span class="Label Label--gray-darker">devops</span>
+</a>
+<a href=/categories/linux class=muted-link>
+<span class="Label Label--gray-darker">linux</span>
+</a>
+<a href=/tags/dapp class=muted-link>
+<span class="Label Label--gray">dapp</span>
+</a>
+<a href=/tags/devops class=muted-link>
+<span class="Label Label--gray">devops</span>
+</a>
+<a href=/tags/linux class=muted-link>
+<span class="Label Label--gray">linux</span>
+</a>
+<div class=float-md-right>
+<span>2018-12-03</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<figure class=img><img src=/wp-content/uploads/2018/12/logo_og-e1543878630388.png>
+</figure>
+<p><a href=https://github.com/flant/dapp>dapp</a> — утилита от российской компании Флант, которая занимается внедрением devops-практик (kubernetes, ci/cd и всё такое, ну вы в курсе) Подробное описание можно прочитать на <a href=https://habr.com/company/flant/blog/333682/>Хабре</a>, а я бы хотел остановиться на некоторых особенностях работы с ней при сборке образов (здесь и далее под образом подразумевается docker image)</p>
+<p>На момент написания статьи актуальная версия dapp 0.36.*</p>
+<p>В качестве примера для наглядности и понимания общей картины возьмём за основу немного урезанное содержимое <strong>dappfile.yaml</strong> из <a href=https://flant.github.io/dapp/how_to/getting_started.html>официальной документации</a></p>
+<div>
+<a href=/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/>Открыть полностью…</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id=footer class="pt-2 pb-3 bg-white text-center">
+<span class="text-small text-gray">
+Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
-<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.</span></div></div></body></html>
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.
+</span>
+</div>
+</div>
+</body>
+</html>

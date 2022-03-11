@@ -1,48 +1,135 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Неправильный размер папок owncloud в freebsd x86 &ndash; Of Code & Systems</title><meta name=description property="og:description" content="Так случилось, что появилась необходимость бэкапить накопленные архивы фотографий, поэтому поставил себе в jail на фряхе owncloud 6.0.0a. Ничего сложного в этом нет, кроме как необходимость собирать nginx, php и mysql с нужными модулями из исходников, т.к. в пакетах нет необходимого. Может как-нибудь в будущем накатаю пост об этом.
+<!doctype html><html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>
+Неправильный размер папок owncloud в freebsd x86 &ndash; Of Code & Systems
+</title>
+<meta name=description property="og:description" content="Так случилось, что появилась необходимость бэкапить накопленные архивы фотографий, поэтому поставил себе в jail на фряхе owncloud 6.0.0a. Ничего сложного в этом нет, кроме как необходимость собирать nginx, php и mysql с нужными модулями из исходников, т.к. в пакетах нет необходимого. Может как-нибудь в будущем накатаю пост об этом.
 Итак, в установленном и работающем ownCloud размеры синхронизированных папок отображаются неправильно: максимально показывается 2ГБ на папку, а общие занятое и свободное пространства неверные.
-|"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">Неправильный размер папок owncloud в freebsd x86</div></div><div class=Subhead-description><a href=/categories/owncloud class=muted-link><span class="Label Label--gray-darker">owncloud</span></a>
-<a href=/categories/php class=muted-link><span class="Label Label--gray-darker">php</span></a><div class=float-md-right><span title="Lastmod: 2014-01-25. Published at: 2014-01-25.">Published: 2014-01-25</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><div id=toc class="Box Box--blue mb-3"><b>Содержание</b><nav id=TableOfContents></nav></div><p>Так случилось, что появилась необходимость бэкапить накопленные архивы фотографий, поэтому поставил себе в jail на фряхе owncloud 6.0.0a. Ничего сложного в этом нет, кроме как необходимость собирать nginx, php и mysql с нужными модулями из исходников, т.к. в пакетах нет необходимого. Может как-нибудь в будущем накатаю пост об этом.</p><p>Итак, в установленном и работающем ownCloud размеры синхронизированных папок отображаются неправильно: максимально показывается 2ГБ на папку, а общие занятое и свободное пространства неверные.</p><p>Проблема кроется в том, что в 32-битной версии php целое число <a href=http://php.net/manual/ru/language.types.integer.php>integer может иметь максимальное значение</a> ~ 2 млрд (2 147 483 647 Байт = 2ГБ), а именно приведение к целому числу и используется в owncloud при постройке кэша, например:</p><div class=highlight><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+|">
+<meta name=apple-mobile-web-app-title content="Of Code & Systems">
+<link rel=stylesheet href=/assets/syntax.css>
+<link rel=stylesheet href=/assets/primer-build.css>
+<link rel=stylesheet href=/assets/style.css>
+</head>
+<body class=bg-gray style=background-color:#fdf6e3!important>
+<div id=holy class="container-lg bg-white h-100">
+<div id=header class="px-1 bg-white">
+<nav class="UnderlineNav UnderlineNav--right px-2">
+<a class="UnderlineNav-actions muted-link h2" href=/>
+Of Code & Systems
+</a>
+</nav>
+</div>
+<div role=main id=main class="holy-main markdown-body px-4 bg-white">
+<div class=Subhead>
+<div class=Subhead-heading>
+<div class="h1 mt-3 mb-1">Неправильный размер папок owncloud в freebsd x86</div>
+</div>
+<div class=Subhead-description>
+<a href=/categories/owncloud class=muted-link>
+<span class="Label Label--gray-darker">owncloud</span>
+</a>
+<a href=/categories/php class=muted-link>
+<span class="Label Label--gray-darker">php</span>
+</a>
+<div class=float-md-right>
+<span title="Lastmod: 2014-01-25. Published at: 2014-01-25.">
+Published: 2014-01-25
+</span>
+</div>
+</div>
+</div>
+<article>
+<section class="pb-6 mb-3 border-bottom">
+<div id=toc class="Box Box--blue mb-3">
+<b>Содержание</b><nav id=TableOfContents></nav></div>
+<p>Так случилось, что появилась необходимость бэкапить накопленные архивы фотографий, поэтому поставил себе в jail на фряхе owncloud 6.0.0a. Ничего сложного в этом нет, кроме как необходимость собирать nginx, php и mysql с нужными модулями из исходников, т.к. в пакетах нет необходимого. Может как-нибудь в будущем накатаю пост об этом.</p>
+<p>Итак, в установленном и работающем ownCloud размеры синхронизированных папок отображаются неправильно: максимально показывается 2ГБ на папку, а общие занятое и свободное пространства неверные.</p>
+<p>Проблема кроется в том, что в 32-битной версии php целое число <a href=http://php.net/manual/ru/language.types.integer.php>integer может иметь максимальное значение</a> ~ 2 млрд (2 147 483 647 Байт = 2ГБ), а именно приведение к целому числу и используется в owncloud при постройке кэша, например:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=o>&lt;?</span><span class=nx>php</span>
 
 <span class=nv>$data</span><span class=p>[</span><span class=s1>&#39;size&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=nx>int</span><span class=p>)</span><span class=nv>$data</span><span class=p>[</span><span class=s1>&#39;size&#39;</span><span class=p>];</span> 
-</code></pre></div><p>Нам же необходим тип float или long, поэтому пользователь <em>MiguelDomingues</em> с форума owncloud <a href="https://forum.owncloud.org/viewtopic.php?f=26&t=18676">предлагает</a> вместо приведения к int заставить php самому конвертировать число в нужный тип при помощи сложения с нулем. Для этого надо подредактировать некоторые файлы:</p><ol><li><p>Редактируем <em>/path/to/owncloud/lib/private/files/cache/cache.php</em></p><p>Меняем в строке 145:</p><div class=highlight><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+</code></pre></div><p>Нам же необходим тип float или long, поэтому пользователь <em>MiguelDomingues</em> с форума owncloud <a href="https://forum.owncloud.org/viewtopic.php?f=26&t=18676">предлагает</a> вместо приведения к int заставить php самому конвертировать число в нужный тип при помощи сложения с нулем. Для этого надо подредактировать некоторые файлы:</p>
+<ol>
+<li>
+<p>Редактируем <em>/path/to/owncloud/lib/private/files/cache/cache.php</em></p>
+<p>Меняем в строке 145:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=o>&lt;?</span><span class=nx>php</span>
 
 <span class=nv>$data</span><span class=p>[</span><span class=s1>&#39;size&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=nx>int</span><span class=p>)</span><span class=nv>$data</span><span class=p>[</span><span class=s1>&#39;size&#39;</span><span class=p>];</span>
-</code></pre></div><p>на:</p><div class=highlight><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+</code></pre></div><p>на:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=o>&lt;?</span><span class=nx>php</span>
 
 <span class=nv>$data</span><span class=p>[</span><span class=s1>&#39;size&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span><span class=o>+</span><span class=nv>$data</span><span class=p>[</span><span class=s1>&#39;size&#39;</span><span class=p>];</span>
-</code></pre></div><p>Меняем в строке 149:</p><div class=highlight><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+</code></pre></div><p>Меняем в строке 149:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=o>&lt;?</span><span class=nx>php</span>
 
 <span class=nv>$data</span><span class=p>[</span><span class=s1>&#39;unencrypted_size&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=nx>int</span><span class=p>)</span><span class=nv>$data</span><span class=p>[</span><span class=s1>&#39;unencrypted_size&#39;</span><span class=p>];</span>
-</code></pre></div><p>на</p><div class=highlight><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+</code></pre></div><p>на</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=o>&lt;?</span><span class=nx>php</span>
 
 <span class=nv>$data</span><span class=p>[</span><span class=s1>&#39;unencrypted_size&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span><span class=o>+</span><span class=nv>$data</span><span class=p>[</span><span class=s1>&#39;unencrypted_size&#39;</span><span class=p>];</span>
-</code></pre></div><p>Меняем в строке 425:</p><div class=highlight><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+</code></pre></div><p>Меняем в строке 425:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=o>&lt;?</span><span class=nx>php</span>
 
 <span class=k>if</span> <span class=p>((</span><span class=nx>int</span><span class=p>)</span><span class=nv>$row</span><span class=p>[</span><span class=s1>&#39;size&#39;</span><span class=p>]</span> <span class=o>===</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span> <span class=p>{</span>
-</code></pre></div><p>на</p><div class=highlight><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+</code></pre></div><p>на</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=o>&lt;?</span><span class=nx>php</span>
 
 <span class=k>if</span> <span class=p>(</span><span class=mi>0</span><span class=o>+</span><span class=nv>$row</span><span class=p>[</span><span class=s1>&#39;size&#39;</span><span class=p>]</span> <span class=o>===</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span> <span class=p>{</span>
-</code></pre></div><p>Меняем в строках 519-520:</p><div class=highlight><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+</code></pre></div><p>Меняем в строках 519-520:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=o>&lt;?</span><span class=nx>php</span>
 
 <span class=nv>$sum</span> <span class=o>=</span> <span class=p>(</span><span class=nx>int</span><span class=p>)</span><span class=nv>$sum</span><span class=p>;</span>
 <span class=nv>$min</span> <span class=o>=</span> <span class=p>(</span><span class=nx>int</span><span class=p>)</span><span class=nv>$min</span><span class=p>;</span>
-</code></pre></div><p>на</p><div class=highlight><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+</code></pre></div><p>на</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=o>&lt;?</span><span class=nx>php</span>
 
 <span class=nv>$sum</span> <span class=o>=</span> <span class=mi>0</span><span class=o>+</span><span class=nv>$sum</span><span class=p>;</span>
 <span class=nv>$min</span> <span class=o>=</span> <span class=mi>0</span><span class=o>+</span><span class=nv>$min</span><span class=p>;</span>
-</code></pre></div></li><li><p>Редактируем <em>/path/to/owncloud/lib/private/files/cache/homecache.php</em></p><p>Меняем в строке 100:</p><div class=highlight><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+</code></pre></div></li>
+<li>
+<p>Редактируем <em>/path/to/owncloud/lib/private/files/cache/homecache.php</em></p>
+<p>Меняем в строке 100:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=o>&lt;?</span><span class=nx>php</span>
 
 <span class=nv>$data</span><span class=p>[</span><span class=s1>&#39;size&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=nx>int</span><span class=p>)</span><span class=nv>$data</span><span class=p>[</span><span class=s1>&#39;size&#39;</span><span class=p>];</span>
-</code></pre></div><p>на</p><div class=highlight><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+</code></pre></div><p>на</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=o>&lt;?</span><span class=nx>php</span>
 
 <span class=nv>$data</span><span class=p>[</span><span class=s1>&#39;size&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span><span class=o>+</span><span class=nv>$data</span><span class=p>[</span><span class=s1>&#39;size&#39;</span><span class=p>];</span>
-</code></pre></div></li><li><p>Редактируем <em>/path/to/owncloud/lib/private/connector/sabre/server.php</em></p><p>Меняем в строке 172:</p><div class=highlight><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+</code></pre></div></li>
+<li>
+<p>Редактируем <em>/path/to/owncloud/lib/private/connector/sabre/server.php</em></p>
+<p>Меняем в строке 172:</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=o>&lt;?</span><span class=nx>php</span>
 
 <span class=nv>$newProperties</span><span class=p>[</span><span class=mi>200</span><span class=p>][</span><span class=nv>$prop</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=nx>int</span><span class=p>)</span><span class=nv>$node</span><span class=o>-&gt;</span><span class=na>getSize</span><span class=p>();</span>
-</code></pre></div><p>на</p><div class=highlight><pre class=chroma><code class=language-php data-lang=php><span class=cp>&lt;?php</span>
+</code></pre></div><p>на</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=o>&lt;?</span><span class=nx>php</span>
 
 <span class=nv>$newProperties</span><span class=p>[</span><span class=mi>200</span><span class=p>][</span><span class=nv>$prop</span><span class=p>]</span> <span class=o>=</span> <span class=mi>0</span><span class=o>+</span><span class=nv>$node</span><span class=o>-&gt;</span><span class=na>getSize</span><span class=p>();</span>
-</code></pre></div></li></ol><p>Кстати, можно заменить (int) на (float) вместо операции сложения. Размера в 3.4e38 на 32-битной платформе будет вполне достаточно.</p></section><section><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
-var d=document,s=d.createElement('script');s.async=true;s.src='//'+"blog-zamolod-ru"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></section></article></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
+</code></pre></div></li>
+</ol>
+<p>Кстати, можно заменить (int) на (float) вместо операции сложения. Размера в 3.4e38 на 32-битной платформе будет вполне достаточно.</p>
+</section>
+<section>
+<div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//blog-zamolod-ru.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</section>
+</article>
+</div>
+<div id=footer class="pt-2 pb-3 bg-white text-center">
+<span class="text-small text-gray">
+Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
-<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.</span></div></div></body></html>
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.
+</span>
+</div>
+</div>
+</body>
+</html>

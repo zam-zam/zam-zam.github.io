@@ -1,16 +1,90 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>SELinux на веб-сервере &ndash; Of Code & Systems</title><meta name=description property="og:description" content="Введение Когда-то, настраивая nginx+php-fpm, я просто делал setenforce 0 или правил /etc/selinux/config, перманентно отключая selinux на сервере
+<!doctype html><html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>
+SELinux на веб-сервере &ndash; Of Code & Systems
+</title>
+<meta name=description property="og:description" content="Введение Когда-то, настраивая nginx+php-fpm, я просто делал setenforce 0 или правил /etc/selinux/config, перманентно отключая selinux на сервере
  /etc/selinux/config
  # This file controls the state of SELinux on the system. # SELINUX= can take one of these three values: # enforcing - SELinux security policy is enforced. # permissive - SELinux prints warnings instead of enforcing. # disabled - No SELinux policy is loaded. SELINUX=disabled Теперь, наконец разобравшись, я понял, что никогда больше не буду выключать selinux
-|"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">SELinux на веб-сервере</div></div><div class=Subhead-description><a href=/categories/linux class=muted-link><span class="Label Label--gray-darker">linux</span></a>
-<a href=/tags/centos class=muted-link><span class="Label Label--gray">centos</span></a>
-<a href=/tags/linux class=muted-link><span class="Label Label--gray">linux</span></a><div class=float-md-right><span title="Lastmod: 2017-04-19. Published at: 2017-04-19.">Published: 2017-04-19</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><div id=toc class="Box Box--blue mb-3"><b>Содержание</b><nav id=TableOfContents><ul><li><ul><li><ul><li><a href=#heading>Введение</a></li><li><a href=#heading1>Почему?</a></li></ul></li></ul></li></ul></nav></div><h3 id=heading>Введение</h3><p>Когда-то, настраивая nginx+php-fpm, я просто делал <strong>setenforce 0</strong> или правил <strong>/etc/selinux/config</strong>, перманентно отключая selinux на сервере</p><blockquote><p><strong>/etc/selinux/config</strong></p></blockquote><div class=highlight><pre class=chroma><code class=language-ini data-lang=ini><span class=c1># This file controls the state of SELinux on the system.</span>
+|">
+<meta name=apple-mobile-web-app-title content="Of Code & Systems">
+<link rel=stylesheet href=/assets/syntax.css>
+<link rel=stylesheet href=/assets/primer-build.css>
+<link rel=stylesheet href=/assets/style.css>
+</head>
+<body class=bg-gray style=background-color:#fdf6e3!important>
+<div id=holy class="container-lg bg-white h-100">
+<div id=header class="px-1 bg-white">
+<nav class="UnderlineNav UnderlineNav--right px-2">
+<a class="UnderlineNav-actions muted-link h2" href=/>
+Of Code & Systems
+</a>
+</nav>
+</div>
+<div role=main id=main class="holy-main markdown-body px-4 bg-white">
+<div class=Subhead>
+<div class=Subhead-heading>
+<div class="h1 mt-3 mb-1">SELinux на веб-сервере</div>
+</div>
+<div class=Subhead-description>
+<a href=/categories/linux class=muted-link>
+<span class="Label Label--gray-darker">linux</span>
+</a>
+<a href=/tags/centos class=muted-link>
+<span class="Label Label--gray">centos</span>
+</a>
+<a href=/tags/linux class=muted-link>
+<span class="Label Label--gray">linux</span>
+</a>
+<div class=float-md-right>
+<span title="Lastmod: 2017-04-19. Published at: 2017-04-19.">
+Published: 2017-04-19
+</span>
+</div>
+</div>
+</div>
+<article>
+<section class="pb-6 mb-3 border-bottom">
+<div id=toc class="Box Box--blue mb-3">
+<b>Содержание</b><nav id=TableOfContents>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href=#введение>Введение</a></li>
+<li><a href=#почему>Почему?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav></div>
+<h3 id=введение>Введение</h3>
+<p>Когда-то, настраивая nginx+php-fpm, я просто делал <strong>setenforce 0</strong> или правил <strong>/etc/selinux/config</strong>, перманентно отключая selinux на сервере</p>
+<blockquote>
+<p><strong>/etc/selinux/config</strong></p>
+</blockquote>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-ini data-lang=ini><span class=c1># This file controls the state of SELinux on the system.</span>
 <span class=c1># SELINUX= can take one of these three values:</span>
 <span class=c1>#       enforcing - SELinux security policy is enforced.</span>
 <span class=c1>#       permissive - SELinux prints warnings instead of enforcing.</span>
 <span class=c1>#       disabled - No SELinux policy is loaded.</span>
 <span class=na>SELINUX</span><span class=o>=</span><span class=s>disabled</span>
-</code></pre></div><p>Теперь, наконец разобравшись, я понял, что никогда больше не буду выключать selinux</p><h3 id=heading1>Почему?</h3><p>Вот есть у вас процесс php-fpm, работающий от пользователя nginx и вы изменили владельца папки проекта тоже на nginx,</p><div class=highlight><pre class=chroma><code class=language-bash data-lang=bash>сhown nginx. -R /var/www/project1
-</code></pre></div><p>чтобы код, выполняемый с помощью php-fpm, мог изменять содержимое папки проекта - например, писать в папку cache или заливать файлы в папку upload. <strong>Так в чём проблема?</strong></p><p>Проблема в том, что без selinux пользователь nginx и запущенный от его имени процесс php-fpm сможет выполнять действия над файлами и папками согласно заданным стандартным rwx разрешениям. То есть то, что в системе открыто на чтение для всех, можно прочитать и через, скажем, залитый php-шелл.</p><p>Если же selinux будет включён, то помимо стандартных разрешений будут проверяться разрешения на доступ домена, в которым работает процесс (в случае с php-fpm в CentOS7 это <strong>httpd_t</strong>), к контексту файлов/директорий, заданных для них. <strong>И что это даст?</strong></p><p>А **ничего **это не даст, потому что домен <strong>httpd_t</strong> включает в себя правила для домена <strong>nsswitch_domain</strong></p><blockquote><p><strong>seinfo -thttpd_t -x</strong></p></blockquote><div class=highlight><pre class=chroma><code class=language-nginx data-lang=nginx><span class=k>httpd_t</span>
+</code></pre></div><p>Теперь, наконец разобравшись, я понял, что никогда больше не буду выключать selinux</p>
+<h3 id=почему>Почему?</h3>
+<p>Вот есть у вас процесс php-fpm, работающий от пользователя nginx и вы изменили владельца папки проекта тоже на nginx,</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>сhown nginx. -R /var/www/project1
+</code></pre></div><p>чтобы код, выполняемый с помощью php-fpm, мог изменять содержимое папки проекта - например, писать в папку cache или заливать файлы в папку upload. <strong>Так в чём проблема?</strong></p>
+<p>Проблема в том, что без selinux пользователь nginx и запущенный от его имени процесс php-fpm сможет выполнять действия над файлами и папками согласно заданным стандартным rwx разрешениям. То есть то, что в системе открыто на чтение для всех, можно прочитать и через, скажем, залитый php-шелл.</p>
+<p>Если же selinux будет включён, то помимо стандартных разрешений будут проверяться разрешения на доступ домена, в которым работает процесс (в случае с php-fpm в CentOS7 это <strong>httpd_t</strong>), к контексту файлов/директорий, заданных для них. <strong>И что это даст?</strong></p>
+<p>А **ничего **это не даст, потому что домен <strong>httpd_t</strong> включает в себя правила для домена <strong>nsswitch_domain</strong></p>
+<blockquote>
+<p><strong>seinfo -thttpd_t -x</strong></p>
+</blockquote>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=k>httpd_t</span>
     <span class=s>can_change_object_identity</span>
     <span class=s>kernel_system_state_reader</span>
     <span class=s>syslog_client_type</span>
@@ -20,12 +94,33 @@
     <span class=s>daemon</span>
     <span class=s>nsswitch_domain</span> <span class=c1># &lt;--
 </span><span class=c1></span>    <span class=s>domain</span>
-</code></pre></div><p>из-за чего, процесс php-fpm сможет читать, скажем, <strong>/etc/passwd</strong>, контекст которого <strong>passwd_file_t</strong></p><blockquote><p><strong>ll -Z /etc/passwd</strong></p></blockquote><div class=highlight><pre class=chroma><code class=language-cpp data-lang=cpp><span class=o>-</span><span class=n>rw</span><span class=o>-</span><span class=n>r</span><span class=o>-</span><span class=o>-</span><span class=n>r</span><span class=o>-</span><span class=o>-</span><span class=p>.</span> <span class=n>root</span> <span class=n>root</span> <span class=nl>system_u</span><span class=p>:</span><span class=nl>object_r</span><span class=p>:</span><span class=nl>passwd_file_t</span><span class=p>:</span><span class=n>s0</span> <span class=o>/</span><span class=n>etc</span><span class=o>/</span><span class=n>passwd</span>
-</code></pre></div><p><strong><code>sesearch --allow --source httpd_t --target passwd_file_t</code></strong></p><div class=highlight><pre class=chroma><code class=language-nginx data-lang=nginx>    <span class=k>Found</span> <span class=mi>3</span> <span class=s>semantic</span> <span class=s>av</span> <span class=s>rules:</span>
+</code></pre></div><p>из-за чего, процесс php-fpm сможет читать, скажем, <strong>/etc/passwd</strong>, контекст которого <strong>passwd_file_t</strong></p>
+<blockquote>
+<p><strong>ll -Z /etc/passwd</strong></p>
+</blockquote>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=o>-</span><span class=n>rw</span><span class=o>-</span><span class=n>r</span><span class=o>--</span><span class=n>r</span><span class=o>--</span><span class=p>.</span> <span class=n>root</span> <span class=n>root</span> <span class=nl>system_u</span><span class=p>:</span><span class=nl>object_r</span><span class=p>:</span><span class=nl>passwd_file_t</span><span class=p>:</span><span class=n>s0</span> <span class=o>/</span><span class=n>etc</span><span class=o>/</span><span class=n>passwd</span>
+</code></pre></div><p><strong><code>sesearch --allow --source httpd_t --target passwd_file_t</code></strong></p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx>    <span class=k>Found</span> <span class=mi>3</span> <span class=s>semantic</span> <span class=s>av</span> <span class=s>rules:</span>
     <span class=s>allow</span> <span class=s>httpd_t</span> <span class=s>file_type</span> <span class=p>:</span> <span class=s>filesystem</span> <span class=s>getattr</span> <span class=p>;</span>
     <span class=k>allow</span> <span class=s>httpd_t</span> <span class=s>file_type</span> <span class=p>:</span> <span class=s>dir</span> <span class=p>{</span> <span class=kn>getattr</span> <span class=s>search</span> <span class=s>open</span> <span class=err>}</span> <span class=p>;</span>
     <span class=kn>allow</span> <span class=s>nsswitch_domain</span> <span class=s>passwd_file_t</span> <span class=p>:</span> <span class=s>file</span> <span class=p>{</span> <span class=kn>ioctl</span> <span class=s>read</span> <span class=s>getattr</span> <span class=s>lock</span> <span class=s>open</span> <span class=err>}</span> <span class=p>;</span>
-</code></pre></div><p>Да ладно, конечно всё не так, как кажется на первый взгляд. Selinux будет препятствием для дальнейшей эскалации привилегий именно из-за своего механизма доменов и контекстов, так что штука на самом деле крутая и полезная и зачастую может <a href=http://rhelblog.redhat.com/2017/01/13/selinux-mitigates-container-vulnerability/>защитить от 0day</a>.</p></section><section><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
-var d=document,s=d.createElement('script');s.async=true;s.src='//'+"blog-zamolod-ru"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></section></article></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
+</code></pre></div><p>Да ладно, конечно всё не так, как кажется на первый взгляд. Selinux будет препятствием для дальнейшей эскалации привилегий именно из-за своего механизма доменов и контекстов, так что штука на самом деле крутая и полезная и зачастую может <a href=http://rhelblog.redhat.com/2017/01/13/selinux-mitigates-container-vulnerability/>защитить от 0day</a>.</p>
+</section>
+<section>
+<div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//blog-zamolod-ru.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</section>
+</article>
+</div>
+<div id=footer class="pt-2 pb-3 bg-white text-center">
+<span class="text-small text-gray">
+Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
-<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.</span></div></div></body></html>
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.
+</span>
+</div>
+</div>
+</body>
+</html>

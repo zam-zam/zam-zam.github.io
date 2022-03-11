@@ -1,16 +1,74 @@
-<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Proxmox. Проброс usb-устройств в гостевую виртуальную машину. На примере ключей 1С HASP &ndash; Of Code & Systems</title><meta name=description property="og:description" content="обновлено 16.05.13
+<!doctype html><html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>
+Proxmox. Проброс usb-устройств в гостевую виртуальную машину. На примере ключей 1С HASP &ndash; Of Code & Systems
+</title>
+<meta name=description property="og:description" content="обновлено 16.05.13
 Немного теории о usb:
 &amp;ldquo;Физическое соединение устройств осуществляется по топологии многоярусной звезды. Центром каждой звезды является хаб, каждый кабельный сегмент соединяет две точки - хаб с другим хабом или с функцией. В системе имеется один (и только один) хост-контроллер, расположенный в вершине пирамиды устройств и хабов. Хост-контроллер интегрируется с корневым хабом (Root Hub), обеспечивающим одну или несколько точек подключения - портов.&amp;rdquo;
  Источник
  Наша задача выяснить, на какой шине (bus) и к какому порту (port) подключены наши usb-устройства. В качестве примера приведён проброс двух ключей HASP 1С Предприятия 8 (серверный и клиентский)
-|"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h2" href=/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">Proxmox. Проброс usb-устройств в гостевую виртуальную машину. На примере ключей 1С HASP</div></div><div class=Subhead-description><a href=/categories/%D0%B1%D0%B5%D0%B7-%D1%80%D1%83%D0%B1%D1%80%D0%B8%D0%BA%D0%B8 class=muted-link><span class="Label Label--gray-darker">Без рубрики</span></a><div class=float-md-right><span title="Lastmod: 2012-10-27. Published at: 2012-10-27.">Published: 2012-10-27</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><div id=toc class="Box Box--blue mb-3"><b>Содержание</b><nav id=TableOfContents></nav></div><p><em>обновлено 16.05.13</em></p><p>Немного теории о usb:</p><p>&ldquo;Физическое соединение устройств осуществляется по топологии многоярусной звезды. Центром каждой звезды является хаб, каждый кабельный сегмент соединяет две точки - хаб с другим хабом или с функцией. В системе имеется один (и только один) хост-контроллер, расположенный в вершине пирамиды устройств и хабов. Хост-контроллер интегрируется с корневым хабом (Root Hub), обеспечивающим одну или несколько точек подключения - портов.&rdquo;</p><blockquote><p><a href=http://usb.fober.net/teoriya/Struktura-sistemy-USB/>Источник</a></p></blockquote><p>Наша задача выяснить, на какой шине (bus) и к какому порту (port) подключены наши usb-устройства. В качестве примера приведён проброс двух ключей HASP 1С Предприятия 8 (серверный и клиентский)</p><ol><li><p>Вставляем usb-устройства;</p></li><li><p>Далее есть два способа выяснения связки шина-порт:</p><p>а) В консоли proxmox сервера выполняем &ldquo;lsusb&rdquo;. В результате выясним имя устройств и найдём среди них свои:</p><pre><code>... 
+|">
+<meta name=apple-mobile-web-app-title content="Of Code & Systems">
+<link rel=stylesheet href=/assets/syntax.css>
+<link rel=stylesheet href=/assets/primer-build.css>
+<link rel=stylesheet href=/assets/style.css>
+</head>
+<body class=bg-gray style=background-color:#fdf6e3!important>
+<div id=holy class="container-lg bg-white h-100">
+<div id=header class="px-1 bg-white">
+<nav class="UnderlineNav UnderlineNav--right px-2">
+<a class="UnderlineNav-actions muted-link h2" href=/>
+Of Code & Systems
+</a>
+</nav>
+</div>
+<div role=main id=main class="holy-main markdown-body px-4 bg-white">
+<div class=Subhead>
+<div class=Subhead-heading>
+<div class="h1 mt-3 mb-1">Proxmox. Проброс usb-устройств в гостевую виртуальную машину. На примере ключей 1С HASP</div>
+</div>
+<div class=Subhead-description>
+<a href=/categories/%D0%B1%D0%B5%D0%B7-%D1%80%D1%83%D0%B1%D1%80%D0%B8%D0%BA%D0%B8 class=muted-link>
+<span class="Label Label--gray-darker">Без рубрики</span>
+</a>
+<div class=float-md-right>
+<span title="Lastmod: 2012-10-27. Published at: 2012-10-27.">
+Published: 2012-10-27
+</span>
+</div>
+</div>
+</div>
+<article>
+<section class="pb-6 mb-3 border-bottom">
+<div id=toc class="Box Box--blue mb-3">
+<b>Содержание</b><nav id=TableOfContents></nav></div>
+<p><em>обновлено 16.05.13</em></p>
+<p>Немного теории о usb:</p>
+<p>&ldquo;Физическое соединение устройств осуществляется по топологии многоярусной звезды. Центром каждой звезды является хаб, каждый кабельный сегмент соединяет две точки - хаб с другим хабом или с функцией. В системе имеется один (и только один) хост-контроллер, расположенный в вершине пирамиды устройств и хабов. Хост-контроллер интегрируется с корневым хабом (Root Hub), обеспечивающим одну или несколько точек подключения - портов.&rdquo;</p>
+<blockquote>
+<p><a href=http://usb.fober.net/teoriya/Struktura-sistemy-USB/>Источник</a></p>
+</blockquote>
+<p>Наша задача выяснить, на какой шине (bus) и к какому порту (port) подключены наши usb-устройства. В качестве примера приведён проброс двух ключей HASP 1С Предприятия 8 (серверный и клиентский)</p>
+<ol>
+<li>
+<p>Вставляем usb-устройства;</p>
+</li>
+<li>
+<p>Далее есть два способа выяснения связки шина-порт:</p>
+<p>а) В консоли proxmox сервера выполняем &ldquo;lsusb&rdquo;. В результате выясним имя устройств и найдём среди них свои:</p>
+<pre tabindex=0><code>... 
 Bus 006 Device 003: ID 0529:0001 Aladdin Knowledge Systems HASP v0.06
 Bus 006 Device 002: ID 0529:0001 Aladdin Knowledge Systems HASP v0.06
 Bus 006 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
 Bus 005 Device 002: ID 0557:2221 ATEN International Co., Ltd
 Bus 005 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
 ...
-</code></pre><p>Искомое: 2 ключа Aladdin Knowledge Systems HASP v0.06 на шине 6</p><p>Теперь выясняем, на каких портах &ldquo;висят&rdquo; ключи. Выполняем &ldquo;lsusb -t&rdquo;, которая нам выдаст древовидную структуру:</p><pre><code>... 
+</code></pre><p>Искомое: 2 ключа Aladdin Knowledge Systems HASP v0.06 на шине 6</p>
+<p>Теперь выясняем, на каких портах &ldquo;висят&rdquo; ключи. Выполняем &ldquo;lsusb -t&rdquo;, которая нам выдаст древовидную структуру:</p>
+<pre tabindex=0><code>... 
 /:  Bus 06.Port 1: Dev 1, Class=root_hub, Driver=uhci_hcd/2p, 12M
     |__ Port 1: Dev 2, If 0, Class=vend., Driver=usbfs, 1.5M
     |__ Port 2: Dev 3, If 0, Class=vend., Driver=usbfs, 1.5M
@@ -18,8 +76,12 @@ Bus 005 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
     |__ Port 2: Dev 2, If 0, Class=HID, Driver=usbhid, 12M
     |__ Port 2: Dev 2, If 1, Class=HID, Driver=usbhid, 12M
 ...
-</code></pre><p>Как видим, устройства (Device) 2 и 3 на шине 6 находятся на портах 1 и 2. Соответственно, пробрасывать будем 6-1 и 6-2.</p><p>б) Короткий способ.</p><p>Выполняем &ldquo;qm monitor НОМЕР_ВИРТУАЛЬНОЙ_МАШИНЫ&rdquo;,</p><pre><code>qm&gt;
-</code></pre><p>Теперь выполняем команду &ldquo;info usbhost&rdquo;</p><pre><code>... 
+</code></pre><p>Как видим, устройства (Device) 2 и 3 на шине 6 находятся на портах 1 и 2. Соответственно, пробрасывать будем 6-1 и 6-2.</p>
+<p>б) Короткий способ.</p>
+<p>Выполняем &ldquo;qm monitor НОМЕР_ВИРТУАЛЬНОЙ_МАШИНЫ&rdquo;,</p>
+<pre tabindex=0><code>qm&gt;
+</code></pre><p>Теперь выполняем команду &ldquo;info usbhost&rdquo;</p>
+<pre tabindex=0><code>... 
   Bus 5, Addr 2, Port 2, Speed 12 Mb/s
     Class 00: USB device 0557:2221, Hermon USB hidmouse Device
   Bus 6, Addr 2, Port 1, Speed 1.5 Mb/s
@@ -27,17 +89,51 @@ Bus 005 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
   Bus 6, Addr 3, Port 2, Speed 1.5 Mb/s
     Vendor Specific: USB device 0529:0001, HASP HL 3.25
 ...
-</code></pre><p>Вот они наши HASP-ключи, опять же на шине 6 и портах 1 и 2.</p><p>Выходим командной quit либо сочетанием Ctrl+C</p></li><li><p>Редактируем на сервере файл /etc(/pve)/qemu-server/NNN.conf (где NNN-номер виртуальной машины) и добавляем следующие строки:</p><p>Для версии proxmox <strong>&lt; 2.0</strong></p><pre><code>args: -device usb-host,hostbus=6,hostport=1
+</code></pre><p>Вот они наши HASP-ключи, опять же на шине 6 и портах 1 и 2.</p>
+<p>Выходим командной quit либо сочетанием Ctrl+C</p>
+</li>
+<li>
+<p>Редактируем на сервере файл /etc(/pve)/qemu-server/NNN.conf (где NNN-номер виртуальной машины) и добавляем следующие строки:</p>
+<p>Для версии proxmox <strong>&lt; 2.0</strong></p>
+<pre tabindex=0><code>args: -device usb-host,hostbus=6,hostport=1
 args: -device usb-host,hostbus=6,hostport=2
-</code></pre><p>Для версии proxmox **> 2.0 **</p><pre><code>usb0: 6-1
+</code></pre><p>Для версии proxmox **> 2.0 **</p>
+<pre tabindex=0><code>usb0: 6-1
 usb1: 6-2
-</code></pre></li><li><p>Перезагружаем виртуальную машину.</p></li><li><p>Проверить, подцепились ли устройства, можно снова зайдя в qm monitor (как в п. 2б) и выполнив команду &ldquo;info usb&rdquo;</p><pre><code>... 
+</code></pre></li>
+<li>
+<p>Перезагружаем виртуальную машину.</p>
+</li>
+<li>
+<p>Проверить, подцепились ли устройства, можно снова зайдя в qm monitor (как в п. 2б) и выполнив команду &ldquo;info usb&rdquo;</p>
+<pre tabindex=0><code>... 
   Device 0.1, Port 6, Speed 12 Mb/s, Product QEMU USB Tablet
   Device 0.1, Port 1, Speed 1.5 Mb/s, Product HASP 2.17
   Device 0.2, Port 2, Speed 1.5 Mb/s, Product HASP HL 3.25 
 ...
-</code></pre></li></ol><p>P.S. Также usb-устройство можно подключить, добавив в конец NNN.conf такое:</p><pre><code>usb0: host=0529:0001
-</code></pre><p>где 0529:0001 - это device ID, взятый из п. 2а</p><p>Плюсы: при перемещении usb-устройства в другой порт не надо ничего перенастраивать;</p><p>Минусы: этот способ не годится, если у вас несколько устройств с одинаковыми device ID, как в указанном выше примере</p></section><section><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
-var d=document,s=d.createElement('script');s.async=true;s.src='//'+"blog-zamolod-ru"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></section></article></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray">Powered by the
+</code></pre></li>
+</ol>
+<p>P.S. Также usb-устройство можно подключить, добавив в конец NNN.conf такое:</p>
+<pre tabindex=0><code>usb0: host=0529:0001
+</code></pre><p>где 0529:0001 - это device ID, взятый из п. 2а</p>
+<p>Плюсы: при перемещении usb-устройства в другой порт не надо ничего перенастраивать;</p>
+<p>Минусы: этот способ не годится, если у вас несколько устройств с одинаковыми device ID, как в указанном выше примере</p>
+</section>
+<section>
+<div id=disqus_thread></div>
+<script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return}var b=document,a=b.createElement('script');a.async=!0,a.src='//blog-zamolod-ru.disqus.com/embed.js',a.setAttribute('data-timestamp',+new Date),(b.head||b.body).appendChild(a)})()</script>
+<noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript>
+<a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a>
+</section>
+</article>
+</div>
+<div id=footer class="pt-2 pb-3 bg-white text-center">
+<span class="text-small text-gray">
+Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
-<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.</span></div></div></body></html>
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.
+</span>
+</div>
+</div>
+</body>
+</html>

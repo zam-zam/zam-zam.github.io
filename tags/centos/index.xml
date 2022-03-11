@@ -5,12 +5,12 @@
 &lt;p>&lt;strong>Ядро&lt;/strong>: 3.14 кастомное от ovh&lt;/p>
 &lt;p>Дело было на майских праздниках. Клиент, держащий сервис, написанный на php и использующий mysql как бд, попросил посмотреть, почему сервер внезапно перестаёт отвечать.&lt;/p>
 &lt;p>Предположили, что дело может быть в высокой нагрузке и отваливается сеть. Но нет, нагрузка так себе, на интерфейсе максимум 300 pps, трафик низкий, память не кушается, проц процентов на 40% загружен. В процессе выяснилось, что сервер не только перестаёт отвечать, но и сам перезагружается.&lt;/p>
-&lt;p>Ага! Настраиваем kdump. kdump не запускается на кастомном ядре 3.14 ovh. Ставим ванильное из родных реп&lt;/p></description></item><item><title>SELinux на веб-сервере</title><link>/2017/04/selinux-na-veb-servere/</link><pubDate>Wed, 19 Apr 2017 15:00:10 +0000</pubDate><guid>/2017/04/selinux-na-veb-servere/</guid><description>&lt;h3 id="heading">Введение&lt;/h3>
+&lt;p>Ага! Настраиваем kdump. kdump не запускается на кастомном ядре 3.14 ovh. Ставим ванильное из родных реп&lt;/p></description></item><item><title>SELinux на веб-сервере</title><link>/2017/04/selinux-na-veb-servere/</link><pubDate>Wed, 19 Apr 2017 15:00:10 +0000</pubDate><guid>/2017/04/selinux-na-veb-servere/</guid><description>&lt;h3 id="введение">Введение&lt;/h3>
 &lt;p>Когда-то, настраивая nginx+php-fpm, я просто делал &lt;strong>setenforce 0&lt;/strong> или правил &lt;strong>/etc/selinux/config&lt;/strong>, перманентно отключая selinux на сервере&lt;/p>
 &lt;blockquote>
 &lt;p>&lt;strong>/etc/selinux/config&lt;/strong>&lt;/p>
 &lt;/blockquote>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="c1"># This file controls the state of SELinux on the system.&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="c1"># This file controls the state of SELinux on the system.&lt;/span>
 &lt;span class="c1"># SELINUX= can take one of these three values:&lt;/span>
 &lt;span class="c1"># enforcing - SELinux security policy is enforced.&lt;/span>
 &lt;span class="c1"># permissive - SELinux prints warnings instead of enforcing.&lt;/span>

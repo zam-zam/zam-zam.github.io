@@ -1,24 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>kubernetes on Of Code &amp; Systems</title><link>/categories/kubernetes/</link><description>Recent content in kubernetes on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Tue, 29 Sep 2020 15:29:00 +0300</lastBuildDate><atom:link href="/categories/kubernetes/index.xml" rel="self" type="application/rss+xml"/><item><title>Kubernetes What If...?</title><link>/2020/09/kubernetes-what-if/</link><pubDate>Tue, 29 Sep 2020 15:29:00 +0300</pubDate><guid>/2020/09/kubernetes-what-if/</guid><description>&lt;h1 id="--">Что произойдёт, если&lt;/h1>
-&lt;h2 id="-kubelet">Перезапустить kubelet&lt;/h2>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>kubernetes on Of Code &amp; Systems</title><link>/categories/kubernetes/</link><description>Recent content in kubernetes on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Tue, 29 Sep 2020 15:29:00 +0300</lastBuildDate><atom:link href="/categories/kubernetes/index.xml" rel="self" type="application/rss+xml"/><item><title>Kubernetes What If...?</title><link>/2020/09/kubernetes-what-if/</link><pubDate>Tue, 29 Sep 2020 15:29:00 +0300</pubDate><guid>/2020/09/kubernetes-what-if/</guid><description>&lt;h1 id="что-произойдёт-если">Что произойдёт, если&lt;/h1>
+&lt;h2 id="перезапустить-kubelet">Перезапустить kubelet&lt;/h2>
 &lt;p>Контейнеры продолжают работать, но в момент синхронизации состояния подов с api-server поды могут переходить в состояние 0/1 Running, когда трафик на них перестаёт направляться&lt;/p>
-&lt;h2 id="-kubelet1">Остановить kubelet&lt;/h2>
-&lt;p>Нода переходит в состояние NotReady, никаких событий на подах не происходит - они продолжают пребывать в состоянии 1/1 Running, но трафик на них перестаёт идти (из endpoint'ов сервисов удаляются IP адрес подов, которые находятся на &amp;ldquo;мёртвой&amp;rdquo; ноде).&lt;/p>
-&lt;p>Спустя указанный pod-eviction-timeout (5m по-умолчанию) для &lt;a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/">kube-controller-manager&lt;/a> поды переходят в статус Terminating и начинают запускаться на живых воркерках. Поды &lt;a href="https://github.com/kubernetes/kubernetes/issues/55713">будут продолжать&lt;/a> находиться в статусе Terminating либо до старта kubelet, либо до удаления ноды из кластера. При этом не выгоняются поды DaemonSet и поды, поднятые kubelet'ом(kube-proxy, nginx-proxy, kube-flannel, nodelocaldns и т.п.)&lt;/p></description></item><item><title>Как определяются права пользователя в kubernetes?</title><link>/2020/06/kubernetes-rbac-add-user/</link><pubDate>Mon, 15 Jun 2020 22:00:24 +0300</pubDate><guid>/2020/06/kubernetes-rbac-add-user/</guid><description>&lt;h1 id="--rbac">Немного о RBAC&lt;/h1>
+&lt;h2 id="остановить-kubelet">Остановить kubelet&lt;/h2>
+&lt;p>Нода переходит в состояние NotReady, никаких событий на подах не происходит - они продолжают пребывать в состоянии 1/1 Running, но трафик на них перестаёт идти (из endpoint&amp;rsquo;ов сервисов удаляются IP адрес подов, которые находятся на &amp;ldquo;мёртвой&amp;rdquo; ноде).&lt;/p>
+&lt;p>Спустя указанный pod-eviction-timeout (5m по-умолчанию) для &lt;a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/">kube-controller-manager&lt;/a> поды переходят в статус Terminating и начинают запускаться на живых воркерках. Поды &lt;a href="https://github.com/kubernetes/kubernetes/issues/55713">будут продолжать&lt;/a> находиться в статусе Terminating либо до старта kubelet, либо до удаления ноды из кластера. При этом не выгоняются поды DaemonSet и поды, поднятые kubelet&amp;rsquo;ом(kube-proxy, nginx-proxy, kube-flannel, nodelocaldns и т.п.)&lt;/p></description></item><item><title>Как определяются права пользователя в kubernetes?</title><link>/2020/06/kubernetes-rbac-add-user/</link><pubDate>Mon, 15 Jun 2020 22:00:24 +0300</pubDate><guid>/2020/06/kubernetes-rbac-add-user/</guid><description>&lt;h1 id="немного-о-rbac">Немного о RBAC&lt;/h1>
 &lt;p>В kubernetes есть сущность, которая называется &lt;code>RoleBinding&lt;/code>. Она определяет, каким субъектам какая роль будет назначена. &lt;code>RoleBinding&lt;/code> действует в рамках &lt;code>namespace&lt;/code>, в котором она создана. Для разрешения действий во всех &lt;code>namespace&lt;/code> без ограничений необходимо создавать &lt;code>ClusterRoleBinding&lt;/code>, который является cluster-wide объектом.&lt;/p>
 &lt;p>Пример RoleBinding&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">apiVersion&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>rbac.authorization.k8s.io/v1&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>kind&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>RoleBinding&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>metadata&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>edit&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>namespace&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>project-a-devel&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>subjects&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>-&lt;span class="w"> &lt;/span>kind&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>Group&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>sre&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>apiGroup&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>rbac.authorization.k8s.io&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>roleRef&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>kind&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>ClusterRole&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>edit&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>apiGroup&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>rbac.authorization.k8s.io&lt;span class="w">
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io/v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">RoleBinding&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">edit&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">namespace&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">project-a-devel&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">subjects&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>- &lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Group&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">sre&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">apiGroup&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">roleRef&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ClusterRole&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">edit&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">apiGroup&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Эта роль:&lt;/p>
 &lt;ul>
 &lt;li>Действует в рамках namespace &lt;code>project-a-devel&lt;/code> - (metadata:)&lt;/li>
@@ -28,17 +28,17 @@
 &lt;h1 id="clusterip">ClusterIP&lt;/h1>
 &lt;p>ClusterIP — это дефолтный тип сервиса в кубах, он поднимает вам сервис внутри кластера на внутрекластеровом IP. Доступа для внешнего трафика нет, только внутри кластера.&lt;/p>
 &lt;p>YAML для ClusterIP выглядит как-то так:&lt;/p>
-&lt;div class="highlight">&lt;pre class="chroma">&lt;code class="language-yaml" data-lang="yaml">apiVersion&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>v1&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>kind&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>Service&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>metadata&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>my-internal-service&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>spec&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>selector&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>app&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>my-app&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>type&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>ClusterIP&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>ports&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>-&lt;span class="w"> &lt;/span>name&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>http&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>port&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>targetPort&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>protocol&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>TCP&lt;span class="w">
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">my-internal-service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">selector&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">app&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">my-app&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ClusterIP&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">http&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">targetPort&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">protocol&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">TCP&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&amp;ldquo;Так, ну и зачем же рассказывать нам о ClusterIP, если он не принимает внешний трафик?&amp;rdquo; — спросите вы. А всё потому, что попасть на этот сервис можно через Kubernetes proxy!&lt;/p></description></item></channel></rss>
