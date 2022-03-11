@@ -3,9 +3,9 @@
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>
-Kubernetes What If...? &ndash; Of Code & Systems
+Kubernetes. Что произойдёт, если... &ndash; Of Code & Systems
 </title>
-<meta name=description property="og:description" content="Что произойдёт, если Перезапустить kubelet Контейнеры продолжают работать, но в момент синхронизации состояния подов с api-server поды могут переходить в состояние 0/1 Running, когда трафик на них перестаёт направляться
+<meta name=description property="og:description" content="Перезапустить kubelet Контейнеры продолжают работать, но в момент синхронизации состояния подов с api-server поды могут переходить в состояние 0/1 Running, когда трафик на них перестаёт направляться
 Остановить kubelet Нода переходит в состояние NotReady, никаких событий на подах не происходит - они продолжают пребывать в состоянии 1/1 Running, но трафик на них перестаёт идти (из endpoint&amp;rsquo;ов сервисов удаляются IP адрес подов, которые находятся на &amp;ldquo;мёртвой&amp;rdquo; ноде).
 Спустя указанный pod-eviction-timeout (5m по-умолчанию) для kube-controller-manager поды переходят в статус Terminating и начинают запускаться на живых воркерках. Поды будут продолжать находиться в статусе Terminating либо до старта kubelet, либо до удаления ноды из кластера. При этом не выгоняются поды DaemonSet и поды, поднятые kubelet&amp;rsquo;ом(kube-proxy, nginx-proxy, kube-flannel, nodelocaldns и т.п.)
 |">
@@ -26,7 +26,7 @@ Of Code & Systems
 <div role=main id=main class="holy-main markdown-body px-4 bg-white">
 <div class=Subhead>
 <div class=Subhead-heading>
-<div class="h1 mt-3 mb-1">Kubernetes What If...?</div>
+<div class="h1 mt-3 mb-1">Kubernetes. Что произойдёт, если...</div>
 </div>
 <div class=Subhead-description>
 <a href=/categories/kubernetes class=muted-link>
@@ -44,32 +44,27 @@ Published: 2020-09-29
 <div id=toc class="Box Box--blue mb-3">
 <b>Содержание</b><nav id=TableOfContents>
 <ul>
-<li><a href=#что-произойдёт-если>Что произойдёт, если</a>
-<ul>
 <li><a href=#перезапустить-kubelet>Перезапустить kubelet</a></li>
 <li><a href=#остановить-kubelet>Остановить kubelet</a></li>
 <li><a href=#перезапустить-docker>Перезапустить docker</a></li>
 <li><a href=#остановить-docker>Остановить docker</a></li>
 <li><a href=#закончится-место-на-диске>Закончится место на диске</a></li>
 </ul>
-</li>
-</ul>
 </nav></div>
-<h1 id=что-произойдёт-если>Что произойдёт, если</h1>
-<h2 id=перезапустить-kubelet>Перезапустить kubelet</h2>
+<h1 id=перезапустить-kubelet>Перезапустить kubelet</h1>
 <p>Контейнеры продолжают работать, но в момент синхронизации состояния подов с api-server поды могут переходить в состояние 0/1 Running, когда трафик на них перестаёт направляться</p>
-<h2 id=остановить-kubelet>Остановить kubelet</h2>
+<h1 id=остановить-kubelet>Остановить kubelet</h1>
 <p>Нода переходит в состояние NotReady, никаких событий на подах не происходит - они продолжают пребывать в состоянии 1/1 Running, но трафик на них перестаёт идти (из endpoint&rsquo;ов сервисов удаляются IP адрес подов, которые находятся на &ldquo;мёртвой&rdquo; ноде).</p>
 <p>Спустя указанный pod-eviction-timeout (5m по-умолчанию) для <a href=https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/>kube-controller-manager</a> поды переходят в статус Terminating и начинают запускаться на живых воркерках. Поды <a href=https://github.com/kubernetes/kubernetes/issues/55713>будут продолжать</a> находиться в статусе Terminating либо до старта kubelet, либо до удаления ноды из кластера. При этом не выгоняются поды DaemonSet и поды, поднятые kubelet&rsquo;ом(kube-proxy, nginx-proxy, kube-flannel, nodelocaldns и т.п.)</p>
-<h2 id=перезапустить-docker>Перезапустить docker</h2>
+<h1 id=перезапустить-docker>Перезапустить docker</h1>
 <p>Все контейнеры перезапускаются по событию <code>Pod sandbox changed, it will be killed and re-created</code></p>
-<h2 id=остановить-docker>Остановить docker</h2>
+<h1 id=остановить-docker>Остановить docker</h1>
 <p>Kubelet не может обратиться к сокету docker, нода переходит в статус NotReady. Далее происходит то же самое, что при остановке kubelet (pod-eviction-timeout). Есть проблема, если используется statefulSet - номерной под не сможет запуститься на другой ноде, пока он не завершится полностью на &ldquo;мёртвой&rdquo;</p>
 <ul>
 <li><a href=https://github.com/kubernetes/kubernetes/issues/72226>https://github.com/kubernetes/kubernetes/issues/72226</a></li>
 <li><a href=https://github.com/kubernetes/kubernetes/issues/74689>https://github.com/kubernetes/kubernetes/issues/74689</a></li>
 </ul>
-<h2 id=закончится-место-на-диске>Закончится место на диске</h2>
+<h1 id=закончится-место-на-диске>Закончится место на диске</h1>
 <p>С точки зрения kubelet существует разделение на 2 файловые системы:</p>
 <ul>
 <li>nodefs - используется для томов (volumes), логов демона kubelet и тому подобное (обычно root раздел)</li>

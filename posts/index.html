@@ -157,7 +157,7 @@ Of Code & Systems
 <div class="Subhead mb-2">
 <div class=Subhead-heading>
 <a href=/2020/09/kubernetes-what-if/>
-<div class="h2 mt-1 mb-1">Kubernetes What If...?</div>
+<div class="h2 mt-1 mb-1">Kubernetes. Что произойдёт, если...</div>
 </a>
 </div>
 <div class=Subhead-description>
@@ -170,10 +170,9 @@ Of Code & Systems
 </div>
 </div>
 <div class=text-gray>
-<h1 id=что-произойдёт-если>Что произойдёт, если</h1>
-<h2 id=перезапустить-kubelet>Перезапустить kubelet</h2>
+<h1 id=перезапустить-kubelet>Перезапустить kubelet</h1>
 <p>Контейнеры продолжают работать, но в момент синхронизации состояния подов с api-server поды могут переходить в состояние 0/1 Running, когда трафик на них перестаёт направляться</p>
-<h2 id=остановить-kubelet>Остановить kubelet</h2>
+<h1 id=остановить-kubelet>Остановить kubelet</h1>
 <p>Нода переходит в состояние NotReady, никаких событий на подах не происходит - они продолжают пребывать в состоянии 1/1 Running, но трафик на них перестаёт идти (из endpoint&rsquo;ов сервисов удаляются IP адрес подов, которые находятся на &ldquo;мёртвой&rdquo; ноде).</p>
 <p>Спустя указанный pod-eviction-timeout (5m по-умолчанию) для <a href=https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/>kube-controller-manager</a> поды переходят в статус Terminating и начинают запускаться на живых воркерках. Поды <a href=https://github.com/kubernetes/kubernetes/issues/55713>будут продолжать</a> находиться в статусе Terminating либо до старта kubelet, либо до удаления ноды из кластера. При этом не выгоняются поды DaemonSet и поды, поднятые kubelet&rsquo;ом(kube-proxy, nginx-proxy, kube-flannel, nodelocaldns и т.п.)</p>
 <div>

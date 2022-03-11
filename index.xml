@@ -71,10 +71,9 @@
 &lt;li>Дальнейший скан сети и поиск уязвимостей для распространения и закрепления&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ol></description></item><item><title>Kubernetes What If...?</title><link>/2020/09/kubernetes-what-if/</link><pubDate>Tue, 29 Sep 2020 15:29:00 +0300</pubDate><guid>/2020/09/kubernetes-what-if/</guid><description>&lt;h1 id="что-произойдёт-если">Что произойдёт, если&lt;/h1>
-&lt;h2 id="перезапустить-kubelet">Перезапустить kubelet&lt;/h2>
+&lt;/ol></description></item><item><title>Kubernetes. Что произойдёт, если...</title><link>/2020/09/kubernetes-what-if/</link><pubDate>Tue, 29 Sep 2020 15:29:00 +0300</pubDate><guid>/2020/09/kubernetes-what-if/</guid><description>&lt;h1 id="перезапустить-kubelet">Перезапустить kubelet&lt;/h1>
 &lt;p>Контейнеры продолжают работать, но в момент синхронизации состояния подов с api-server поды могут переходить в состояние 0/1 Running, когда трафик на них перестаёт направляться&lt;/p>
-&lt;h2 id="остановить-kubelet">Остановить kubelet&lt;/h2>
+&lt;h1 id="остановить-kubelet">Остановить kubelet&lt;/h1>
 &lt;p>Нода переходит в состояние NotReady, никаких событий на подах не происходит - они продолжают пребывать в состоянии 1/1 Running, но трафик на них перестаёт идти (из endpoint&amp;rsquo;ов сервисов удаляются IP адрес подов, которые находятся на &amp;ldquo;мёртвой&amp;rdquo; ноде).&lt;/p>
 &lt;p>Спустя указанный pod-eviction-timeout (5m по-умолчанию) для &lt;a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/">kube-controller-manager&lt;/a> поды переходят в статус Terminating и начинают запускаться на живых воркерках. Поды &lt;a href="https://github.com/kubernetes/kubernetes/issues/55713">будут продолжать&lt;/a> находиться в статусе Terminating либо до старта kubelet, либо до удаления ноды из кластера. При этом не выгоняются поды DaemonSet и поды, поднятые kubelet&amp;rsquo;ом(kube-proxy, nginx-proxy, kube-flannel, nodelocaldns и т.п.)&lt;/p></description></item><item><title>Graceful Shutdown в Akka HTTP</title><link>/2020/09/scala-akka-graceful-shutdown/</link><pubDate>Tue, 22 Sep 2020 18:53:00 +0300</pubDate><guid>/2020/09/scala-akka-graceful-shutdown/</guid><description>&lt;p>Атуально для Akka HTTP начиная с версии &lt;a href="https://doc.akka.io/docs/akka-http/current/release-notes/10.2.x.html">10.2.0&lt;/a>&lt;/p>
 &lt;p>Github Issue: &lt;a href="https://github.com/akka/akka-http/pull/3142">Add coordinated shutdown support&lt;/a>&lt;/p>
