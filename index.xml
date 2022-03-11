@@ -4,12 +4,12 @@
 &lt;h1 id="описание">Описание&lt;/h1>
 &lt;p>Мы используем CDN для раздачи статичных файлов и хотим иметь статистику по этой раздаче (коды ответов, rps, полосу пропускания)&lt;/p>
 &lt;p>Первый и самый главный вопрос - откуда получить эти данные? Конечно же из &lt;a href="https://docs.sbercloud.ru/cdn/ug/topics/guides__api.html">CDN API&lt;/a>.&lt;/p>
-&lt;p>Ищем&amp;hellip; Ага! &lt;a href="https://docs.sbercloud.ru/cdn/ug/topics/api__statistics__realtime-bandwidth-stat.html#id4">Статистика по конкретному аккаунту с разбивкой по ресурсам&lt;/a>&lt;/p></description></item><item><title>Syslogd then and now</title><link>/2021/04/syslogd-then-and-now/</link><pubDate>Tue, 27 Apr 2021 17:15:00 +0300</pubDate><guid>/2021/04/syslogd-then-and-now/</guid><description>&lt;h1 id="как-обрабатываются-логи">Как обрабатываются логи&lt;/h1>
-&lt;h2 id="как-обрабатывает-логи-оригинальный-syslogd">Как обрабатывает логи оригинальный syslogd&lt;/h2>
+&lt;p>Ищем&amp;hellip; Ага! &lt;a href="https://docs.sbercloud.ru/cdn/ug/topics/api__statistics__realtime-bandwidth-stat.html#id4">Статистика по конкретному аккаунту с разбивкой по ресурсам&lt;/a>&lt;/p></description></item><item><title>Как syslog обрабатывает логи</title><link>/2021/04/syslogd-then-and-now/</link><pubDate>Tue, 27 Apr 2021 17:15:00 +0300</pubDate><guid>/2021/04/syslogd-then-and-now/</guid><description>&lt;h1 id="как-syslog-обрабатывает-логи">Как syslog обрабатывает логи&lt;/h1>
+&lt;h2 id="оригинальный-syslogd">Оригинальный syslogd&lt;/h2>
 &lt;p>
 &lt;a href="/2021/04/syslogd-then-and-now/syslogd01.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="/2021/04/syslogd-then-and-now/syslogd01.png" width="611" height="409">&lt;/a>
 &lt;/p>
-&lt;h2 id="как-обрабатывает-логи-связка-journald--rsyslogd">Как обрабатывает логи связка journald + rsyslogd&lt;/h2>
+&lt;h2 id="cвязка-journald--rsyslogd">Cвязка journald + rsyslogd&lt;/h2>
 &lt;p>
 &lt;a href="/2021/04/syslogd-then-and-now/syslogd02.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="/2021/04/syslogd-then-and-now/syslogd02.png" width="871" height="419">&lt;/a>
 &lt;/p>
