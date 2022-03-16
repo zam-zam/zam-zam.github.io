@@ -1,0 +1,475 @@
+<!doctype html><html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>
+Описание настроек Realm'а Keycloak &ndash; Of Code & Systems
+</title>
+<meta name=description property="og:description" content="General   Name
+ Название/ID реалма
+   Display name
+ Отображаемое имя
+   HTML Display name
+ Отображаемое имя с возможность использования html-тегов (например, добавление лого). Если задано, то имеет приоритет над Display name
+   Frontend URL
+ Позволяет для реалма задать отдельное доменное имя. Например, можно сделать такой матчинг auth.example.com -&amp;gt; sso.example.com/auth/realms/myrealm. Обработкой занимается встроенный веб-сервер. То же самое можно реализовать через reverse-proxy, типа nginx, с установкой Host хидера при проксировании и &amp;ldquo;обрезанием&amp;rdquo; путей
+   Enabled
+ Вкл/Выкл
+   User-Managed Access
+ Включить управление своими ресурсами в Account Management Console (auth/realms/myrealm/account/resource)
+   Endpoints
+ Ссылки OIDC/SAML, где можно получить все доступные точки входа для проктоколов
+  |">
+<meta name=apple-mobile-web-app-title content="Of Code & Systems">
+<link rel=stylesheet href=/assets/syntax.css>
+<link rel=stylesheet href=/assets/primer-build.css>
+<link rel=stylesheet href=/assets/style.css>
+</head>
+<body class=bg-gray style=background-color:#fdf6e3!important>
+<div id=holy class="container-lg bg-white h-100">
+<div id=header class="px-1 bg-white text-center">
+<nav class="UnderlineNav UnderlineNav--right px-2">
+<a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>
+Of Code & Systems
+</a>
+</nav>
+</div>
+<div role=main id=main class="holy-main markdown-body px-4 bg-white">
+<div class=Subhead>
+<div class=Subhead-heading>
+<div class="h1 mt-3 mb-1">Описание настроек Realm'а Keycloak</div>
+</div>
+<div class=Subhead-description>
+<div class=float-md-right>
+<span title="Lastmod: 2022-03-16. Published at: 2022-03-16.">
+2022-03-16
+</span>
+</div>
+</div>
+</div>
+<article>
+<section class="pb-6 mb-3 border-bottom">
+<div id=toc class="Box Box--blue mb-3">
+<b>Содержание</b><nav id=TableOfContents>
+<ul>
+<li><a href=#general>General</a></li>
+<li><a href=#login>Login</a></li>
+<li><a href=#keys>Keys</a></li>
+<li><a href=#email>Email</a></li>
+<li><a href=#themes>Themes</a></li>
+<li><a href=#localization>Localization</a></li>
+<li><a href=#cache>Cache</a></li>
+<li><a href=#tokens>Tokens</a></li>
+<li><a href=#client-registration>Client Registration</a></li>
+<li><a href=#client-policies>Client Policies</a></li>
+<li><a href=#security-defenses>Security Defenses</a></li>
+</ul>
+</nav></div>
+<p>
+<a href=/posts/2022-03-16-keycloak-realm-settings/keycloak.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/posts/2022-03-16-keycloak-realm-settings/keycloak.png width=1054 height=281></a>
+</p>
+<h1 id=general>General</h1>
+<ul>
+<li>
+<p>Name</p>
+<blockquote>
+<p>Название/ID реалма</p>
+</blockquote>
+</li>
+<li>
+<p>Display name</p>
+<blockquote>
+<p>Отображаемое имя</p>
+</blockquote>
+</li>
+<li>
+<p>HTML Display name</p>
+<blockquote>
+<p>Отображаемое имя с возможность использования html-тегов (например, добавление лого). Если задано, то имеет приоритет над Display name</p>
+</blockquote>
+</li>
+<li>
+<p>Frontend URL</p>
+<blockquote>
+<p>Позволяет для реалма задать отдельное доменное имя. Например, можно сделать такой матчинг <code>auth.example.com -> sso.example.com/auth/realms/myrealm</code>. Обработкой занимается встроенный веб-сервер. То же самое можно реализовать через reverse-proxy, типа nginx, с установкой <code>Host</code> хидера при проксировании и &ldquo;обрезанием&rdquo; путей</p>
+</blockquote>
+</li>
+<li>
+<p>Enabled</p>
+<blockquote>
+<p>Вкл/Выкл</p>
+</blockquote>
+</li>
+<li>
+<p>User-Managed Access</p>
+<blockquote>
+<p>Включить управление своими ресурсами в Account Management Console (auth/realms/myrealm/account/resource)</p>
+</blockquote>
+</li>
+<li>
+<p>Endpoints</p>
+<blockquote>
+<p>Ссылки OIDC/SAML, где можно получить все доступные точки входа для проктоколов</p>
+</blockquote>
+</li>
+</ul>
+<h1 id=login>Login</h1>
+<ul>
+<li>
+<p>User registration</p>
+<blockquote>
+<p>Разрешить саомстоятельную регистрацию</p>
+</blockquote>
+</li>
+<li>
+<p>Edit username</p>
+<blockquote>
+<p>Разрешить изменять имя пользователя</p>
+</blockquote>
+</li>
+<li>
+<p>Forgot password</p>
+<blockquote>
+<p>Выводить ссылку восстановления пароля на странице логина</p>
+</blockquote>
+</li>
+<li>
+<p>Remember Me</p>
+<blockquote>
+<p>Галочка &ldquo;запомнить меня&rdquo; на странице логина. При логи в браузер будет отправляться постоянная кука вместо временной, которая удаляется при закрытии браузера. Так пользователь останется залогиненым не до момента закрытия браузер, а до момента истечения сессии, на которую указывает кука</p>
+</blockquote>
+</li>
+<li>
+<p>Verify email</p>
+<blockquote>
+<p>Требовать подтверждения email</p>
+</blockquote>
+</li>
+<li>
+<p>Login with email</p>
+<blockquote>
+<p>Позволяет логиниться с email-адресом в качестве логина</p>
+</blockquote>
+</li>
+<li>
+<p>Require SSL</p>
+<blockquote>
+<p>Требовать подключение по https. Можно: отключить | требовать для всех, кроме localhost и приватных сетей | требовать для всех</p>
+</blockquote>
+</li>
+</ul>
+<h1 id=keys>Keys</h1>
+<ul>
+<li>
+<p>Active</p>
+<blockquote>
+<p>Список криптографических ключей, которым подписываются новые токены и по которым могут проверяться старые. Используются протоколами аутентификации. Например, для подписывания JWT-токенов</p>
+</blockquote>
+</li>
+<li>
+<p>Passive</p>
+<blockquote>
+<p>Список криптографических ключей, по которым могут проверяться старые токены. Новые от этих ключей не выпускаются</p>
+</blockquote>
+</li>
+<li>
+<p>Disabled</p>
+<blockquote>
+<p>Сисок отключенных ключей</p>
+</blockquote>
+</li>
+<li>
+<p>Providers</p>
+<blockquote>
+<p>По сути сами ключи, а точнее провайдеры, которые их генерируют</p>
+</blockquote>
+</li>
+</ul>
+<h1 id=email>Email</h1>
+<p>Настройки SMTP сервера для отправки email</p>
+<h1 id=themes>Themes</h1>
+<p>Настройка тем оформления и поддерживаемых языков</p>
+<h1 id=localization>Localization</h1>
+<p>Переопределение текстов локализации для выбранной темы</p>
+<h1 id=cache>Cache</h1>
+<p>Сброс кешей</p>
+<h1 id=tokens>Tokens</h1>
+<p>Настройки параметров токенов</p>
+<ul>
+<li>
+<p>Default Signature Algorithm</p>
+<blockquote>
+<p>Алгоритм для подписи токенов по-умолчанию</p>
+</blockquote>
+</li>
+<li>
+<p>Revoke Refresh Token</p>
+<blockquote>
+<p>Ограничивает количество использований refresh токена. Запрещает иметь более одного активного refresh токена.</p>
+</blockquote>
+</li>
+<li>
+<p>SSO Session Idle</p>
+<blockquote>
+<p>Если пользователь неактивен дольше указанного времени, то сессия истекает. Касается и токенов, и браузеров</p>
+</blockquote>
+</li>
+<li>
+<p>SSO Session Max</p>
+<blockquote>
+<p>Максимальное время жизни сессии, после чего сессия истекает. Касается и токенов, и браузеров</p>
+</blockquote>
+</li>
+<li>
+<p>SSO Session Idle Remember Me</p>
+<blockquote>
+<p>То же самое, что <code>SSO Session Idle</code>, но при нажатом &ldquo;Запомнить меня&rdquo;</p>
+</blockquote>
+</li>
+<li>
+<p>SSO Session Max Remember Me</p>
+<blockquote>
+<p>То же самое, что <code>SSO Session Max</code>, но при нажатом &ldquo;Запомнить меня&rdquo;</p>
+</blockquote>
+</li>
+<li>
+<p>Offline Session Idle</p>
+<blockquote>
+<p><code>offline_access</code> Если пользователь неактивен дольше указанного времени, то offline токен отзывается</p>
+</blockquote>
+</li>
+<li>
+<p>Offline Session Max Limited</p>
+<blockquote>
+<p><code>offline_access</code> Включает настройку максимального времени жизни сессий</p>
+</blockquote>
+</li>
+<li>
+<p>Client Session Idle</p>
+<blockquote>
+<p>То же самое, что <code>SSO Session Idle</code>, но для refresh токена. Если на задано, то используется <code>SSO Session Idle</code></p>
+</blockquote>
+</li>
+<li>
+<p>Client Session Max</p>
+<blockquote>
+<p>То же самое, что <code>SSO Session Max</code>, но для refresh токена. Если на задано, то используется <code>SSO Session Max</code></p>
+</blockquote>
+</li>
+<li>
+<p>Access Token Lifespan</p>
+<blockquote>
+<p>Максимальное время жизни <code>access</code> токена</p>
+</blockquote>
+</li>
+<li>
+<p>Access Token Lifespan For Implicit Flow</p>
+<blockquote>
+<p>Максимальное время жизни <code>access</code> токена для <code>Implicit Flow</code></p>
+</blockquote>
+</li>
+<li>
+<p>Client login timeout</p>
+<blockquote>
+<p>Максимальное время, за которое клиент должен закончить Authorization Code Flow в OIDC</p>
+</blockquote>
+</li>
+<li>
+<p>Login timeout</p>
+<blockquote>
+<p>Максимальное время всего процесса логина. Если превышено, то надо начинать заново</p>
+</blockquote>
+</li>
+<li>
+<p>Login action timeout</p>
+<blockquote>
+<p>Максимальное время части процесса логина (одной страницы)</p>
+</blockquote>
+</li>
+<li>
+<p>User-Initiated Action Lifespan</p>
+<blockquote>
+<p>Максимальное время для действий, которые разрешил/запросил сам пользователь. Типа сброса пароля</p>
+</blockquote>
+</li>
+<li>
+<p>Default Admin-Initiated Action Lifespan</p>
+<blockquote>
+<p>Максимальное время для действий, которые разрешил/запросил админ. Типа сброса пароля</p>
+</blockquote>
+</li>
+<li>
+<p>Lifetime of the Request URI for Pushed Authorization Request</p>
+<blockquote>
+<p>Максимальное вермя Request URI для Pushed Authorization Request</p>
+</blockquote>
+</li>
+<li>
+<p>Override User-Initiated Action Lifespan</p>
+<blockquote>
+<p>Отдельная настройка таймаутов для конкретных действий, типа проверки email, сброса пароля и пр.. Переопределяет <code>User-Initiated Action Lifespan</code> для конкретного действия</p>
+</blockquote>
+</li>
+<li>
+<p>OAuth2.0 Device Code Lifespan</p>
+<blockquote>
+<p>Относится к <a href=https://tools.ietf.org/html/draft-ietf-oauth-device-flow-15>OAuth 2.0 Device Authorization Grant</a></p>
+</blockquote>
+</li>
+<li>
+<p>OAuth2.0 Device Polling Interval</p>
+<blockquote>
+<p>Относится к <a href=https://tools.ietf.org/html/draft-ietf-oauth-device-flow-15>OAuth 2.0 Device Authorization Grant</a></p>
+</blockquote>
+</li>
+</ul>
+<h1 id=client-registration>Client Registration</h1>
+<p>Позволяет приложениям самостоятельно создавать клиента в keycloak, без участия админа</p>
+<ul>
+<li>
+<p>Initial Access Tokens</p>
+<blockquote>
+<p>Токен, который используется для регистрации</p>
+</blockquote>
+</li>
+<li>
+<p>Client Registration Policies</p>
+<blockquote>
+<p>Настройки политик для ограничения параметров регистрации клиента</p>
+</blockquote>
+</li>
+</ul>
+<h1 id=client-policies>Client Policies</h1>
+<p>Политики для ограничения того, какие параметры могут быть настроены у клиентов. Однако пока что это касается только автоматически создавемых клиентов. Политики нельзя применить к клиентам, создаваемым через админку</p>
+<ul>
+<li>
+<p>Profiles</p>
+<blockquote>
+<p>Профили с настройками клиента</p>
+</blockquote>
+</li>
+<li>
+<p>Policies</p>
+<blockquote>
+<p>Политики, которые по различным условиям (например, типа клиента), применяют различные профили</p>
+</blockquote>
+</li>
+</ul>
+<h1 id=security-defenses>Security Defenses</h1>
+<p>Настройка различных параметров безопасности реалма</p>
+<p><strong>Headers</strong></p>
+<p>Хидеры, которые будут устанавливаться сервером keycloak</p>
+<ul>
+<li>
+<p>X-Frame-Options</p>
+<blockquote>
+<p>Настройка разрешения сайту быть отрендеренным в <code>&lt;frame>, &lt;iframe>, &lt;embed>, &lt;object></code>. Защита от clickjacking.</p>
+</blockquote>
+</li>
+<li>
+<p>Content-Security-Policy</p>
+<blockquote>
+<p>Настройка того, что можно загружать внутри <code>&lt;frame>, &lt;iframe>, &lt;embed>, &lt;object></code></p>
+</blockquote>
+</li>
+<li>
+<p>Content-Security-Policy-Report-Only</p>
+<blockquote>
+<p>То же самое, что <code>Content-Security-Policy</code>, но только для тестирования. Политики не применяются, а только мониторятся</p>
+</blockquote>
+</li>
+<li>
+<p>X-Content-Type-Options</p>
+<blockquote>
+<p>Настройка запрета <code>MIME sniffing</code> браузером, когда вместо того, чтобы полагаться на хидер <code>Content-Type</code>, браузер сам определяет содержимое и обрабатывает его. Например, загружается какой-нибудь <code>.jpg</code> с <code>Content-Type: image/jpg</code>, но внутри javascript, который из-за <code>MIME sniffing</code> будет выполнен браузером</p>
+</blockquote>
+</li>
+<li>
+<p>X-Robots-Tag</p>
+<blockquote>
+<p>Правила загрузки и индексирования страниц сайта</p>
+</blockquote>
+</li>
+<li>
+<p>X-XSS-Protection</p>
+<blockquote>
+<p>Настройка остановки загрузки страницы при обнаружении <code>XSS</code></p>
+</blockquote>
+</li>
+<li>
+<p>HTTP Strict Transport Security (HSTS)</p>
+<blockquote>
+<p>Настройка заголовка <code>Strict-Transport-Security</code>. Уведомление браузера о том, что доступ должен быть осуществлён только посредством HTTPS вместо HTTP</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>Brute Force Detection</strong></p>
+<p>Настройка защиты от брутфорса (подбор паролей)</p>
+<ul>
+<li>
+<p>Enabled</p>
+<blockquote>
+<p>Вкл/Выкл</p>
+</blockquote>
+</li>
+<li>
+<p>Permanent Lockout</p>
+<blockquote>
+<p>Включить постоянную блокировку пользователя при превышении <code>Max Login Failures</code></p>
+</blockquote>
+</li>
+<li>
+<p>Max Login Failures</p>
+<blockquote>
+<p>Максимальное количество попыток входа</p>
+</blockquote>
+</li>
+<li>
+<p>Wait Increment</p>
+<blockquote>
+<p>На сколько увеличить время блокировки при очередном превышении <code>Max Login Failures</code></p>
+</blockquote>
+</li>
+<li>
+<p>Quick Login Check Milli Seconds</p>
+<blockquote>
+<p>Минимальное время между попытками входа. Если превышено, то блокировать</p>
+</blockquote>
+</li>
+<li>
+<p>Minimum Quick Login Wait</p>
+<blockquote>
+<p>Минимальное(стартовое) время, на которое будет заблокирован пользователь</p>
+</blockquote>
+</li>
+<li>
+<p>Max Wait</p>
+<blockquote>
+<p>Максимальное время блокировки</p>
+</blockquote>
+</li>
+<li>
+<p>Failure Reset Time</p>
+<blockquote>
+<p>Через какое время сбрасывается счётчик неудачных попыток входа</p>
+</blockquote>
+</li>
+</ul>
+</section>
+<section>
+<div id=remark42></div>
+</section>
+</article>
+</div>
+<div id=footer class="pt-2 pb-3 bg-white text-center">
+<span class="text-small text-gray">
+Powered by the
+<a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.
+</span>
+</div>
+</div>
+<script>var remark_config={host:'https://remark42.k8s.zzamzam.dev',site_id:'zzamzam_dev',components:['embed','counter']}</script>
+<script>!function(d,b){for(var c=0,a,e,f;c<d.length;c++)a=b.createElement("script"),e=".js",f=b.head||b.body,"noModule"in a?(a.type="module",e=".mjs"):a.async=!0,a.defer=!0,a.src=remark_config.host+"/web/"+d[c]+e,f.appendChild(a)}(remark_config.components||["embed"],document)</script>
+</body>
+</html>

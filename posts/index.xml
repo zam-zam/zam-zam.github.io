@@ -1,4 +1,51 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Of Code &amp; Systems</title><link>https://zzamzam.dev/posts/</link><description>Recent content in Posts on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Fri, 11 Mar 2022 03:37:05 +0300</lastBuildDate><atom:link href="https://zzamzam.dev/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Пишем свой prometheus-exporter для sbercloud cdn на python</title><link>https://zzamzam.dev/posts/2022-03-11-sbercloud-cdn-prometheus-exporter-python/</link><pubDate>Fri, 11 Mar 2022 03:37:05 +0300</pubDate><guid>https://zzamzam.dev/posts/2022-03-11-sbercloud-cdn-prometheus-exporter-python/</guid><description>&lt;p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Of Code &amp; Systems</title><link>https://zzamzam.dev/posts/</link><description>Recent content in Posts on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Wed, 16 Mar 2022 16:52:05 +0300</lastBuildDate><atom:link href="https://zzamzam.dev/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Описание настроек Realm'а Keycloak</title><link>https://zzamzam.dev/posts/2022-03-16-keycloak-realm-settings/</link><pubDate>Wed, 16 Mar 2022 16:52:05 +0300</pubDate><guid>https://zzamzam.dev/posts/2022-03-16-keycloak-realm-settings/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/posts/2022-03-16-keycloak-realm-settings/keycloak.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/posts/2022-03-16-keycloak-realm-settings/keycloak.png" width="1054" height="281">&lt;/a>
+&lt;/p>
+&lt;h1 id="general">General&lt;/h1>
+&lt;ul>
+&lt;li>
+&lt;p>Name&lt;/p>
+&lt;blockquote>
+&lt;p>Название/ID реалма&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Display name&lt;/p>
+&lt;blockquote>
+&lt;p>Отображаемое имя&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>HTML Display name&lt;/p>
+&lt;blockquote>
+&lt;p>Отображаемое имя с возможность использования html-тегов (например, добавление лого). Если задано, то имеет приоритет над Display name&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Frontend URL&lt;/p>
+&lt;blockquote>
+&lt;p>Позволяет для реалма задать отдельное доменное имя. Например, можно сделать такой матчинг &lt;code>auth.example.com -&amp;gt; sso.example.com/auth/realms/myrealm&lt;/code>. Обработкой занимается встроенный веб-сервер. То же самое можно реализовать через reverse-proxy, типа nginx, с установкой &lt;code>Host&lt;/code> хидера при проксировании и &amp;ldquo;обрезанием&amp;rdquo; путей&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Enabled&lt;/p>
+&lt;blockquote>
+&lt;p>Вкл/Выкл&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>User-Managed Access&lt;/p>
+&lt;blockquote>
+&lt;p>Включить управление своими ресурсами в Account Management Console (auth/realms/myrealm/account/resource)&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Endpoints&lt;/p>
+&lt;blockquote>
+&lt;p>Ссылки OIDC/SAML, где можно получить все доступные точки входа для проктоколов&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;/ul></description></item><item><title>Пишем свой prometheus-exporter для sbercloud cdn на python</title><link>https://zzamzam.dev/posts/2022-03-11-sbercloud-cdn-prometheus-exporter-python/</link><pubDate>Fri, 11 Mar 2022 03:37:05 +0300</pubDate><guid>https://zzamzam.dev/posts/2022-03-11-sbercloud-cdn-prometheus-exporter-python/</guid><description>&lt;p>
 &lt;a href="https://zzamzam.dev/posts/2022-03-11-sbercloud-cdn-prometheus-exporter-python/grafana.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/posts/2022-03-11-sbercloud-cdn-prometheus-exporter-python/grafana_hu7948ee00652d222b3608baa32af8a6e7_100192_1024x0_resize_box_3.png" width="1024" height="534">&lt;/a>
 &lt;/p>
 &lt;h1 id="описание">Описание&lt;/h1>
