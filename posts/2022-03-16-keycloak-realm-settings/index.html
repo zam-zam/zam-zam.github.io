@@ -67,18 +67,6 @@ Of Code & Systems
 <li><a href=#security-defenses>Security Defenses</a></li>
 </ul>
 </li>
-<li><a href=#keycloak-scopes-oidc>Keycloak Scopes OIDC</a>
-<ul>
-<li><a href=#oidc>OIDC</a></li>
-<li><a href=#non-oidc>Non-OIDC</a></li>
-</ul>
-</li>
-<li><a href=#keycloak-roles>Keycloak Roles</a>
-<ul>
-<li><a href=#realm-roles>Realm Roles</a></li>
-<li><a href=#client-roles>Client Roles</a></li>
-</ul>
-</li>
 </ul>
 </nav></div>
 <p>
@@ -135,7 +123,7 @@ Of Code & Systems
 <li>
 <p>User registration</p>
 <blockquote>
-<p>Разрешить саомстоятельную регистрацию</p>
+<p>Разрешить самостоятельную регистрацию</p>
 </blockquote>
 </li>
 <li>
@@ -470,189 +458,6 @@ Of Code & Systems
 <blockquote>
 <p>Через какое время сбрасывается счётчик неудачных попыток входа</p>
 </blockquote>
-</li>
-</ul>
-<h1 id=keycloak-scopes-oidc>Keycloak Scopes OIDC</h1>
-<p>default - включен в scopes по-умолчанию</p>
-<p>optional - включается в scopes при запроса</p>
-<p>consent - отображать в окне согласия при запросе разрешения на аутентификацию у пользователя</p>
-<p>scope - добавлять в список scope токена</p>
-<h2 id=oidc>OIDC</h2>
-<ul>
-<li>
-<p>profile</p>
-<blockquote>
-<p>default, consent, scope</p>
-</blockquote>
-<p>mappers:</p>
-<ul>
-<li>profile, name, gender, locale, etc&mldr;</li>
-</ul>
-</li>
-<li>
-<p>email</p>
-<blockquote>
-<p>default, consent, scope</p>
-</blockquote>
-<p>mappers:</p>
-<ul>
-<li>email(string) (id token, access token, userinfo)</li>
-<li>email_verified(bool) (id token, access token, userinfo)</li>
-</ul>
-</li>
-<li>
-<p>address</p>
-<blockquote>
-<p>optional, consent, scope</p>
-</blockquote>
-<p>mappers:</p>
-<ul>
-<li>address(json) (id token, access token, userinfo)</li>
-</ul>
-</li>
-<li>
-<p>phone</p>
-<blockquote>
-<p>optional, consent, scope</p>
-</blockquote>
-<p>mappers:</p>
-<ul>
-<li>phone number(string) (id token, access token, userinfo)</li>
-<li>phone number verified(bool) (id token, access token, userinfo)</li>
-</ul>
-</li>
-</ul>
-<h2 id=non-oidc>Non-OIDC</h2>
-<ul>
-<li>
-<p>microprofile-jwt</p>
-<blockquote>
-<p>optional, scope</p>
-</blockquote>
-<p><em>Was created to handle the claims defined in the <a href=https://wiki.eclipse.org/MicroProfile/JWT_Auth>MicroProfile/JWT Auth Specification</a>. This client scope defines a user property mapper for the upn claim and also a realm role mapper for the groups claim. These mappers can be changed as needed so that different properties can be used to create the MicroProfile/JWT specific claims</em></p>
-<p>mappers:</p>
-<ul>
-<li>upn(string) (id token, access token, userinfo)</li>
-<li>groups(json) (id token, access token)</li>
-</ul>
-</li>
-<li>
-<p>offline_access</p>
-<blockquote>
-<p>optional, consent, scope</p>
-</blockquote>
-<p><em>Useful when client wants to obtain offline tokens. Learn about offline tokens in the Offline Access section or in the OpenID Connect specification, where scope parameter is defined with the value offline_access</em></p>
-<p>realm_roles:</p>
-<ul>
-<li>offline_access</li>
-</ul>
-</li>
-<li>
-<p>roles</p>
-<blockquote>
-<p>default, consent</p>
-</blockquote>
-<p><em>Not defined in the OpenID Connect specification and it is also not added automatically to the scope claim in the access token. This client scope has some mappers, which are used to add roles of the user to the access token and possibly add some audiences for the clients with at least one client role as described in the</em> <a href=https://www.keycloak.org/docs/11.0/server_admin/#_audience_resolve>Audience section</a></p>
-<p>mappers:</p>
-<ul>
-<li>audience resolve/aud(json) (id token, access token)</li>
-<li>client roles/resource_access roles(json) (access token)</li>
-<li>realm roles/realm_access roles(json) (access token)</li>
-</ul>
-</li>
-<li>
-<p>web-origins</p>
-<blockquote>
-<p>default</p>
-</blockquote>
-<p><em>Not defined in the OpenID Connect specification and not added to the scope claim. This is used to add allowed web origins to the access token allowed-origins claim</em></p>
-<p>mappers:</p>
-<ul>
-<li>allowed web origins/allowed-origins(string) (id token, access token)</li>
-</ul>
-</li>
-</ul>
-<h1 id=keycloak-roles>Keycloak Roles</h1>
-<h2 id=realm-roles>Realm Roles</h2>
-<ul>
-<li>
-<p>default-roles-&lt;realm_name></p>
-<blockquote>
-<p>composite:</p>
-</blockquote>
-<p>Глобальная роль для подключения других ролей в default, присутствующая у каждого Realm</p>
-</li>
-<li>
-<p>offline_access</p>
-<blockquote>
-<p>default</p>
-</blockquote>
-<p>Роль позволяет получать вечный refresh_token вместо временного. Например, если scope offline_access опциональный и при запросе указан scope=offline_access</p>
-</li>
-<li>
-<p>uma_authorization</p>
-<blockquote>
-<p>default</p>
-</blockquote>
-<p>Роль нужна для настройки Authorization</p>
-</li>
-</ul>
-<h2 id=client-roles>Client Roles</h2>
-<p><strong>Account</strong></p>
-<ul>
-<li>delete-account</li>
-<li>manage-account
-<ul>
-<li>acccount/manager-account-links</li>
-</ul>
-</li>
-<li>manage-account-links</li>
-<li>manage-consent
-<ul>
-<li>acccount/view-consent</li>
-</ul>
-</li>
-<li>view-applications</li>
-<li>view-consent</li>
-<li>view-profile</li>
-</ul>
-<p><strong>Broker</strong></p>
-<ul>
-<li>read-token</li>
-</ul>
-<p><strong>Realm-Management</strong></p>
-<ul>
-<li>create-client</li>
-<li>impersonation</li>
-<li>manage-authorization</li>
-<li>manage-clients</li>
-<li>manage-events</li>
-<li>manage-identity-providers</li>
-<li>manage-realm</li>
-<li>manage-users</li>
-<li>query-clients</li>
-<li>query-groups</li>
-<li>query-realms</li>
-<li>query-users</li>
-<li>realm-admin
-<ul>
-<li>realm-management/*</li>
-</ul>
-</li>
-<li>view-authorization</li>
-<li>view-clients
-<ul>
-<li>realm-management/query-clients</li>
-</ul>
-</li>
-<li>view-events</li>
-<li>view-identity-providers</li>
-<li>view-realm</li>
-<li>view-users
-<ul>
-<li>realm-management/query-groups</li>
-<li>realm-management/query-users</li>
-</ul>
 </li>
 </ul>
 </section>
