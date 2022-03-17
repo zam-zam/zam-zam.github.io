@@ -1,4 +1,40 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Of Code &amp; Systems</title><link>https://zzamzam.dev/</link><description>Recent content on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Wed, 16 Mar 2022 16:53:05 +0300</lastBuildDate><atom:link href="https://zzamzam.dev/index.xml" rel="self" type="application/rss+xml"/><item><title>Keycloak. Описание Scopes и Roles</title><link>https://zzamzam.dev/posts/2022-03-16-scopes-and-roles/</link><pubDate>Wed, 16 Mar 2022 16:53:05 +0300</pubDate><guid>https://zzamzam.dev/posts/2022-03-16-scopes-and-roles/</guid><description>&lt;h1 id="keycloak-scopes-oidc">Keycloak Scopes OIDC&lt;/h1>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Of Code &amp; Systems</title><link>https://zzamzam.dev/</link><description>Recent content on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Thu, 17 Mar 2022 12:53:05 +0300</lastBuildDate><atom:link href="https://zzamzam.dev/index.xml" rel="self" type="application/rss+xml"/><item><title>Keycloak. Описание Scopes и Roles</title><link>https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/</link><pubDate>Thu, 17 Mar 2022 12:53:05 +0300</pubDate><guid>https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/</guid><description>&lt;h1 id="settings">Settings&lt;/h1>
+&lt;ul>
+&lt;li>
+&lt;p>Client ID&lt;/p>
+&lt;blockquote>
+&lt;p>Уникальный идентификатор клиента&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Name&lt;/p>
+&lt;blockquote>
+&lt;p>Отображаемое имя (например, в окне согласия (Consent))&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Description&lt;/p>
+&lt;blockquote>
+&lt;p>Описание&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Enabled&lt;/p>
+&lt;blockquote>
+&lt;p>Вкл/Выкл&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Always Display in Console&lt;/p>
+&lt;blockquote>
+&lt;p>Всегда показываться клиента в списках приложений пользователя в Account Management Console
+&lt;p>
+&lt;a href="https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/01.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/01.png" width="1920" height="530">&lt;/a>
+&lt;/p>
+&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;/ul></description></item><item><title>Keycloak. Описание Scopes и Roles</title><link>https://zzamzam.dev/posts/2022-03-16-keycloak-scopes-and-roles/</link><pubDate>Wed, 16 Mar 2022 16:53:05 +0300</pubDate><guid>https://zzamzam.dev/posts/2022-03-16-keycloak-scopes-and-roles/</guid><description>&lt;h1 id="keycloak-scopes-oidc">Keycloak Scopes OIDC&lt;/h1>
 &lt;p>default - включен в scopes по-умолчанию&lt;/p>
 &lt;p>optional - включается в scopes при запроса&lt;/p>
 &lt;p>consent - отображать в окне согласия при запросе разрешения на аутентификацию у пользователя&lt;/p>

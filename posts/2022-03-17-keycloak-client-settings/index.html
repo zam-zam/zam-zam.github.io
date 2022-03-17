@@ -1,0 +1,326 @@
+<!doctype html><html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>
+Keycloak. Описание Scopes и Roles &ndash; Of Code & Systems
+</title>
+<meta name=description property="og:description" content="Settings   Client ID
+ Уникальный идентификатор клиента
+   Name
+ Отображаемое имя (например, в окне согласия (Consent))
+   Description
+ Описание
+   Enabled
+ Вкл/Выкл
+   Always Display in Console
+ Всегда показываться клиента в списках приложений пользователя в Account Management Console   |">
+<meta name=apple-mobile-web-app-title content="Of Code & Systems">
+<link rel=stylesheet href=/assets/syntax.css>
+<link rel=stylesheet href=/assets/primer-build.css>
+<link rel=stylesheet href=/assets/style.css>
+</head>
+<body class=bg-gray style=background-color:#fdf6e3!important>
+<div id=holy class="container-lg bg-white h-100">
+<div id=header class="px-1 bg-white text-center">
+<nav class="UnderlineNav UnderlineNav--right px-2">
+<a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>
+Of Code & Systems
+</a>
+</nav>
+</div>
+<div role=main id=main class="holy-main markdown-body px-4 bg-white">
+<div class=Subhead>
+<div class=Subhead-heading>
+<div class="h1 mt-3 mb-1">Keycloak. Описание Scopes и Roles</div>
+</div>
+<div class=Subhead-description>
+<a href=/categories/keycloak class=muted-link>
+<span class="Label Label--gray-darker">keycloak</span>
+</a>
+<div class=float-md-right>
+<span title="Lastmod: 2022-03-17. Published at: 2022-03-17.">
+2022-03-17
+</span>
+</div>
+</div>
+</div>
+<article>
+<section class="pb-6 mb-3 border-bottom">
+<div id=toc class="Box Box--blue mb-3">
+<b>Содержание</b><nav id=TableOfContents>
+<ul>
+<li><a href=#settings>Settings</a></li>
+<li><a href=#credentials>Credentials</a></li>
+<li><a href=#keys>Keys</a></li>
+<li><a href=#roles>Roles</a></li>
+<li><a href=#client-scopes>Client Scopes</a></li>
+<li><a href=#mappers>Mappers</a></li>
+<li><a href=#scope>Scope</a></li>
+<li><a href=#authorization>Authorization</a></li>
+<li><a href=#revocation>Revocation</a></li>
+<li><a href=#sessions>Sessions</a></li>
+<li><a href=#offline-access>Offline Access</a></li>
+<li><a href=#installation>Installation</a></li>
+<li><a href=#service-account-roles>Service Account Roles</a></li>
+</ul>
+</nav></div>
+<h1 id=settings>Settings</h1>
+<ul>
+<li>
+<p>Client ID</p>
+<blockquote>
+<p>Уникальный идентификатор клиента</p>
+</blockquote>
+</li>
+<li>
+<p>Name</p>
+<blockquote>
+<p>Отображаемое имя (например, в окне согласия (Consent))</p>
+</blockquote>
+</li>
+<li>
+<p>Description</p>
+<blockquote>
+<p>Описание</p>
+</blockquote>
+</li>
+<li>
+<p>Enabled</p>
+<blockquote>
+<p>Вкл/Выкл</p>
+</blockquote>
+</li>
+<li>
+<p>Always Display in Console</p>
+<blockquote>
+<p>Всегда показываться клиента в списках приложений пользователя в Account Management Console
+<p>
+<a href=/posts/2022-03-17-keycloak-client-settings/01.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/posts/2022-03-17-keycloak-client-settings/01.png width=1920 height=530></a>
+</p>
+</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li>
+<p>Consent Required</p>
+<blockquote>
+<p>Выводить окно согласия предоставления пользовательских данных клиенту
+<p>
+<a href=/posts/2022-03-17-keycloak-client-settings/02.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/posts/2022-03-17-keycloak-client-settings/02_huf7eb2a267a21b9c89b0ef6697bf622d1_98927_400x0_resize_box_3.png width=400 height=382></a>
+</p>
+</p>
+</blockquote>
+</li>
+<li>
+<p>Login Theme</p>
+<blockquote>
+<p>Тема оформления для клиента. Переопределяет тему, заданную в настройках реалма</p>
+</blockquote>
+</li>
+<li>
+<p>Client Protocol</p>
+<blockquote>
+<p>Протокол, используемый для аутентификации (oidc, saml)</p>
+</blockquote>
+</li>
+<li>
+<p>Access Type</p>
+<blockquote>
+<p>По сути определяет тип клиента. Браузерное фронтовое приложение (Public) | Бэкенд, который модет получать токен и обращаться к другим бэкендам (Confidential) | Бэкенд, который только проверяет другие токены и нам нужно, чтоб keycloak знал о нём, чтобы правильно добавлять поля в токен, типа <code>aud</code> (Bearer-only)</p>
+</blockquote>
+</li>
+<li>
+<p>Standart Flow Enabled</p>
+<blockquote>
+<p><em>Authorization Code Flow</em> в терминах oidc
+<p>
+<a href=/posts/2022-03-17-keycloak-client-settings/03.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/posts/2022-03-17-keycloak-client-settings/03_hu7b92809d10d79e6b03cd5c3a42aa7dae_130502_800x0_resize_box_3.png width=800 height=577></a>
+</p>
+<em>Источник изображения: <a href=https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow>https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow</a></em></p>
+</blockquote>
+</li>
+<li>
+<p>Implicit Flow Enabled</p>
+<blockquote>
+<p>
+<p>
+<a href=/posts/2022-03-17-keycloak-client-settings/04.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/posts/2022-03-17-keycloak-client-settings/04_hud7c1153a511309fd4908e5bfdd2cdc35_67514_800x0_resize_box_3.png width=800 height=380></a>
+</p>
+<em>Источник изображения: <a href=https://auth0.com/docs/get-started/authentication-and-authorization-flow/implicit-flow-with-form-post>https://auth0.com/docs/get-started/authentication-and-authorization-flow/implicit-flow-with-form-post</a></em></p>
+</blockquote>
+</li>
+<li>
+<p>Direct Access Grants Enabled</p>
+<blockquote>
+<p><em>Resource Owner Password Credentials Grant</em> в терминах oidc
+Разрешает напрямую передавать клиенту имя пользователя и пароль, чтобы клиент мог самостоятельно получить пользовательских токен</p>
+</blockquote>
+</li>
+<li>
+<p>Service Accounts Enabled</p>
+<blockquote>
+<p><code>Access Type: confidential</code>
+<em>Client Credential Grant</em> в терминах oidc
+Позволяет клиенту иметь некие учётные данные (client_id+secret, signed jwt, etc&mldr;), с помощью которых он может получать токены</p>
+</blockquote>
+</li>
+<li>
+<p>OAuth 2.0 Device Authorization Grant Enabled</p>
+<blockquote>
+<p>Относится к <a href=https://tools.ietf.org/html/draft-ietf-oauth-device-flow-15>OAuth 2.0 Device Authorization Grant</a></p>
+</blockquote>
+</li>
+<li>
+<p>OIDC CIBA Grant Enabled</p>
+<blockquote>
+<p><code>Access Type: confidential</code>
+Относится к <a href=https://openid.net/specs/openid-client-initiated-backchannel-authentication-core-1_0.html>OIDC Client-Initiated Backchannel Authentication</a></p>
+</blockquote>
+</li>
+<li>
+<p>Authorization Enabled</p>
+<blockquote>
+<p>Включить настройку правил авторизации (появляется отдельный там <code>Authorization</code>)</p>
+</blockquote>
+</li>
+<li>
+<p>Front Channel Logout</p>
+<blockquote>
+<p>Если включено, используется <code>Front Channel Logout</code>, когда логаут запросы отправляются клиентам из браузера, иначе <code>Back Channel Logout</code>, когда keycloak сам отправляет запросы клиентам
+Front Channel Logout
+<p>
+<a href=/posts/2022-03-17-keycloak-client-settings/05.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/posts/2022-03-17-keycloak-client-settings/05.png width=640 height=480></a>
+</p>
+<em>Источник изображения: <a href="https://www.youtube.com/watch?v=ObWSeNYkh8s">https://www.youtube.com/watch?v=ObWSeNYkh8s</a></em>
+Back Channel Logout
+<p>
+<a href=/posts/2022-03-17-keycloak-client-settings/06.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/posts/2022-03-17-keycloak-client-settings/06.png width=800 height=600></a>
+</p>
+<em>Источник изображения: <a href=https://piraveenaparalogarajah.medium.com/configuring-openid-connect-back-channel-logout-using-wso2-identity-server-8c758310525f>https://piraveenaparalogarajah.medium.com/configuring-openid-connect-back-channel-logout-using-wso2-identity-server-8c758310525f</a></em></p>
+</blockquote>
+</li>
+<li>
+<p>Front-Channel Logout URL</p>
+<blockquote>
+<p><code>Front Channel Logout: true</code>
+Куда редиректить после логаута</p>
+</blockquote>
+</li>
+<li>
+<p>Root URL</p>
+<blockquote>
+<p>Если в параметрах, типа Valid Redirect URIs, Base URL и др. используются относительные пути, то здесь можно задать рутовый, который будет к ним добавлен. Т.е. параметр чисто для удобства.
+<code>Root URL: https://example.com</code>, <code>Valid Redirect URIs: /somepath</code> в результате <code>Valid Redirect URIs</code> по факту будет <code>https://example.com/somepath</code></p>
+</blockquote>
+</li>
+<li>
+<p>Valid Redirect URIs</p>
+<blockquote>
+<p><code>Standard Flow Enabled: true</code>
+URL&rsquo;ы, на которые разрешено перенаправлять после логина в keycloak при использовании <code>Standart Flow</code>. По сути, это то, куда можно передавать <code>Authorization Code</code>, сгенерированный keycloak&rsquo;ом, для дальнейшего получения токена</p>
+</blockquote>
+</li>
+<li>
+<p>Base URL</p>
+<blockquote>
+<p>URL, по которому keycloak может общаться с клиентским API</p>
+</blockquote>
+</li>
+<li>
+<p>Admin URL</p>
+<blockquote>
+<p>URL, по которому через API keycloak может отправлять клиенту различную административную информацию, типа политик или <code>backchannel logout</code>. Поддержка обработки таких запросов должна быть реализована в API клиента. Если не задано, используется <code>Base URL</code></p>
+</blockquote>
+</li>
+<li>
+<p>Logo URL</p>
+<blockquote>
+<p>URL логотипа клиента. Например, для отображения на странице согласия (Consent)</p>
+</blockquote>
+</li>
+<li>
+<p>Policy URL</p>
+<blockquote>
+<p>URL на политику обработки данных (Privacy Policy)</p>
+</blockquote>
+</li>
+<li>
+<p>Terms of service URL</p>
+<blockquote>
+<p>URL на Условия пользования (TOS)</p>
+</blockquote>
+</li>
+<li>
+<p>Web Origins</p>
+<blockquote>
+<p><code>Standard Flow Enabled: true</code>
+Значение хидера <code>Access-Control-Allow-Origin</code>, который будет отдавать keycloak в ответе, когда к нему через ajax будут приходить запросы от веб-приложения, открытого в браузере. Защита от XSS, CSRF атак. Защиту реализует сам браузер, читая значение хидера и запрещая использовать ответ сервера, если в заголовке нет текущего открытого URL</p>
+</blockquote>
+</li>
+<li>
+<p>Backchannel Logout URL</p>
+<blockquote>
+<p>URL, на который должен быть отправлен запрос для логаута из реалма при логауте пользователя через Backchannel. Если не задано, используется <code>Admin URL</code></p>
+</blockquote>
+</li>
+<li>
+<p>Backchannel Logout Session Required</p>
+<blockquote>
+<p>Включать или нет session_id (sid) в logout токен при использовании <code>Backchannel Logout URL</code></p>
+</blockquote>
+</li>
+<li>
+<p>Backchannel Logout Revoke Offline Sessions</p>
+<blockquote>
+<p>Добавлять в logout токен <code>revoke_offline_access</code>, который означает, что клиенту также необходимо удалить сессии offline токенов при использовании <code>Backchannel Logout</code></p>
+</blockquote>
+</li>
+</ul>
+<h1 id=credentials>Credentials</h1>
+<p>Здесь можно задать учётные данные для аутентификации клиента, в случае если в клиент настроен с <code>Access Type: confidential</code> и <code>Service Accounts Enabled: true</code></p>
+<h1 id=keys>Keys</h1>
+<p>Если в <code>Credentials</code> используется <code>Signed JWT</code> как учётные данные клиента, то в этом разделе можно настроить то, как проверять подпись JWT-токена</p>
+<h1 id=roles>Roles</h1>
+<p>Роли, специфичные для клиента. Роль может быть назначена обычным и service-account пользователям. В токене роли будут перечислены в scope <code>resource_access.&lt;client>.roles</code>, если у клиента <code>&lt;client></code>, в настройках <code>Scope</code> разрешено добавление этой роли в токен</p>
+<h1 id=client-scopes>Client Scopes</h1>
+<p>Переопределяет реалмовые Client Scopes, которые были применены при создании клиента</p>
+<h1 id=mappers>Mappers</h1>
+<p>Маппинги, которые в том числе позволяют прокидывать/изменять параметры в scope, добавляемые в токен</p>
+<h1 id=scope>Scope</h1>
+<p>Позволяет ограничить то, какие роли добавляются в scope токена. Например, пользователь аутентифицируется в веб-приложении, которое использует клиента <code>Client1</code> для работы с keycloak, при этом у пользователя добавлена роль <code>RoleClient2</code> клиента <code>Client2</code>. Мы не хотим, чтобы в токене, получаемом для <code>Client1</code> были указаны роли для клиента <code>Client2</code>. В таком случае мы отключаем <code>Full Scope Allowed</code> и настраиваем, какие конкретно роли разрешено добавлять в токен.</p>
+<h1 id=authorization>Authorization</h1>
+<p><code>Authorization Enabled: true</code></p>
+<h1 id=revocation>Revocation</h1>
+<p>Позволяет отозвать/пометить невалидными все сессии и токены, полученные ДО указананной даты. Кнопкной <code>Set to now</code> будет установлено <code>Not Before</code> на текущую дату, а затем через <code>Push</code> нужно отправить эту политику всем клиентам на настроенные для них <code>Admin URL</code>. На клиенте должен быть реализован API и функции, которые применяют эти политики, чтобы по факту начать отбрасывать невалидные токены и сессии.</p>
+<h1 id=sessions>Sessions</h1>
+<p>Позволяет смотреть текущии активные сессии для данного клиента
+<p>
+<a href=/posts/2022-03-17-keycloak-client-settings/07.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/posts/2022-03-17-keycloak-client-settings/07_huaf55a81e6d409335f447e4b5d78cd4cd_31365_1000x0_resize_box_3.png width=1000 height=152></a>
+</p>
+</p>
+<h1 id=offline-access>Offline Access</h1>
+<p>Позволяет посмотреть, кто и когда получил offline токены</p>
+<h1 id=installation>Installation</h1>
+<p>Здесь просто можно сгенерировать конфиги для подключения приложений к keycloak</p>
+<h1 id=service-account-roles>Service Account Roles</h1>
+<p>Позволяет задать роли для <code>service-account</code> пользователя текущего клиента, если <code>Access Type: confidential</code> и <code>Service Accounts Enabled: true</code></p>
+</section>
+<section>
+<div id=remark42></div>
+</section>
+</article>
+</div>
+<div id=footer class="pt-2 pb-3 bg-white text-center">
+<span class="text-small text-gray">
+Powered by the
+<a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>.
+</span>
+</div>
+</div>
+<script>var remark_config={host:'https://remark42.k8s.zzamzam.dev',site_id:'zzamzam_dev',components:['embed','counter']}</script>
+<script>!function(d,b){for(var c=0,a,e,f;c<d.length;c++)a=b.createElement("script"),e=".js",f=b.head||b.body,"noModule"in a?(a.type="module",e=".mjs"):a.async=!0,a.defer=!0,a.src=remark_config.host+"/web/"+d[c]+e,f.appendChild(a)}(remark_config.components||["embed"],document)</script>
+</body>
+</html>
