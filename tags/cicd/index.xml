@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>cicd on Of Code &amp; Systems</title><link>https://zzamzam.dev/tags/cicd/</link><description>Recent content in cicd on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Wed, 04 Mar 2020 23:32:24 +0300</lastBuildDate><atom:link href="https://zzamzam.dev/tags/cicd/index.xml" rel="self" type="application/rss+xml"/><item><title>Организация деплоя в множество окружений с помощью helmfile</title><link>https://zzamzam.dev/2020/03/helmfile-ogranization/</link><pubDate>Wed, 04 Mar 2020 23:32:24 +0300</pubDate><guid>https://zzamzam.dev/2020/03/helmfile-ogranization/</guid><description>&lt;blockquote>
+&lt;p>Эта статья на Хабре &lt;a href="https://habr.com/ru/post/491108/">https://habr.com/ru/post/491108/&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;a href="https://github.com/roboll/helmfile">Helmfile&lt;/a> - обёртка для &lt;a href="https://github.com/helm/helm/">helm&lt;/a>, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.&lt;/p>
+&lt;p>О самом helmfile и примерах его использования можно почитать в &lt;a href="https://github.com/roboll/helmfile/blob/master/README.md">readme&lt;/a> и &lt;a href="https://github.com/roboll/helmfile/blob/master/docs/writing-helmfile.md">best practices guide&lt;/a>.&lt;/p>
+&lt;p>Мы же познакомимся с неочевидными способами описать релизы в helmfile&lt;/p>
+&lt;p>Допустим, у нас есть пачка helm-чартов (для примера пусть будет postgres и некое backend приложение) и несколько окружений (несколько kubernetes кластеров, несколько namespace&amp;rsquo;ов или несколько и того, и другого). Берём helmfile, читаем документацию и начинаем описывать наши окружения и релизы:&lt;/p>
+&lt;pre tabindex="0">&lt;code> .
+├── envs
+│   ├── devel
+│   │   └── values
+│   │   ├── backend.yaml
+│   │   └── postgres.yaml
+│   └── production
+│   └── values
+│   ├── backend.yaml
+│   └── postgres.yaml
+└── helmfile.yaml
+&lt;/code>&lt;/pre></description></item><item><title>dapp — утилита для сборки и деплоя контейнеров. Особенности работы</title><link>https://zzamzam.dev/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</link><pubDate>Mon, 03 Dec 2018 22:54:56 +0000</pubDate><guid>https://zzamzam.dev/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/flant.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/flant_hu2d95afc78664deacc037fd44acff9223_17100_120x0_resize_box_3.png" width="120" height="120">&lt;/a>
+&lt;/p>
+&lt;p>&lt;a href="https://github.com/flant/dapp">dapp&lt;/a> — утилита от российской компании Флант, которая занимается внедрением devops-практик (kubernetes, ci/cd и всё такое, ну вы в курсе) Подробное описание можно прочитать на &lt;a href="https://habr.com/company/flant/blog/333682/">Хабре&lt;/a>, а я бы хотел остановиться на некоторых особенностях работы с ней при сборке образов (здесь и далее под образом подразумевается docker image)&lt;/p>
+&lt;p>На момент написания статьи актуальная версия dapp 0.36.*&lt;/p>
+&lt;p>В качестве примера для наглядности и понимания общей картины возьмём за основу немного урезанное содержимое &lt;strong>dappfile.yaml&lt;/strong> из &lt;a href="https://flant.github.io/dapp/how_to/getting_started.html">официальной документации&lt;/a>&lt;/p></description></item></channel></rss>
