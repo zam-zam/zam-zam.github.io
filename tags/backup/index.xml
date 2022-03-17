@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>backup on Of Code &amp; Systems</title><link>https://zzamzam.dev/tags/backup/</link><description>Recent content in backup on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Fri, 06 Dec 2019 18:23:35 +0000</lastBuildDate><atom:link href="https://zzamzam.dev/tags/backup/index.xml" rel="self" type="application/rss+xml"/><item><title>Планирование резервного копирования с использованием backupninja</title><link>https://zzamzam.dev/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/</link><pubDate>Fri, 06 Dec 2019 18:23:35 +0000</pubDate><guid>https://zzamzam.dev/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/backupninja.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/backupninja_hufa854ffe5905694c03d3be5b15ff844b_5154_120x0_resize_box_3.png" width="120" height="120">&lt;/a>
+&lt;/p>
+&lt;blockquote>
+&lt;p>Эта заметка - перепечатка своего ответа на &lt;a href="https://toster.ru/answer?answer_id=1007582">вопрос в сервисе toster.ru&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>Искал решение для планирование резервных копий различными утилитами на различные хранилища и остановился на &lt;!-- raw HTML omitted -->backupninja&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>Умеет по расписанию бэкапить БД и файлы и отправлять их на сторонний сервер разными способами, включая rsync, rdiff, duplicity&lt;/p>
+&lt;p>В /etc/backup.d/ создаёте конфиги вида 10-db.mysql , 50-ftp.dup&lt;/p>
+&lt;p>Числа в начале файла описывают очерёдность выполнения в случае одновременного запуска (сначала сдампить базу, а затем заливать из папки с архивом на ftp).&lt;/p>
+&lt;p>Расширение файла указывает на тип задачи (.mysql - бэкап mysql, .dup - используем duplicity)&lt;/p></description></item><item><title>Рекомендации по работе с Symantec Backup Exec 2010 R3</title><link>https://zzamzam.dev/2015/03/rekomendacii-po-rabote-s-symantec-backup-exec-2010-r3/</link><pubDate>Thu, 12 Mar 2015 17:36:00 +0000</pubDate><guid>https://zzamzam.dev/2015/03/rekomendacii-po-rabote-s-symantec-backup-exec-2010-r3/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2015/03/rekomendacii-po-rabote-s-symantec-backup-exec-2010-r3/symantec-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2015/03/rekomendacii-po-rabote-s-symantec-backup-exec-2010-r3/symantec-logo_hu44e5f9b565beb8eb080f707821f76f86_62398_320x0_resize_box_3.png" width="320" height="66">&lt;/a>
+&lt;/p>
+&lt;h1 id="описание">Описание&lt;/h1>
+&lt;h2 id="устройства-devices">Устройства (Devices)&lt;/h2>
+&lt;p>&lt;strong>Устройство&lt;/strong> - это физическое (магнитная лента, роботизированная библиотека) или виртуальное устройство (папка на жёстком диске), на которое происходит резервное копирование.&lt;/p>
+&lt;p>На любом подключённом в Windows жёстком диске через Backup Exec можно создать такую папку, которая будет являться &lt;strong>устройством&lt;/strong> и будет иметь 2 важных параметра:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Максимальный размер&lt;/strong> создаваемых в папке файлов (каждый файл - носитель, на котором будут храниться резервные копии)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Количество &lt;strong>наборов данных (data sets)&lt;/strong>, которые могут быть записаны в файл (один набор данных = один выбранный ресурс в задании бэкапа. Каждый новый бэкап того же ресурса - новый набор данных)&lt;/p>
+&lt;/li>
+&lt;/ol></description></item></channel></rss>

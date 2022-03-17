@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>backupninja on Of Code &amp; Systems</title><link>https://zzamzam.dev/tags/backupninja/</link><description>Recent content in backupninja on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Fri, 06 Dec 2019 18:23:35 +0000</lastBuildDate><atom:link href="https://zzamzam.dev/tags/backupninja/index.xml" rel="self" type="application/rss+xml"/><item><title>Планирование резервного копирования с использованием backupninja</title><link>https://zzamzam.dev/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/</link><pubDate>Fri, 06 Dec 2019 18:23:35 +0000</pubDate><guid>https://zzamzam.dev/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/backupninja.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/backupninja_hufa854ffe5905694c03d3be5b15ff844b_5154_120x0_resize_box_3.png" width="120" height="120">&lt;/a>
+&lt;/p>
+&lt;blockquote>
+&lt;p>Эта заметка - перепечатка своего ответа на &lt;a href="https://toster.ru/answer?answer_id=1007582">вопрос в сервисе toster.ru&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>Искал решение для планирование резервных копий различными утилитами на различные хранилища и остановился на &lt;!-- raw HTML omitted -->backupninja&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>Умеет по расписанию бэкапить БД и файлы и отправлять их на сторонний сервер разными способами, включая rsync, rdiff, duplicity&lt;/p>
+&lt;p>В /etc/backup.d/ создаёте конфиги вида 10-db.mysql , 50-ftp.dup&lt;/p>
+&lt;p>Числа в начале файла описывают очерёдность выполнения в случае одновременного запуска (сначала сдампить базу, а затем заливать из папки с архивом на ftp).&lt;/p>
+&lt;p>Расширение файла указывает на тип задачи (.mysql - бэкап mysql, .dup - используем duplicity)&lt;/p></description></item></channel></rss>

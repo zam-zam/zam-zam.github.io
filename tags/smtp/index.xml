@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>smtp on Of Code &amp; Systems</title><link>https://zzamzam.dev/tags/smtp/</link><description>Recent content in smtp on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Thu, 12 Mar 2015 17:43:00 +0000</lastBuildDate><atom:link href="https://zzamzam.dev/tags/smtp/index.xml" rel="self" type="application/rss+xml"/><item><title>MS Exchange 2013. Пограничный сервер</title><link>https://zzamzam.dev/2015/03/ms-exchange-2013-pogranichnyj-server/</link><pubDate>Thu, 12 Mar 2015 17:43:00 +0000</pubDate><guid>https://zzamzam.dev/2015/03/ms-exchange-2013-pogranichnyj-server/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2015/03/ms-exchange-2013-pogranichnyj-server/exchange-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2015/03/ms-exchange-2013-pogranichnyj-server/exchange-logo_hu17ee6bf3dcf75c58f87f06cc811886b4_12629_320x0_resize_box_3.png" width="320" height="109">&lt;/a>
+&lt;/p>
+&lt;h1 id="роль-edge-для-exchange-2013">Роль EDGE для Exchange 2013&lt;/h1>
+&lt;h2 id="описание">Описание&lt;/h2>
+&lt;p>Пограничный сервер, анализирующий соединения и письма, помечающий спам, блокирующий недоверенные внешние сервера и т.п.&lt;/p>
+&lt;h2 id="безопасность">Безопасность&lt;/h2>
+&lt;h3 id="чёрные-и-белые-списки-серверов">Чёрные и белые списки серверов&lt;/h3>
+&lt;p>Пожалуй, самый простой, но не самый надёжный способ обезопасить себя от писем с &amp;ldquo;левых&amp;rdquo; почтовых серверов. При получении письма проверяется, не присутствует ли IP отправителя в одном списков.&lt;/p>
+&lt;p>IP-адреса в списки можно добавлять вручную через powershell, также существуют сторонние сервисы, которые собирают информацию по доверенным и недоверенным IP-адресам.&lt;/p>
+&lt;p>Сначала IP ищется в вручную созданных списках и только затем в списках сторонних провайдеров&lt;/p></description></item></channel></rss>

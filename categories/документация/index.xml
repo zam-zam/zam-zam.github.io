@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>документация on Of Code &amp; Systems</title><link>https://zzamzam.dev/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F/</link><description>Recent content in документация on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Thu, 17 Mar 2022 12:53:05 +0300</lastBuildDate><atom:link href="https://zzamzam.dev/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F/index.xml" rel="self" type="application/rss+xml"/><item><title>Keycloak. Описание настроек Clients</title><link>https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/</link><pubDate>Thu, 17 Mar 2022 12:53:05 +0300</pubDate><guid>https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/00.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/00.png" width="1404" height="53">&lt;/a>
+&lt;/p>
+&lt;h1 id="settings">Settings&lt;/h1>
+&lt;ul>
+&lt;li>
+&lt;p>Client ID&lt;/p>
+&lt;blockquote>
+&lt;p>Уникальный идентификатор клиента&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Name&lt;/p>
+&lt;blockquote>
+&lt;p>Отображаемое имя (например, в окне согласия (Consent))&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Description&lt;/p>
+&lt;blockquote>
+&lt;p>Описание&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Enabled&lt;/p>
+&lt;blockquote>
+&lt;p>Вкл/Выкл&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Always Display in Console&lt;/p>
+&lt;blockquote>
+&lt;p>Всегда показываться клиента в списках приложений пользователя в Account Management Console
+&lt;p>
+&lt;a href="https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/01.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/01.png" width="1920" height="530">&lt;/a>
+&lt;/p>
+&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;/ul></description></item><item><title>Keycloak. Описание Scopes и Roles</title><link>https://zzamzam.dev/posts/2022-03-16-keycloak-scopes-and-roles/</link><pubDate>Wed, 16 Mar 2022 16:53:05 +0300</pubDate><guid>https://zzamzam.dev/posts/2022-03-16-keycloak-scopes-and-roles/</guid><description>&lt;h1 id="keycloak-scopes-oidc">Keycloak Scopes OIDC&lt;/h1>
+&lt;p>default - включен в scopes по-умолчанию&lt;/p>
+&lt;p>optional - включается в scopes при запроса&lt;/p>
+&lt;p>consent - отображать в окне согласия при запросе разрешения на аутентификацию у пользователя&lt;/p>
+&lt;p>scope - добавлять в список scope токена&lt;/p>
+&lt;h2 id="oidc">OIDC&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>profile&lt;/p>
+&lt;blockquote>
+&lt;p>default, consent, scope&lt;/p>
+&lt;/blockquote>
+&lt;p>mappers:&lt;/p>
+&lt;ul>
+&lt;li>profile, name, gender, locale, etc&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Keycloak. Описание настроек Realm'а</title><link>https://zzamzam.dev/posts/2022-03-16-keycloak-realm-settings/</link><pubDate>Wed, 16 Mar 2022 16:52:05 +0300</pubDate><guid>https://zzamzam.dev/posts/2022-03-16-keycloak-realm-settings/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/posts/2022-03-16-keycloak-realm-settings/keycloak.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/posts/2022-03-16-keycloak-realm-settings/keycloak.png" width="1054" height="281">&lt;/a>
+&lt;/p>
+&lt;h1 id="realm-settings">Realm Settings&lt;/h1>
+&lt;h2 id="general">General&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Name&lt;/p>
+&lt;blockquote>
+&lt;p>Название/ID реалма&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Display name&lt;/p>
+&lt;blockquote>
+&lt;p>Отображаемое имя&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>HTML Display name&lt;/p>
+&lt;blockquote>
+&lt;p>Отображаемое имя с возможность использования html-тегов (например, добавление лого). Если задано, то имеет приоритет над Display name&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Frontend URL&lt;/p>
+&lt;blockquote>
+&lt;p>Позволяет для реалма задать отдельное доменное имя. Например, можно сделать такой матчинг &lt;code>auth.example.com -&amp;gt; sso.example.com/auth/realms/myrealm&lt;/code>. Обработкой занимается встроенный веб-сервер. То же самое можно реализовать через reverse-proxy, типа nginx, с установкой &lt;code>Host&lt;/code> хидера при проксировании и &amp;ldquo;обрезанием&amp;rdquo; путей&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Enabled&lt;/p>
+&lt;blockquote>
+&lt;p>Вкл/Выкл&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>User-Managed Access&lt;/p>
+&lt;blockquote>
+&lt;p>Включить управление своими ресурсами в Account Management Console (auth/realms/myrealm/account/resource)&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Endpoints&lt;/p>
+&lt;blockquote>
+&lt;p>Ссылки OIDC/SAML, где можно получить все доступные точки входа для проктоколов&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;/ul></description></item><item><title>Как syslog обрабатывает логи</title><link>https://zzamzam.dev/2021/04/syslogd-then-and-now/</link><pubDate>Tue, 27 Apr 2021 17:15:00 +0300</pubDate><guid>https://zzamzam.dev/2021/04/syslogd-then-and-now/</guid><description>&lt;h1 id="оригинальный-syslogd">Оригинальный syslogd&lt;/h1>
+&lt;p>
+&lt;a href="https://zzamzam.dev/2021/04/syslogd-then-and-now/syslogd01.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2021/04/syslogd-then-and-now/syslogd01.png" width="611" height="409">&lt;/a>
+&lt;/p>
+&lt;h1 id="cвязка-journald--rsyslogd">Cвязка journald + rsyslogd&lt;/h1>
+&lt;p>
+&lt;a href="https://zzamzam.dev/2021/04/syslogd-then-and-now/syslogd02.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2021/04/syslogd-then-and-now/syslogd02.png" width="871" height="419">&lt;/a>
+&lt;/p>
+&lt;h1 id="форматы-syslog-сообщений">Форматы syslog сообщений&lt;/h1>
+&lt;h2 id="rfc-3164-устаревший">RFC 3164 (устаревший)&lt;/h2>
+&lt;p>&lt;a href="https://tools.ietf.org/html/rfc3164">RFC 3164 - The BSD Syslog Protocol&lt;/a>&lt;/p>
+&lt;h3 id="описание-формата-сообщения">Описание формата сообщения&lt;/h3>
+&lt;p>The first part is called the &lt;code>PRI&lt;/code>, the second part is the &lt;code>HEADER&lt;/code>, and the third part is the &lt;code>MSG&lt;/code>. The total length of the packet MUST be 1024 bytes or less&lt;/p></description></item><item><title>Как можно собирать образы контейнеров</title><link>https://zzamzam.dev/2021/04/docker-build-options-on-ci/</link><pubDate>Mon, 26 Apr 2021 11:33:00 +0300</pubDate><guid>https://zzamzam.dev/2021/04/docker-build-options-on-ci/</guid><description>&lt;h1 id="варианты-запуска-сборок">Варианты запуска сборок&lt;/h1>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Shell executor&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>docker-in-docker&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Изолированные друг от друга контейнеры, т.к. здесь child контейнеры от контейнера dind, а не от хостового docker.sock&lt;/li>
+&lt;li>Необходим запуск с privileged (небезопасно)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Проброс docker.sock&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Все контейнеры - siblings (видят друг друга), т.к. запускается через хостовый docker&lt;/li>
+&lt;li>Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>buildah/buildkit/img&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Позволяют внутри докер контейнера запускать сборку образа без докер-демона&lt;/li>
+&lt;li>Требуется unprivileged_userns_clone (user namespaces), у которого свои security-риски&lt;/li>
+&lt;li>Синтаксис запуска отличается -&amp;gt; переучивать команду&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>kaniko&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Позволяют внутри докер контейнера запускать сборку образа без докер-демона&lt;/li>
+&lt;li>Не поддерживается установка бинарника в свой образ. Необходимо использовать официальный образ&lt;/li>
+&lt;li>Синтаксис запуска отличается -&amp;gt; переучивать команду&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h1 id="потенциальные-векторы-атаки">Потенциальные векторы атаки&lt;/h1>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Источник&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>В сборке используется публичный образ, в котором в entrypoint выполняется команда проверки docker.sock и запуск контейнера через него&lt;/li>
+&lt;li>При сборке в зависимостях (напрмер, node) скачивается зловред, который запускается в процессе сборки. Далее проверка docker.sock и запуск контейнера через него&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Цель&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Закрепиться в системе. Через докер возможно установить свои бинарники и сервисы в систему&lt;/li>
+&lt;li>Дальнейший скан сети и поиск уязвимостей для распространения и закрепления&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol></description></item><item><title>Kubernetes. Что произойдёт, если...</title><link>https://zzamzam.dev/2020/09/kubernetes-what-if/</link><pubDate>Tue, 29 Sep 2020 15:29:00 +0300</pubDate><guid>https://zzamzam.dev/2020/09/kubernetes-what-if/</guid><description>&lt;h1 id="перезапустить-kubelet">Перезапустить kubelet&lt;/h1>
+&lt;p>Контейнеры продолжают работать, но в момент синхронизации состояния подов с api-server поды могут переходить в состояние 0/1 Running, когда трафик на них перестаёт направляться&lt;/p>
+&lt;h1 id="остановить-kubelet">Остановить kubelet&lt;/h1>
+&lt;p>Нода переходит в состояние NotReady, никаких событий на подах не происходит - они продолжают пребывать в состоянии 1/1 Running, но трафик на них перестаёт идти (из endpoint&amp;rsquo;ов сервисов удаляются IP адрес подов, которые находятся на &amp;ldquo;мёртвой&amp;rdquo; ноде).&lt;/p>
+&lt;p>Спустя указанный pod-eviction-timeout (5m по-умолчанию) для &lt;a href="https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/">kube-controller-manager&lt;/a> поды переходят в статус Terminating и начинают запускаться на живых воркерках. Поды &lt;a href="https://github.com/kubernetes/kubernetes/issues/55713">будут продолжать&lt;/a> находиться в статусе Terminating либо до старта kubelet, либо до удаления ноды из кластера. При этом не выгоняются поды DaemonSet и поды, поднятые kubelet&amp;rsquo;ом(kube-proxy, nginx-proxy, kube-flannel, nodelocaldns и т.п.)&lt;/p></description></item><item><title>Graceful Shutdown в Akka HTTP</title><link>https://zzamzam.dev/2020/09/scala-akka-graceful-shutdown/</link><pubDate>Tue, 22 Sep 2020 18:53:00 +0300</pubDate><guid>https://zzamzam.dev/2020/09/scala-akka-graceful-shutdown/</guid><description>&lt;p>Атуально для Akka HTTP начиная с версии &lt;a href="https://doc.akka.io/docs/akka-http/current/release-notes/10.2.x.html">10.2.0&lt;/a>&lt;/p>
+&lt;p>Github Issue: &lt;a href="https://github.com/akka/akka-http/pull/3142">Add coordinated shutdown support&lt;/a>&lt;/p>
+&lt;p>По-умолчанию, Akka при завершении (в т.ч. получении SIGTERM) запускает процесс &lt;a href="https://doc.akka.io/docs/akka/current/coordinated-shutdown.html">Coordinated Shutdown&lt;/a>, в рамках которого происходят последовательно несколько фаз:&lt;/p>
+&lt;ul>
+&lt;li>before-service-unbind&lt;/li>
+&lt;li>service-unbind&lt;/li>
+&lt;li>service-requests-done&lt;/li>
+&lt;li>service-stop&lt;/li>
+&lt;li>before-cluster-shutdown&lt;/li>
+&lt;li>cluster-sharding-shutdown-region&lt;/li>
+&lt;li>cluster-leave&lt;/li>
+&lt;li>cluster-exiting&lt;/li>
+&lt;li>cluster-exiting-done&lt;/li>
+&lt;li>cluster-shutdown&lt;/li>
+&lt;li>before-actor-system-terminate&lt;/li>
+&lt;li>actor-system-terminate&lt;/li>
+&lt;/ul>
+&lt;p>В каждой фазе выполняются определённые действия и настроен таймаут, который можно переопределить и в течение которого эти действия должны завершиться. Если действия не успевают завершаться, то фаза заканчивается и начинается следующая&lt;/p>
+&lt;p>В рамках Akka HTTP нас в первую очередь интересуют следующие фазы&lt;/p>
+&lt;ul>
+&lt;li>service-unbind #перестаёт слушаться tcp порт и перестают приниматься новые соединения. Установленные соединения не разрываются&lt;/li>
+&lt;li>service-requests-done #ожидается окончание запросов, которые в данный момент обрабатываются кодом и клиент ожидает на них ответ&lt;/li>
+&lt;li>service-stop #закрываются все установленные соединения&lt;/li>
+&lt;/ul>
+&lt;p>По-умолчанию (&lt;a href="https://github.com/akka/akka/blob/master/akka-actor/src/main/resources/reference.conf#L1162">default-phase-timeout = 5s&lt;/a>), после unbind есть 5 секунд на завершение текущих запросов&lt;/p>
+&lt;p>При использовании Kubernetes, стоит принимать во внимание также его таймаут &lt;a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#podspec-v1-core">terminationGracePeriodSeconds&lt;/a>, в течение которого будет ожидаться реакция на SIGTERM, после чего будет послан SIGKILL. По-умолчанию, он равен 30s&lt;/p></description></item><item><title>Как определяются права пользователя в kubernetes?</title><link>https://zzamzam.dev/2020/06/kubernetes-rbac-add-user/</link><pubDate>Mon, 15 Jun 2020 22:00:24 +0300</pubDate><guid>https://zzamzam.dev/2020/06/kubernetes-rbac-add-user/</guid><description>&lt;h1 id="немного-о-rbac">Немного о RBAC&lt;/h1>
+&lt;p>В kubernetes есть сущность, которая называется &lt;code>RoleBinding&lt;/code>. Она определяет, каким субъектам какая роль будет назначена. &lt;code>RoleBinding&lt;/code> действует в рамках &lt;code>namespace&lt;/code>, в котором она создана. Для разрешения действий во всех &lt;code>namespace&lt;/code> без ограничений необходимо создавать &lt;code>ClusterRoleBinding&lt;/code>, который является cluster-wide объектом.&lt;/p>
+&lt;p>Пример RoleBinding&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io/v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">RoleBinding&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">edit&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">namespace&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">project-a-devel&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">subjects&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>- &lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Group&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">sre&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">apiGroup&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">roleRef&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ClusterRole&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">edit&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">apiGroup&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Эта роль:&lt;/p>
+&lt;ul>
+&lt;li>Действует в рамках namespace &lt;code>project-a-devel&lt;/code> - (metadata:)&lt;/li>
+&lt;li>Применяется к пользователям в группе &lt;code>sre&lt;/code> (&lt;code>/O=sre&lt;/code>) - (subjects:)&lt;/li>
+&lt;li>Разрешает действия, описанные в созданной по-умолчанию кластерной роли (ClusterRole) &lt;code>edit&lt;/code> - (roleRef:)&lt;/li>
+&lt;/ul></description></item><item><title>Как избежать запуска двойного pipeline при использовании merge requests pipelines?</title><link>https://zzamzam.dev/2020/06/gitlab-avoid-double-pipeline-run/</link><pubDate>Mon, 15 Jun 2020 21:00:24 +0300</pubDate><guid>https://zzamzam.dev/2020/06/gitlab-avoid-double-pipeline-run/</guid><description>&lt;p>&lt;a href="https://docs.gitlab.com/ee/ci/merge_request_pipelines/">Пайплайны для Merge Requests&lt;/a> существуют отдельно (имеют лейбл detached) и запускается независимо от основного pipeline. Из-за этого если сделать push в репу в ветку, из которой в гитлабе есть открытый МР, то запускаются 2 одинаковых пайплайна&lt;/p>
+&lt;p>&lt;img src="https://zzamzam.dev/wp-content/uploads/2020/06/double-pipeline.png" alt="">
+ 
+Есть варианта, чтобы это избежать:&lt;/p>
+&lt;ol>
+&lt;li>Дублировать все джобы через extends, чтобы разделить на запускаемые на МРах и на обычные&lt;/li>
+&lt;li>Не запускать CI на некоторых ветках, пока из них нет открытого МРа&lt;/li>
+&lt;/ol></description></item><item><title>Организация деплоя в множество окружений с помощью helmfile</title><link>https://zzamzam.dev/2020/03/helmfile-ogranization/</link><pubDate>Wed, 04 Mar 2020 23:32:24 +0300</pubDate><guid>https://zzamzam.dev/2020/03/helmfile-ogranization/</guid><description>&lt;blockquote>
+&lt;p>Эта статья на Хабре &lt;a href="https://habr.com/ru/post/491108/">https://habr.com/ru/post/491108/&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;a href="https://github.com/roboll/helmfile">Helmfile&lt;/a> - обёртка для &lt;a href="https://github.com/helm/helm/">helm&lt;/a>, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.&lt;/p>
+&lt;p>О самом helmfile и примерах его использования можно почитать в &lt;a href="https://github.com/roboll/helmfile/blob/master/README.md">readme&lt;/a> и &lt;a href="https://github.com/roboll/helmfile/blob/master/docs/writing-helmfile.md">best practices guide&lt;/a>.&lt;/p>
+&lt;p>Мы же познакомимся с неочевидными способами описать релизы в helmfile&lt;/p>
+&lt;p>Допустим, у нас есть пачка helm-чартов (для примера пусть будет postgres и некое backend приложение) и несколько окружений (несколько kubernetes кластеров, несколько namespace&amp;rsquo;ов или несколько и того, и другого). Берём helmfile, читаем документацию и начинаем описывать наши окружения и релизы:&lt;/p>
+&lt;pre tabindex="0">&lt;code> .
+├── envs
+│   ├── devel
+│   │   └── values
+│   │   ├── backend.yaml
+│   │   └── postgres.yaml
+│   └── production
+│   └── values
+│   ├── backend.yaml
+│   └── postgres.yaml
+└── helmfile.yaml
+&lt;/code>&lt;/pre></description></item><item><title>Немного о настройках при работе с Kafka, на которые стоит обратить внимание</title><link>https://zzamzam.dev/2020/03/kafka-recommendations/</link><pubDate>Mon, 02 Mar 2020 08:32:24 +0300</pubDate><guid>https://zzamzam.dev/2020/03/kafka-recommendations/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2020/03/kafka-recommendations/kafka-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2020/03/kafka-recommendations/kafka-logo_hud7d8be01d929cd2cf0625cb627456468_16618_320x0_resize_box_3.png" width="320" height="96">&lt;/a>
+&lt;/p>
+&lt;p>Этот пост - небольшой конспект доклада с Highload &lt;a href="https://www.youtube.com/watch?v=m5CDfrQLzrs">&lt;strong>Кафка. &amp;ldquo;Описание одной борьбы&amp;rdquo; / Денис Карасик (Badoo)&lt;/strong>&lt;/a>. Как ясно из заголовка статьи, здесь будет рассказано о некоторых важных параметрах конфигурации брокеров, топиков и producer&amp;rsquo;ов&lt;/p></description></item><item><title>Проблема безопасности SSH Agent Forwarding</title><link>https://zzamzam.dev/2019/12/problema-bezopasnosti-ssh-agent-forwarding/</link><pubDate>Fri, 06 Dec 2019 19:02:24 +0000</pubDate><guid>https://zzamzam.dev/2019/12/problema-bezopasnosti-ssh-agent-forwarding/</guid><description>&lt;p>Вот что говорит нам &lt;code>man ssh_config&lt;/code> про &lt;code>ForwardAgent&lt;/code>(перевод):&lt;/p>
+&lt;blockquote>
+&lt;p>Agent forwarding нужно включать с осторожностью. Пользователи, которые смогут обойти настройки разрешений файлов на удалённом хосте (в частности для unix-socket агента (ssh-agent)) могут получить доступ к локальному агенту через перенаправленное(forwarded)-соединение. Атакующий не сможет вытащить сами ключи из агента, однако получит возможность проводить с ключами действия, позволяющие ему проходить аутентификацию, используя загруженные в агент идентификаторы&lt;/p>
+&lt;/blockquote>
+&lt;p>Просто запомните: если ваш бастион(&lt;em>прим. пер.:&lt;/em> &lt;a href="https://en.wikipedia.org/wiki/Jump_server">jump box&lt;/a> - сервер-бастион для доступа в закрытый сетевой контур) скомпроментирован, и вы используете SSH agent forwarding, чтобы через него подключаться к другим машинам, то высок риск компроментации и этих удалённых машин.&lt;/p>
+&lt;p>Вместо этого лучше используйте &lt;code>ProxyCommand&lt;/code> или &lt;code>ProxyJump&lt;/code> (добавлен в OpenSSH 7.3). В таком случае ssh перенаправит TCP-соединение на удалённую машину через бастион, а само соединение будет установлено с вашей локальной машины. Если кто-нибудь на бастионе попробует провести MITM (man-in-the-middle) атаку на ваше соединение, то ssh об этом предупредит (&lt;em>прим. пер.: видимо, речь идёт о предупреждении об изменившимся ssh fingerprint(отпечатке)&lt;/em>)&lt;/p></description></item><item><title>Планирование резервного копирования с использованием backupninja</title><link>https://zzamzam.dev/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/</link><pubDate>Fri, 06 Dec 2019 18:23:35 +0000</pubDate><guid>https://zzamzam.dev/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/backupninja.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/backupninja_hufa854ffe5905694c03d3be5b15ff844b_5154_120x0_resize_box_3.png" width="120" height="120">&lt;/a>
+&lt;/p>
+&lt;blockquote>
+&lt;p>Эта заметка - перепечатка своего ответа на &lt;a href="https://toster.ru/answer?answer_id=1007582">вопрос в сервисе toster.ru&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>Искал решение для планирование резервных копий различными утилитами на различные хранилища и остановился на &lt;!-- raw HTML omitted -->backupninja&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>Умеет по расписанию бэкапить БД и файлы и отправлять их на сторонний сервер разными способами, включая rsync, rdiff, duplicity&lt;/p>
+&lt;p>В /etc/backup.d/ создаёте конфиги вида 10-db.mysql , 50-ftp.dup&lt;/p>
+&lt;p>Числа в начале файла описывают очерёдность выполнения в случае одновременного запуска (сначала сдампить базу, а затем заливать из папки с архивом на ftp).&lt;/p>
+&lt;p>Расширение файла указывает на тип задачи (.mysql - бэкап mysql, .dup - используем duplicity)&lt;/p></description></item><item><title>Kubernetes NodePort / LoadBalancer / Ingress? Когда что использовать?</title><link>https://zzamzam.dev/2019/01/kubernetes-nodeport-loadbalancer-ingress-kogda-chto-ispolzovat/</link><pubDate>Mon, 07 Jan 2019 22:47:36 +0000</pubDate><guid>https://zzamzam.dev/2019/01/kubernetes-nodeport-loadbalancer-ingress-kogda-chto-ispolzovat/</guid><description>&lt;p>Чем отличаются всякие там &lt;strong>NodePorts&lt;/strong>, &lt;strong>LoadBalancer&lt;/strong> и &lt;strong>Ingress&lt;/strong>? Все они дают возможность внешнему трафику попасть в ваш кластер, но дают эту возможность по-разному. Давайте-ка разберёмся, как они это делают и когда какой тип сервиса лучше использовать.&lt;/p>
+&lt;h1 id="clusterip">ClusterIP&lt;/h1>
+&lt;p>ClusterIP — это дефолтный тип сервиса в кубах, он поднимает вам сервис внутри кластера на внутрекластеровом IP. Доступа для внешнего трафика нет, только внутри кластера.&lt;/p>
+&lt;p>YAML для ClusterIP выглядит как-то так:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">my-internal-service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">selector&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">app&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">my-app&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ClusterIP&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">http&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">targetPort&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">protocol&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">TCP&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&amp;ldquo;Так, ну и зачем же рассказывать нам о ClusterIP, если он не принимает внешний трафик?&amp;rdquo; — спросите вы. А всё потому, что попасть на этот сервис можно через Kubernetes proxy!&lt;/p></description></item><item><title>dapp — утилита для сборки и деплоя контейнеров. Особенности работы</title><link>https://zzamzam.dev/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</link><pubDate>Mon, 03 Dec 2018 22:54:56 +0000</pubDate><guid>https://zzamzam.dev/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/flant.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/flant_hu2d95afc78664deacc037fd44acff9223_17100_120x0_resize_box_3.png" width="120" height="120">&lt;/a>
+&lt;/p>
+&lt;p>&lt;a href="https://github.com/flant/dapp">dapp&lt;/a> — утилита от российской компании Флант, которая занимается внедрением devops-практик (kubernetes, ci/cd и всё такое, ну вы в курсе) Подробное описание можно прочитать на &lt;a href="https://habr.com/company/flant/blog/333682/">Хабре&lt;/a>, а я бы хотел остановиться на некоторых особенностях работы с ней при сборке образов (здесь и далее под образом подразумевается docker image)&lt;/p>
+&lt;p>На момент написания статьи актуальная версия dapp 0.36.*&lt;/p>
+&lt;p>В качестве примера для наглядности и понимания общей картины возьмём за основу немного урезанное содержимое &lt;strong>dappfile.yaml&lt;/strong> из &lt;a href="https://flant.github.io/dapp/how_to/getting_started.html">официальной документации&lt;/a>&lt;/p></description></item><item><title>Получаем wildcard сертификаты LetsEncrypt</title><link>https://zzamzam.dev/2018/03/poluchaem-wildcard-sertifikaty-letsencrypt/</link><pubDate>Mon, 26 Mar 2018 19:38:38 +0000</pubDate><guid>https://zzamzam.dev/2018/03/poluchaem-wildcard-sertifikaty-letsencrypt/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2018/03/poluchaem-wildcard-sertifikaty-letsencrypt/letsencrypt-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2018/03/poluchaem-wildcard-sertifikaty-letsencrypt/letsencrypt-logo_huf2faf598ec360181ff1fa5e568772309_7226_320x0_resize_box_3.png" width="320" height="73">&lt;/a>
+&lt;/p>
+&lt;p>13 март 2018 года LetsEncrypt наконец &lt;a href="https://community.letsencrypt.org/t/acme-v2-and-wildcard-certificate-support-is-live/55579">объявила&lt;/a>, что, они начали поддерживать wildcard-сертификаты. Теперь можно за раз получить сертификат, включащий в себя все субдомены&lt;/p>
+&lt;p>&lt;img src="https://zzamzam.dev/wp-content/uploads/2018/03/2018-03-26_22-22-42.png" alt="">&lt;/p>
+&lt;p>Процесс всё так же автоматизирован через консольную утилиту certbot. Отличие в том, что теперь подтверждение домена можно сделать только через TXT-запись в DNS-зоне, а не через webroot, как раньше.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Качаем обновлённый certbot v0.22, разархивируем, переходим в папку&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">wget &lt;span class="s1">&amp;#39;https://github.com/certbot/certbot/archive/v0.22.2.tar.gz&amp;#39;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span>tar -xvf v0.22.2.tar.gz &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;span class="se">&lt;/span>&lt;span class="nb">cd&lt;/span> certbot-0.22.2
+&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ol></description></item><item><title>Быстрый перенос базы mysql на другой сервер с помощью percona xtrabackup</title><link>https://zzamzam.dev/2017/08/bystryj-perenos-bd-s-pomoshhju-percona-xtrabackup-na-dru/</link><pubDate>Sat, 19 Aug 2017 22:37:01 +0000</pubDate><guid>https://zzamzam.dev/2017/08/bystryj-perenos-bd-s-pomoshhju-percona-xtrabackup-na-dru/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2017/08/bystryj-perenos-bd-s-pomoshhju-percona-xtrabackup-na-dru/percona-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2017/08/bystryj-perenos-bd-s-pomoshhju-percona-xtrabackup-na-dru/percona-logo_hu77e204cc11d8bac396181228fe786bc4_52528_320x0_resize_box_3.png" width="320" height="95">&lt;/a>
+&lt;/p>
+&lt;p>По мотивам &lt;a href="https://www.percona.com/doc/percona-xtrabackup/LATEST/innobackupex/partial_backups_innobackupex.html">официального мануала&lt;/a>&lt;/p>
+&lt;p>Скорость переноса данных, по сравнению с обычными консольными dump / restore просто колоссальная, т.к. переносятся целиком файлы таблиц.&lt;/p>
+&lt;p>Особенность в том, что на целевом сервере не должно быть рабочей mysql с нужными данными&lt;/p>
+&lt;p>На серверах должен быть установлен &lt;a href="https://www.percona.com/software/mysql-database/percona-xtrabackup">Percona XtraBackup&lt;/a>&lt;/p>
+&lt;p>&lt;strong>Source server&lt;/strong>&lt;/p>
+&lt;p>Делаем частичный бэкап (partial backup), указывая опцию -database, где через пробел перечисляем базы для бэкапа. Важным моментов является то, что необходимо забрать и базу mysql для сохранения учётных записей и разрешений&lt;/p></description></item><item><title>PHP профайлер tideways + xhgui</title><link>https://zzamzam.dev/2017/08/php-profajler-tideways-xhgui/</link><pubDate>Wed, 16 Aug 2017 18:47:54 +0000</pubDate><guid>https://zzamzam.dev/2017/08/php-profajler-tideways-xhgui/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2017/08/php-profajler-tideways-xhgui/php-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2017/08/php-profajler-tideways-xhgui/php-logo_hub5e048af1cb548a04bf727f259434501_42802_320x0_resize_box_3.png" width="320" height="201">&lt;/a>
+&lt;/p>
+&lt;h2 id="введение">Введение&lt;/h2>
+&lt;p>Об удобстве использования профайлера, да ещё с графическим интерфейсом и говорить нечего, особенно когда надо найти узкие места под нагрузкой.&lt;/p>
+&lt;p>&lt;a href="https://github.com/tideways/php-profiler-extension">tideways&lt;/a> - само расширение php для сбора данных о производительности кода&lt;/p>
+&lt;p>&lt;a href="https://github.com/perftools/xhgui">xhgui&lt;/a> - графический веб-интерфейс (см. скриншот выше), который, помимо всего прочего, сохраняет данные профилирования в mongodb и затем использует их для вывода статистики&lt;/p></description></item><item><title>map в nginx</title><link>https://zzamzam.dev/2017/08/map-v-nginx/</link><pubDate>Wed, 16 Aug 2017 15:32:59 +0000</pubDate><guid>https://zzamzam.dev/2017/08/map-v-nginx/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2017/08/map-v-nginx/nginx-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2017/08/map-v-nginx/nginx-logo_hua8d6dd98fb390227b6559b23a8e61e5a_31065_320x0_resize_box_3.png" width="320" height="67">&lt;/a>
+&lt;/p>
+&lt;p>Кейс следующий:&lt;/p>
+&lt;p>Есть запросы к API с передачей уникального токена в GET параметре. По этому токену (user_token=) имеются лимиты на запросы через &lt;a href="https://nginx.org/ru/docs/http/ngx_http_limit_req_module.html">limit_req_zone&lt;/a>, типа такого:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-nginx" data-lang="nginx">&lt;span class="k">limit_req_zone&lt;/span> &lt;span class="nv">$arg_user_token&lt;/span> &lt;span class="s">zone=token5:10m&lt;/span> &lt;span class="s">rate=12r/m&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Необходимо для некоторых токенов отключить лимиты. Тут на помощь и приходит модуль &lt;a href="https://nginx.org/ru/docs/http/ngx_http_map_module.html">map&lt;/a> nginx. Он позволяет динамически получать переменную, значение которой будет зависеть от значений других, входных, переменных. Т.е., грубо говоря, мы имеем&lt;/p></description></item><item><title>CentOS 7. Kernel panic — not syncing: Fatal machine check on current CPU</title><link>https://zzamzam.dev/2017/05/centos-7-kernel-panic-not-syncing-fatal-machine-check-on-current-cpu/</link><pubDate>Mon, 01 May 2017 18:55:07 +0000</pubDate><guid>https://zzamzam.dev/2017/05/centos-7-kernel-panic-not-syncing-fatal-machine-check-on-current-cpu/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2017/05/centos-7-kernel-panic-not-syncing-fatal-machine-check-on-current-cpu/centos-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2017/05/centos-7-kernel-panic-not-syncing-fatal-machine-check-on-current-cpu/centos-logo_hu440f0f84b6e1c5de8db308e67a2d7711_7656_320x0_resize_box_3.png" width="320" height="168">&lt;/a>
+&lt;/p>
+&lt;p>&lt;strong>Провайдер услуг&lt;/strong>: ovh&lt;/p>
+&lt;p>&lt;strong>Проц&lt;/strong>: Intel Xeon D-1521&lt;/p>
+&lt;p>&lt;strong>ОС&lt;/strong>: CentOS 7.3&lt;/p>
+&lt;p>&lt;strong>Ядро&lt;/strong>: 3.14 кастомное от ovh&lt;/p>
+&lt;p>Дело было на майских праздниках. Клиент, держащий сервис, написанный на php и использующий mysql как бд, попросил посмотреть, почему сервер внезапно перестаёт отвечать.&lt;/p>
+&lt;p>Предположили, что дело может быть в высокой нагрузке и отваливается сеть. Но нет, нагрузка так себе, на интерфейсе максимум 300 pps, трафик низкий, память не кушается, проц процентов на 40% загружен. В процессе выяснилось, что сервер не только перестаёт отвечать, но и сам перезагружается.&lt;/p>
+&lt;p>Ага! Настраиваем kdump. kdump не запускается на кастомном ядре 3.14 ovh. Ставим ванильное из родных реп&lt;/p></description></item><item><title>Недоверенные корневые сертификаты от налоговой (ФНС России) в вашей системе</title><link>https://zzamzam.dev/2017/04/nedoverennye-kornevye-sertifikaty-o/</link><pubDate>Fri, 21 Apr 2017 10:34:48 +0000</pubDate><guid>https://zzamzam.dev/2017/04/nedoverennye-kornevye-sertifikaty-o/</guid><description>&lt;p>Чтобы отправить декларацию от доходах 3-НДФЛ в ФНС, можно получить ключ неквалифицированной электронной подписи и его сертификат, сформированные онлайн и отправить декларацию через личные кабинет налогоплательщика.&lt;/p>
+&lt;p>Если решите хранить ключ у себя на компьютере, то ФНС предложит установить «средства электронной подписи, которые установят в систему свои корневые сертификаты с неограниченными правами использования. А это означает, что ваша машина будет доверять любыми сертификатам, выпущенными удостоверяющим центром (УЦ), указанном в корневом сертификате.&lt;/p>
+&lt;p>Проверить установленные недоверенные сертификаты можно с помощью утилиты RCC (&lt;a href="https://www.trustprobe.com/fs1/apps.html">https://www.trustprobe.com/fs1/apps.html&lt;/a>). Утилита запускается в юзер-спейсе без запроса админских прав и только читает сертификаты.&lt;/p>
+&lt;p>&lt;strong>До установки средств электронной подписи&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://zzamzam.dev/wp-content/uploads/2017/08/01.png" alt="">&lt;/p>
+&lt;p>&lt;strong>После установки средств электронной подписи&lt;/strong> появляется аж четыре корневых УЦ&lt;/p></description></item><item><title>SELinux на веб-сервере</title><link>https://zzamzam.dev/2017/04/selinux-na-veb-servere/</link><pubDate>Wed, 19 Apr 2017 15:00:10 +0000</pubDate><guid>https://zzamzam.dev/2017/04/selinux-na-veb-servere/</guid><description>&lt;h3 id="введение">Введение&lt;/h3>
+&lt;p>Когда-то, настраивая nginx+php-fpm, я просто делал &lt;strong>setenforce 0&lt;/strong> или правил &lt;strong>/etc/selinux/config&lt;/strong>, перманентно отключая selinux на сервере&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>/etc/selinux/config&lt;/strong>&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="c1"># This file controls the state of SELinux on the system.&lt;/span>
+&lt;span class="c1"># SELINUX= can take one of these three values:&lt;/span>
+&lt;span class="c1"># enforcing - SELinux security policy is enforced.&lt;/span>
+&lt;span class="c1"># permissive - SELinux prints warnings instead of enforcing.&lt;/span>
+&lt;span class="c1"># disabled - No SELinux policy is loaded.&lt;/span>
+&lt;span class="na">SELINUX&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">disabled&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Теперь, наконец разобравшись, я понял, что никогда больше не буду выключать selinux&lt;/p></description></item><item><title>Thinstation 5. Делаем окно подключения для rdesktop</title><link>https://zzamzam.dev/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/</link><pubDate>Thu, 12 Mar 2015 18:00:00 +0000</pubDate><guid>https://zzamzam.dev/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/thinstation-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/thinstation-logo_huc673d70d10eff8150c8b64ee4985890d_110066_320x0_resize_box_3.png" width="320" height="155">&lt;/a>
+&lt;/p>
+&lt;p>Thinstation - великолепная платформа для сборки тонкого клиента. Но вот некоторые вещи приходится допиливать руками&amp;hellip;&lt;/p>
+&lt;p>Ситуация такая: есть несколько серверов windows terminal server, где работают наши юзеры, и нам надо сделать балансировку при подключении юзеров. Для балансировки используем &lt;strong>haproxy&lt;/strong>. Нюанс в том, что мы хотим использовать балансировку по rdp-cookie, в котором в том числе передаётся **username. **Это нам даст попадание попадание пользователя на тот же сервер в ту же сессию, если у его тонкого клиента поменялся IP или пользователь заходит с соседнего тонкого клиента.&lt;/p>
+&lt;p>Так в чём проблема? Мы не хотим использовать полноценный оконный менеджер, а по-умолчанию, окно подключения в thinstation есть только у freerdp, а вот при загрузке в сессию rdesktop нам через балансировщик бросает сразу на терминальный сервер в сессию, где уже выводится стандартная виндовая форма ввода логина-пароля. А нам нужен именно rdesktop&lt;/p>
+&lt;p>Хитрость всего лишь в том, что необходимо подменить бинарник freerdp на бинарник rdesktop и добавить в сборку keymaps, чтобы в rdesktop корректно работала клавиатура&lt;/p></description></item><item><title>MS Exchange 2013. Пограничный сервер</title><link>https://zzamzam.dev/2015/03/ms-exchange-2013-pogranichnyj-server/</link><pubDate>Thu, 12 Mar 2015 17:43:00 +0000</pubDate><guid>https://zzamzam.dev/2015/03/ms-exchange-2013-pogranichnyj-server/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2015/03/ms-exchange-2013-pogranichnyj-server/exchange-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2015/03/ms-exchange-2013-pogranichnyj-server/exchange-logo_hu17ee6bf3dcf75c58f87f06cc811886b4_12629_320x0_resize_box_3.png" width="320" height="109">&lt;/a>
+&lt;/p>
+&lt;h1 id="роль-edge-для-exchange-2013">Роль EDGE для Exchange 2013&lt;/h1>
+&lt;h2 id="описание">Описание&lt;/h2>
+&lt;p>Пограничный сервер, анализирующий соединения и письма, помечающий спам, блокирующий недоверенные внешние сервера и т.п.&lt;/p>
+&lt;h2 id="безопасность">Безопасность&lt;/h2>
+&lt;h3 id="чёрные-и-белые-списки-серверов">Чёрные и белые списки серверов&lt;/h3>
+&lt;p>Пожалуй, самый простой, но не самый надёжный способ обезопасить себя от писем с &amp;ldquo;левых&amp;rdquo; почтовых серверов. При получении письма проверяется, не присутствует ли IP отправителя в одном списков.&lt;/p>
+&lt;p>IP-адреса в списки можно добавлять вручную через powershell, также существуют сторонние сервисы, которые собирают информацию по доверенным и недоверенным IP-адресам.&lt;/p>
+&lt;p>Сначала IP ищется в вручную созданных списках и только затем в списках сторонних провайдеров&lt;/p></description></item><item><title>Рекомендации по работе с Symantec Backup Exec 2010 R3</title><link>https://zzamzam.dev/2015/03/rekomendacii-po-rabote-s-symantec-backup-exec-2010-r3/</link><pubDate>Thu, 12 Mar 2015 17:36:00 +0000</pubDate><guid>https://zzamzam.dev/2015/03/rekomendacii-po-rabote-s-symantec-backup-exec-2010-r3/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2015/03/rekomendacii-po-rabote-s-symantec-backup-exec-2010-r3/symantec-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2015/03/rekomendacii-po-rabote-s-symantec-backup-exec-2010-r3/symantec-logo_hu44e5f9b565beb8eb080f707821f76f86_62398_320x0_resize_box_3.png" width="320" height="66">&lt;/a>
+&lt;/p>
+&lt;h1 id="описание">Описание&lt;/h1>
+&lt;h2 id="устройства-devices">Устройства (Devices)&lt;/h2>
+&lt;p>&lt;strong>Устройство&lt;/strong> - это физическое (магнитная лента, роботизированная библиотека) или виртуальное устройство (папка на жёстком диске), на которое происходит резервное копирование.&lt;/p>
+&lt;p>На любом подключённом в Windows жёстком диске через Backup Exec можно создать такую папку, которая будет являться &lt;strong>устройством&lt;/strong> и будет иметь 2 важных параметра:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Максимальный размер&lt;/strong> создаваемых в папке файлов (каждый файл - носитель, на котором будут храниться резервные копии)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Количество &lt;strong>наборов данных (data sets)&lt;/strong>, которые могут быть записаны в файл (один набор данных = один выбранный ресурс в задании бэкапа. Каждый новый бэкап того же ресурса - новый набор данных)&lt;/p>
+&lt;/li>
+&lt;/ol></description></item><item><title>openSUSE 13.1 NetworkManager-l2tp</title><link>https://zzamzam.dev/2014/07/opensuse-13-1-networkmanager-l2tp/</link><pubDate>Wed, 02 Jul 2014 19:19:00 +0000</pubDate><guid>https://zzamzam.dev/2014/07/opensuse-13-1-networkmanager-l2tp/</guid><description>&lt;p>Исходники &lt;a href="https://github.com/seriyps/NetworkManager-l2tp">https://github.com/seriyps/NetworkManager-l2tp&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">git clone https://github.com/seriyps/NetworkManager-l2tp.git
+&lt;span class="nb">cd&lt;/span> NetworkManager-l2tp
+./autogen.sh
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Windows Phone. Nokia Lumia AT&amp;T. Восстанавливаем Общий интернет (Tethering)</title><link>https://zzamzam.dev/2013/10/windows-phone-nokia-lumia-att-vosstanavlivaem-obshhij-interne/</link><pubDate>Thu, 10 Oct 2013 21:22:00 +0000</pubDate><guid>https://zzamzam.dev/2013/10/windows-phone-nokia-lumia-att-vosstanavlivaem-obshhij-interne/</guid><description>&lt;p>AT&amp;amp;T Unlocked Lumia 900 из США. Общий интернет работал, а потом внезапно пропал, а точнее при попытке его включить появлялась следующая ошибка:&lt;/p>
+&lt;blockquote>
+&lt;p>&amp;ldquo;Соединение не в общем доступе&lt;br>
+Чтобы включить привязку на устройстве, откройте сайт att.com/mywireless или наберите номер 611.&amp;rdquo;&lt;br>
+&amp;ldquo;Could not enable tethering, please go to att.com/mywireless or dial 611″&lt;/p>
+&lt;/blockquote></description></item><item><title>Меняем сетевое имя (hostname) устройства на Android (root required)</title><link>https://zzamzam.dev/2013/05/menjaem-setevoe-imja-hostname-ustrojstva-na-android-root-re/</link><pubDate>Wed, 15 May 2013 12:26:00 +0000</pubDate><guid>https://zzamzam.dev/2013/05/menjaem-setevoe-imja-hostname-ustrojstva-na-android-root-re/</guid><description>&lt;p>Как ясно из заголовка, нам потребуются рутованое устройство, а также эмулятор терминала на Android.&lt;/p></description></item><item><title>Выключение гостевых виртуальных машин Windows 7/2008 в KVM</title><link>https://zzamzam.dev/2013/05/vykljuchenie-gostevyh-virtualnyh-mash/</link><pubDate>Wed, 15 May 2013 10:00:00 +0000</pubDate><guid>https://zzamzam.dev/2013/05/vykljuchenie-gostevyh-virtualnyh-mash/</guid><description>&lt;p>KVM использует ACPI для подачи сигнала завершения в гостевую виртуальную машину, но по-умолчанию в Windows 7/2008 стоит запрет на завершение работы, если нет залогиневшегося пользователя.&lt;/p></description></item><item><title>Proxmox. Проброс usb-устройств в гостевую виртуальную машину. На примере ключей 1С HASP</title><link>https://zzamzam.dev/2012/10/proxmox-probros-usb-ustrojstv-v-gostevuju-virtu/</link><pubDate>Sat, 27 Oct 2012 12:51:00 +0000</pubDate><guid>https://zzamzam.dev/2012/10/proxmox-probros-usb-ustrojstv-v-gostevuju-virtu/</guid><description>&lt;p>&lt;em>обновлено 16.05.13&lt;/em>&lt;/p>
+&lt;p>Немного теории о usb:&lt;/p>
+&lt;p>&amp;ldquo;Физическое соединение устройств осуществляется по топологии многоярусной звезды. Центром каждой звезды является хаб, каждый кабельный сегмент соединяет две точки - хаб с другим хабом или с функцией. В системе имеется один (и только один) хост-контроллер, расположенный в вершине пирамиды устройств и хабов. Хост-контроллер интегрируется с корневым хабом (Root Hub), обеспечивающим одну или несколько точек подключения - портов.&amp;rdquo;&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;a href="http://usb.fober.net/teoriya/Struktura-sistemy-USB/">Источник&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>Наша задача выяснить, на какой шине (bus) и к какому порту (port) подключены наши usb-устройства. В качестве примера приведён проброс двух ключей HASP 1С Предприятия 8 (серверный и клиентский)&lt;/p></description></item></channel></rss>

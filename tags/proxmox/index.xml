@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>proxmox on Of Code &amp; Systems</title><link>https://zzamzam.dev/tags/proxmox/</link><description>Recent content in proxmox on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Tue, 21 May 2013 19:11:00 +0000</lastBuildDate><atom:link href="https://zzamzam.dev/tags/proxmox/index.xml" rel="self" type="application/rss+xml"/><item><title>Вышел Proxmox VE 3.0</title><link>https://zzamzam.dev/2013/05/vyshel-proxmox-ve-3-0/</link><pubDate>Tue, 21 May 2013 19:11:00 +0000</pubDate><guid>https://zzamzam.dev/2013/05/vyshel-proxmox-ve-3-0/</guid><description>&lt;p>&lt;strong>upd 28.05.13&lt;/strong>&lt;br>
+Полностью зарелизили версию 3.0&lt;br>
+Теперь можно создавать шаблоны для будущего удобного развёртывания и клонировать свои виртуальные машины.&lt;br>
+Выдержка из &lt;a href="http://pve.proxmox.com/wiki/VM_Templates_and_Clones">proxmox wiki&lt;/a>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Templates&lt;/strong> - Templates are pre-configured operating system environments that deploy in a couple of clicks&lt;/li>
+&lt;li>&lt;strong>Linked Clone&lt;/strong> - A linked clone VM requires less disk space but cannot run without access to the base VM Template&lt;/li>
+&lt;li>&lt;strong>Full Clone&lt;/strong> - A full clone VM is a complete copy and is fully independant to the original VM or VM Template, but requires the same disk space as the original.&lt;/li>
+&lt;/ul></description></item><item><title>Proxmox. Проброс usb-устройств в гостевую виртуальную машину. На примере ключей 1С HASP</title><link>https://zzamzam.dev/2012/10/proxmox-probros-usb-ustrojstv-v-gostevuju-virtu/</link><pubDate>Sat, 27 Oct 2012 12:51:00 +0000</pubDate><guid>https://zzamzam.dev/2012/10/proxmox-probros-usb-ustrojstv-v-gostevuju-virtu/</guid><description>&lt;p>&lt;em>обновлено 16.05.13&lt;/em>&lt;/p>
+&lt;p>Немного теории о usb:&lt;/p>
+&lt;p>&amp;ldquo;Физическое соединение устройств осуществляется по топологии многоярусной звезды. Центром каждой звезды является хаб, каждый кабельный сегмент соединяет две точки - хаб с другим хабом или с функцией. В системе имеется один (и только один) хост-контроллер, расположенный в вершине пирамиды устройств и хабов. Хост-контроллер интегрируется с корневым хабом (Root Hub), обеспечивающим одну или несколько точек подключения - портов.&amp;rdquo;&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;a href="http://usb.fober.net/teoriya/Struktura-sistemy-USB/">Источник&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;p>Наша задача выяснить, на какой шине (bus) и к какому порту (port) подключены наши usb-устройства. В качестве примера приведён проброс двух ключей HASP 1С Предприятия 8 (серверный и клиентский)&lt;/p></description></item></channel></rss>

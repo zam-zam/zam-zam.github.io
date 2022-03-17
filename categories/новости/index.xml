@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>новости on Of Code &amp; Systems</title><link>https://zzamzam.dev/categories/%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D1%82%D0%B8/</link><description>Recent content in новости on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Tue, 02 May 2017 20:59:35 +0000</lastBuildDate><atom:link href="https://zzamzam.dev/categories/%D0%BD%D0%BE%D0%B2%D0%BE%D1%81%D1%82%D0%B8/index.xml" rel="self" type="application/rss+xml"/><item><title>Digital Ocean представил новые дроплеты с высокопроизводительными CPU</title><link>https://zzamzam.dev/2017/05/digital-ocean-predstavil-novye-droplety-s-vysoko/</link><pubDate>Tue, 02 May 2017 20:59:35 +0000</pubDate><guid>https://zzamzam.dev/2017/05/digital-ocean-predstavil-novye-droplety-s-vysoko/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2017/05/digital-ocean-predstavil-novye-droplety-s-vysoko/do-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2017/05/digital-ocean-predstavil-novye-droplety-s-vysoko/do-logo_hu375f1039e7bf73eb43d94d568a84b65f_43515_320x0_resize_box_3.png" width="320" height="320">&lt;/a>
+&lt;/p>
+&lt;p>Упало письмо с рассылкой от DO, в котором говорится что они анонсируют ранний доступ, по запросу, к новым типам дроплетов&lt;/p>
+&lt;blockquote>
+&lt;p>We&amp;rsquo;re excited to share some big new products and capabilities, and other improvements you may have missed&lt;/p>
+&lt;p>&lt;strong>High CPU Droplets: Early Access&lt;/strong>&lt;/p>
+&lt;p>We are now offering early access to a new set Droplet Plans: High CPU Droplets.&lt;/p>
+&lt;p>Focused on reliable high performance, High CPU Droplets are backed by a more powerful, best-in-class CPU, and won&amp;rsquo;t have any overcommitment on the underlying physical resources.&lt;/p>
+&lt;/blockquote></description></item><item><title>Вышел Proxmox VE 3.0</title><link>https://zzamzam.dev/2013/05/vyshel-proxmox-ve-3-0/</link><pubDate>Tue, 21 May 2013 19:11:00 +0000</pubDate><guid>https://zzamzam.dev/2013/05/vyshel-proxmox-ve-3-0/</guid><description>&lt;p>&lt;strong>upd 28.05.13&lt;/strong>&lt;br>
+Полностью зарелизили версию 3.0&lt;br>
+Теперь можно создавать шаблоны для будущего удобного развёртывания и клонировать свои виртуальные машины.&lt;br>
+Выдержка из &lt;a href="http://pve.proxmox.com/wiki/VM_Templates_and_Clones">proxmox wiki&lt;/a>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Templates&lt;/strong> - Templates are pre-configured operating system environments that deploy in a couple of clicks&lt;/li>
+&lt;li>&lt;strong>Linked Clone&lt;/strong> - A linked clone VM requires less disk space but cannot run without access to the base VM Template&lt;/li>
+&lt;li>&lt;strong>Full Clone&lt;/strong> - A full clone VM is a complete copy and is fully independant to the original VM or VM Template, but requires the same disk space as the original.&lt;/li>
+&lt;/ul></description></item></channel></rss>

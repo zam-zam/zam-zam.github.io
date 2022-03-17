@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>логирование on Of Code &amp; Systems</title><link>https://zzamzam.dev/tags/%D0%BB%D0%BE%D0%B3%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/</link><description>Recent content in логирование on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Tue, 27 Apr 2021 17:15:00 +0300</lastBuildDate><atom:link href="https://zzamzam.dev/tags/%D0%BB%D0%BE%D0%B3%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5/index.xml" rel="self" type="application/rss+xml"/><item><title>Как syslog обрабатывает логи</title><link>https://zzamzam.dev/2021/04/syslogd-then-and-now/</link><pubDate>Tue, 27 Apr 2021 17:15:00 +0300</pubDate><guid>https://zzamzam.dev/2021/04/syslogd-then-and-now/</guid><description>&lt;h1 id="оригинальный-syslogd">Оригинальный syslogd&lt;/h1>
+&lt;p>
+&lt;a href="https://zzamzam.dev/2021/04/syslogd-then-and-now/syslogd01.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2021/04/syslogd-then-and-now/syslogd01.png" width="611" height="409">&lt;/a>
+&lt;/p>
+&lt;h1 id="cвязка-journald--rsyslogd">Cвязка journald + rsyslogd&lt;/h1>
+&lt;p>
+&lt;a href="https://zzamzam.dev/2021/04/syslogd-then-and-now/syslogd02.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2021/04/syslogd-then-and-now/syslogd02.png" width="871" height="419">&lt;/a>
+&lt;/p>
+&lt;h1 id="форматы-syslog-сообщений">Форматы syslog сообщений&lt;/h1>
+&lt;h2 id="rfc-3164-устаревший">RFC 3164 (устаревший)&lt;/h2>
+&lt;p>&lt;a href="https://tools.ietf.org/html/rfc3164">RFC 3164 - The BSD Syslog Protocol&lt;/a>&lt;/p>
+&lt;h3 id="описание-формата-сообщения">Описание формата сообщения&lt;/h3>
+&lt;p>The first part is called the &lt;code>PRI&lt;/code>, the second part is the &lt;code>HEADER&lt;/code>, and the third part is the &lt;code>MSG&lt;/code>. The total length of the packet MUST be 1024 bytes or less&lt;/p></description></item></channel></rss>
