@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>fluent-bit on Of Code &amp; Systems</title><link>https://zzamzam.dev/tags/fluent-bit/</link><description>Recent content in fluent-bit on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Fri, 29 Apr 2022 12:11:59 +0300</lastBuildDate><atom:link href="https://zzamzam.dev/tags/fluent-bit/index.xml" rel="self" type="application/rss+xml"/><item><title>Потеря логов при отправке через Fluent Bit</title><link>https://zzamzam.dev/posts/2022-04-29-fluent-bit-loses-logs/</link><pubDate>Fri, 29 Apr 2022 12:11:59 +0300</pubDate><guid>https://zzamzam.dev/posts/2022-04-29-fluent-bit-loses-logs/</guid><description>&lt;h1 id="описание-проблемы">Описание проблемы&lt;/h1>
+&lt;p>&lt;strong>Дано&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>кластер k8s&lt;/li>
+&lt;li>много приложений, которые пишут свои логи в stdout/stderr, а контейнерный движок (в данном случае docker) складывает их в файлы&lt;/li>
+&lt;li>fluent-bit, запущенный на каждой ноде k8s. Он собирает логи, фильтрует их и отправляет в Loki&lt;/li>
+&lt;li>loki - хранилище логов от Grafana Labs&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>В чём заключается проблема&lt;/strong>&lt;/p>
+&lt;p>При просмотре логов через Grafana (источник - Loki) видно, что логи приходят с сильной задержкой или часть логов вообще отсутствует. При просмотре через kubectl logs все логи на месте&lt;/p>
+&lt;h1 id="решение-проблемы">Решение проблемы&lt;/h1></description></item></channel></rss>

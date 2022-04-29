@@ -1,0 +1,310 @@
+<!doctype html><html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>
+Потеря логов при отправке через Fluent Bit &ndash; Of Code & Systems
+</title>
+<meta name=description property="og:description" content="Описание проблемы Дано
+ кластер k8s много приложений, которые пишут свои логи в stdout/stderr, а контейнерный движок (в данном случае docker) складывает их в файлы fluent-bit, запущенный на каждой ноде k8s. Он собирает логи, фильтрует их и отправляет в Loki loki - хранилище логов от Grafana Labs  В чём заключается проблема
+При просмотре логов через Grafana (источник - Loki) видно, что логи приходят с сильной задержкой или часть логов вообще отсутствует. При просмотре через kubectl logs все логи на месте
+Решение проблемы|">
+<meta name=apple-mobile-web-app-title content="Of Code & Systems">
+<link rel=stylesheet href=/assets/syntax.css>
+<link rel=stylesheet href=/assets/primer-build.css>
+<link rel=stylesheet href=/assets/style.css>
+</head>
+<body class=bg-gray style=background-color:#fdf6e3!important>
+<div id=holy class="container-lg bg-white h-100">
+<div id=header class="px-1 bg-white text-center">
+<nav class="UnderlineNav UnderlineNav--right px-2">
+<a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>
+Of Code & Systems
+</a>
+</nav>
+</div>
+<div role=main id=main class="holy-main markdown-body px-4 bg-white">
+<div class=Subhead>
+<div class=Subhead-heading>
+<div class="h1 mt-3 mb-1">Потеря логов при отправке через Fluent Bit</div>
+</div>
+<div class=Subhead-description>
+<a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link>
+<span class="Label Label--gray-darker">документация</span>
+</a>
+<a href=/tags/%D0%BB%D0%BE%D0%B3%D0%B8 class=muted-link>
+<span class="Label Label--gray">логи</span>
+</a>
+<a href=/tags/fluent-bit class=muted-link>
+<span class="Label Label--gray">fluent-bit</span>
+</a>
+<div class=float-md-right>
+<span title="Lastmod: 2022-04-29. Published at: 2022-04-29.">
+2022-04-29
+</span>
+</div>
+</div>
+</div>
+<article>
+<section class="pb-6 mb-3 border-bottom">
+<div id=toc class="Box Box--blue mb-3">
+<b>Содержание</b><nav id=TableOfContents>
+<ul>
+<li><a href=#описание-проблемы>Описание проблемы</a></li>
+<li><a href=#решение-проблемы>Решение проблемы</a>
+<ul>
+<li><a href=#ищем-причину>Ищем причину</a></li>
+<li><a href=#как-fluent-bit-отправляет-логи>Как fluent-bit отправляет логи</a></li>
+<li><a href=#отправляем-логи-чаще>Отправляем логи чаще</a></li>
+<li><a href=#используем-многопоточность>Используем многопоточность</a></li>
+</ul>
+</li>
+<li><a href=#вывод>Вывод</a></li>
+</ul>
+</nav></div>
+<h1 id=описание-проблемы>Описание проблемы</h1>
+<p><strong>Дано</strong></p>
+<ul>
+<li>кластер k8s</li>
+<li>много приложений, которые пишут свои логи в stdout/stderr, а контейнерный движок (в данном случае docker) складывает их в файлы</li>
+<li>fluent-bit, запущенный на каждой ноде k8s. Он собирает логи, фильтрует их и отправляет в Loki</li>
+<li>loki - хранилище логов от Grafana Labs</li>
+</ul>
+<p><strong>В чём заключается проблема</strong></p>
+<p>При просмотре логов через Grafana (источник - Loki) видно, что логи приходят с сильной задержкой или часть логов вообще отсутствует. При просмотре через kubectl logs все логи на месте</p>
+<h1 id=решение-проблемы>Решение проблемы</h1>
+<h2 id=ищем-причину>Ищем причину</h2>
+<p>Конфиг fluent-bit имеет примерно такой вид</p>
+<pre tabindex=0><code>[SERVICE]
+  Flush                     1
+  Daemon                    Off
+  Log_Level                 info
+  Parsers_File              parsers.conf
+  Parsers_File              custom_parsers.conf
+  HTTP_Server               On
+  HTTP_Listen               0.0.0.0
+  HTTP_Port                 2020
+[INPUT]
+  Name                      tail
+  Path                      /var/log/containers/*.log
+  Parser                    docker
+  Tag                       kube.*
+  Mem_Buf_Limit             4MB
+  Skip_Long_Lines           On
+  Skip_Empty_Lines          On
+[FILTER]
+  Name                      kubernetes
+  Match                     kube.*
+  Merge_Log                 On
+  Keep_Log                  On
+  K8S-Logging.Parser        On
+  K8S-Logging.Exclude       On
+[OUTPUT]
+  Name                      loki
+  Match                     kube.*
+  Host                      loki.logging.svc.cluster.local
+  Port                      3100
+  Labels                    job=fluent, namespace=$kubernetes['namespace_name'], pod=$kubernetes['pod_name'], container=$kubernetes['container_name']
+  Auto_kubernetes_labels    off
+  Line_format               json
+</code></pre><p>Первым делом смотрим логи самого fluent-bit</p>
+<blockquote>
+<p>kubectl logs -l app.kubernetes.io/name=fluent-bit &ndash;max-log-requests=6 -f</p>
+</blockquote>
+<p>и видим там много подобных сообщений</p>
+<pre tabindex=0><code>[2022/04/27 07:48:32] [ warn] [input] tail.0 paused (mem buf overlimit)
+[2022/04/27 07:48:33] [ info] [input] tail.0 resume (storage buf overlimit 77/128)
+[2022/04/27 07:48:33] [ warn] [input] tail.0 paused (mem buf overlimit)
+[2022/04/27 07:48:34] [ info] [input] tail.0 resume (storage buf overlimit 77/128)                                           
+[2022/04/27 07:48:34] [ warn] [input] tail.0 paused (mem buf overlimit)
+[2022/04/27 07:48:35] [ info] [input] tail.0 resume (storage buf overlimit 78/128)
+</code></pre><p><strong>tail.0 paused (mem buf overlimit)</strong> говорит о том, что сбор логов через плагин <strong>tail</strong> был приостановлен из-за превышения лимита буфера в памяти <strong>Mem_Buf_Limit</strong> (если не задать, то в какой-то момент придёт ООМ). Как только логи из буфера сбрасываются в <strong>loki</strong> и в буфере появляется место, <strong>tail</strong> продолжает собирать логи, но тут же снова упирается в лимит буфера и останавливает сбор новых логов.</p>
+<p>На то, как буфер переполняется и с какой скоростью появляются новые логи, можно посмотреть в более явном виде, отправляя при переполнении буфера логи в файловую систему</p>
+<pre tabindex=0><code>[SERVICE]
+...
+  storage.path              /fluent-bit/log/storage/
+[INPUT]
+...
+  storage.type              filesystem
+</code></pre><p>Логи будут отправляться на диск:</p>
+<ul>
+<li>при превышении <strong>Mem_Buf_Limit</strong></li>
+<li>при превышении разрешённого количества чанков в памяти. Задаётся глобально параметром <strong>storage.max_chunks_up</strong> (по-умолчанию 128). Для конкретного input плагина размер чанка задаётся через <strong>Buffer_Chunk_Size</strong> и <strong>Buffer_Max_Size</strong></li>
+</ul>
+<p>Подробнее можно почитать по ссылкам</p>
+<ul>
+<li><a href=https://docs.fluentbit.io/manual/administration/buffering-and-storage>https://docs.fluentbit.io/manual/administration/buffering-and-storage</a></li>
+<li><a href=https://docs.fluentbit.io/manual/pipeline/inputs/tail>https://docs.fluentbit.io/manual/pipeline/inputs/tail</a></li>
+</ul>
+<hr>
+<p>В релизных образах fluent-bit не содержится никаких дополнительных инструментов. Для дебага необходимо пользоваться специальными образами с суффиксом <strong>-debug</strong></p>
+<p>Например, <strong>1.9.2-debug</strong></p>
+<hr>
+<p>Теперь можно понаблюдать, как растёт очередь логов на файловой системе</p>
+<blockquote>
+<p>watch -n 5 &ldquo;kubectl get po | grep flue | cut -d' ' -f1 | xargs -I{} sh -c &lsquo;kubectl exec -t {} &ndash; du -hs /fluent-bit/log/storage&rsquo;&rdquo;</p>
+</blockquote>
+<p><img src=01.gif alt></p>
+<p>Итак, проблема в том, что логи в input плагине появляются быстрее, чем успевают отправляться в output плагине. Почему так происходит?</p>
+<p>Первым предположением было то, что <strong>Loki</strong> не успевает принимать и обрабатывать логи, однако</p>
+<p>отсутствие нагрузки на loki</p>
+<p><img src=02.png alt></p>
+<p>и вывод дебаг-лога fluent-bit</p>
+<pre tabindex=0><code>[2022/04/27 10:11:31] [debug] [upstream] KA connection #94 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 10:11:31] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 10:11:31] [debug] [upstream] KA connection #94 to loki-headless.logging.svc.cluster.local:3100 is now available
+ 
+[2022/04/27 10:11:32] [debug] [upstream] KA connection #94 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 10:11:32] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 10:11:32] [debug] [upstream] KA connection #94 to loki-headless.logging.svc.cluster.local:3100 is now available
+ 
+[2022/04/27 10:11:33] [debug] [upstream] KA connection #94 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 10:11:33] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 10:11:33] [debug] [upstream] KA connection #94 to loki-headless.logging.svc.cluster.local:3100 is now available
+ 
+[2022/04/27 10:11:34] [debug] [upstream] KA connection #94 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 10:11:34] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 10:11:34] [debug] [upstream] KA connection #94 to loki-headless.logging.svc.cluster.local:3100 is now available
+ 
+[2022/04/27 10:11:35] [debug] [upstream] KA connection #94 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 10:11:35] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 10:11:35] [debug] [upstream] KA connection #94 to loki-headless.logging.svc.cluster.local:3100 is now available
+ 
+[2022/04/27 10:11:36] [debug] [upstream] KA connection #94 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 10:11:36] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 10:11:36] [debug] [upstream] KA connection #94 to loki-headless.logging.svc.cluster.local:3100 is now available
+ 
+[2022/04/27 10:11:37] [debug] [upstream] KA connection #94 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 10:11:37] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 10:11:37] [debug] [upstream] KA connection #94 to loki-headless.logging.svc.cluster.local:3100 is now available
+</code></pre><p>говорят о том, что Loki принимает все логи с той скоростью, с которой fluent-bit их отправляет</p>
+<p>Значит проблему надо искать на стороне fluent-bit в том, как он отправляет логи</p>
+<h2 id=как-fluent-bit-отправляет-логи>Как fluent-bit отправляет логи</h2>
+<p>Пора обратиться к <a href=https://docs.fluentbit.io/manual/administration/scheduling-and-retries>документации</a></p>
+<blockquote>
+<p>Fluent Bit has an Engine that helps to coordinate the data ingestion from input plugins and calls the Scheduler to decide when it is time to flush the data through one or multiple output plugins</p>
+</blockquote>
+<p>Fluent-bit один раз в определённый интервал времени собирает данные из буфера input плагинов, прогоняет через фильтры и отправляет в output плагины. Это интервал задаётся глобально параметром <strong>Flush</strong> в секции <strong>[SERVICE]</strong>. Выходит, никакой тонкой настройки output плагинов и возможности отправлять некий буфер сразу после его накопления - нет, а единственный вариант - это просто чаще отправлять логи</p>
+<h2 id=отправляем-логи-чаще>Отправляем логи чаще</h2>
+<p>Что ж, попробуем отправлять логи каждые 100мс</p>
+<pre tabindex=0><code>[SERVICE]
+  Flush                     0.1
+...
+</code></pre><p><img src=03.gif alt></p>
+<p>Похоже, что теперь логи успевают отправляться, но неужели нет более элегантного способа, чем просто чаще отправлять данные? Тем более, что это всё происходит в одном потоке</p>
+<p>Оказывается, есть способ лучше</p>
+<h2 id=используем-многопоточность>Используем многопоточность</h2>
+<p>В fluent-bit 1.7.0 <a href=https://fluentbit.io/announcements/v1.7.0/#core-multithread-support-5x-performance>добавили</a> многопоточность, которая позволяет output плагинам выполнять обработку и доставку логов в отдельных потоках. Количество потоков задаётся через параметр <strong>Workers</strong></p>
+<p>Что конкретно происходит при вынесении доставки в отдельный поток, в рамках этой статьи останется магией, потому что в документации об этом не говорится и надо пристально изучать код на <strong>C</strong>. Поэтому просто поэкспериментируем, выставив отправку логов каждые 5 секунд и один отдельный воркер для <strong>Loki</strong> output</p>
+<p><strong>Конфиг</strong></p>
+<pre tabindex=0><code>[SERVICE]
+  Flush                     5
+...
+[OUTPUT]
+  Name                      loki
+...
+  Workers                   1
+</code></pre><p><strong>Файловый буфер</strong></p>
+<p><img src=04.gif alt></p>
+<p>По файловому буферу видно, что логи успевают отправляться и в буфере не накапливаются</p>
+<p><strong>Дебаг лог</strong></p>
+<pre tabindex=0><code>[2022/04/27 13:25:08] [debug] [output:loki:loki.0] task_id=0 assigned to thread #0
+[2022/04/27 13:25:08] [debug] [upstream] KA connection #125 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 13:25:08] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 13:25:08] [debug] [upstream] KA connection #125 to loki-headless.logging.svc.cluster.local:3100 is now available
+ 
+[2022/04/27 13:25:13] [debug] [output:loki:loki.0] task_id=1 assigned to thread #0
+[2022/04/27 13:25:13] [debug] [upstream] KA connection #122 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 13:25:13] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 13:25:13] [debug] [upstream] KA connection #122 to loki-headless.logging.svc.cluster.local:3100 is now available
+ 
+[2022/04/27 13:25:18] [debug] [output:loki:loki.0] task_id=2 assigned to thread #0
+[2022/04/27 13:25:18] [debug] [upstream] KA connection #119 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 13:25:18] [debug] [output:loki:loki.0] task_id=0 assigned to thread #0
+[2022/04/27 13:25:18] [debug] [output:loki:loki.0] task_id=3 assigned to thread #0
+[2022/04/27 13:25:18] [debug] [upstream] KA connection #114 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 13:25:18] [debug] [output:loki:loki.0] task_id=1 assigned to thread #0
+[2022/04/27 13:25:18] [debug] [output:loki:loki.0] task_id=4 assigned to thread #0
+[2022/04/27 13:25:18] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 13:25:18] [debug] [upstream] KA connection #119 to loki-headless.logging.svc.cluster.local:3100 is now available
+[2022/04/27 13:25:18] [debug] [upstream] KA connection #116 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 13:25:18] [debug] [upstream] KA connection #118 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 13:25:18] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 13:25:18] [debug] [upstream] KA connection #114 to loki-headless.logging.svc.cluster.local:3100 is now available
+[2022/04/27 13:25:18] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 13:25:18] [debug] [upstream] KA connection #116 to loki-headless.logging.svc.cluster.local:3100 is now available
+[2022/04/27 13:25:18] [debug] [upstream] KA connection #125 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 13:25:18] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 13:25:18] [debug] [upstream] KA connection #125 to loki-headless.logging.svc.cluster.local:3100 is now available
+[2022/04/27 13:25:18] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 13:25:18] [debug] [upstream] KA connection #118 to loki-headless.logging.svc.cluster.local:3100 is now available
+ 
+[2022/04/27 13:25:23] [debug] [output:loki:loki.0] task_id=5 assigned to thread #0
+[2022/04/27 13:25:23] [debug] [output:loki:loki.0] task_id=0 assigned to thread #0
+[2022/04/27 13:25:23] [debug] [output:loki:loki.0] task_id=1 assigned to thread #0
+[2022/04/27 13:25:23] [debug] [upstream] KA connection #122 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 13:25:23] [debug] [upstream] KA connection #119 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 13:25:23] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 13:25:23] [debug] [upstream] KA connection #122 to loki-headless.logging.svc.cluster.local:3100 is now available
+[2022/04/27 13:25:23] [debug] [upstream] KA connection #114 to loki-headless.logging.svc.cluster.local:3100 has been assigned (recycled)
+[2022/04/27 13:25:23] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 13:25:23] [debug] [upstream] KA connection #114 to loki-headless.logging.svc.cluster.local:3100 is now available
+[2022/04/27 13:25:23] [debug] [output:loki:loki.0] loki-headless.logging.svc.cluster.local:3100, HTTP status=204
+[2022/04/27 13:25:23] [debug] [upstream] KA connection #119 to loki-headless.logging.svc.cluster.local:3100 is now available
+</code></pre><p>По дебаг логу видно, что событие отправки логов стартует каждые 5 секунд, однако за счёт использования отдельного потока в каждом событии одновременно запускается сразу несколько задач (<strong>task_id=#</strong>), которые отправляют в <strong>Loki</strong> накопившиеся чанки</p>
+<h1 id=вывод>Вывод</h1>
+<ul>
+<li>
+<p>При использовании fluent-bit данная проблема может воспроизводится при отправке не только в <strong>Loki</strong>, но и в другие хранилища/форвардеры логов. Стоит заметить, что версия 1.7.0 с многопоточностью появилась в феврале 2021 года и с тех пор в некоторые output плагины уже были добавлены значения <strong>Workers</strong> по-умолчанию (например, в <a href=https://docs.fluentbit.io/manual/pipeline/outputs/elasticsearch>плагин elasticsearch</a> с версии <a href=https://fluentbit.io/announcements/v1.8.13/>1.8.13</a>), так что при использовании более новых версий fluent-bit с этой проблемой можно не столкнуться</p>
+</li>
+<li>
+<p>Использование отдельных потоков - это отличное производительное решение и однозначно нужно использовать именно его вместо уменьшения интервала <strong>Flush</strong></p>
+</li>
+<li>
+<p>Иногда документации недостаточно и полезно искать анонсы по релизам и читать исходники</p>
+</li>
+</ul>
+</section>
+<section>
+<div id=remark42></div>
+</section>
+</article>
+</div>
+<div id=side class="pr-1 bg-white">
+<aside class=pr-3>
+<div id=toc class="Box Box--blue mb-3">
+<b>Потеря логов при отправке через Fluent Bit</b><nav id=TableOfContents>
+<ul>
+<li><a href=#описание-проблемы>Описание проблемы</a></li>
+<li><a href=#решение-проблемы>Решение проблемы</a>
+<ul>
+<li><a href=#ищем-причину>Ищем причину</a></li>
+<li><a href=#как-fluent-bit-отправляет-логи>Как fluent-bit отправляет логи</a></li>
+<li><a href=#отправляем-логи-чаще>Отправляем логи чаще</a></li>
+<li><a href=#используем-многопоточность>Используем многопоточность</a></li>
+</ul>
+</li>
+<li><a href=#вывод>Вывод</a></li>
+</ul>
+</nav></div>
+<div>
+</div>
+</aside>
+</div>
+<div id=footer class="pt-2 pb-3 bg-white text-center">
+<span class="text-small text-gray">
+<p>
+<a href=https://creativecommons.org/licenses/by-sa/4.0/><img src=/images/cc-by-sa.png alt></a>
+</p>
+<p>
+Powered by the
+<a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>
+</p>
+</span>
+</div>
+</div>
+<script>var remark_config={host:'https://remark42.k8s.zzamzam.dev',site_id:'zzamzam_dev',components:['embed','counter']}</script>
+<script>!function(d,b){for(var c=0,a,e,f;c<d.length;c++)a=b.createElement("script"),e=".js",f=b.head||b.body,"noModule"in a?(a.type="module",e=".mjs"):a.async=!0,a.defer=!0,a.src=remark_config.host+"/web/"+d[c]+e,f.appendChild(a)}(remark_config.components||["embed"],document)</script>
+</body>
+</html>
