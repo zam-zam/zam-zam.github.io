@@ -5,7 +5,8 @@
 <title>
 Потеря логов при отправке через Fluent Bit &ndash; Of Code & Systems
 </title>
-<meta name=description property="og:description" content="Описание проблемы Дано
+<meta name=description property="og:description" content=" Эта статья на Хабре https://habr.com/ru/post/675728/
+ Описание проблемы Дано
  кластер k8s много приложений, которые пишут свои логи в stdout/stderr, а контейнерный движок (в данном случае docker) складывает их в файлы fluent-bit, запущенный на каждой ноде k8s. Он собирает логи, фильтрует их и отправляет в Loki loki - хранилище логов от Grafana Labs  В чём заключается проблема
 При просмотре логов через Grafana (источник - Loki) видно, что логи приходят с сильной задержкой или часть логов вообще отсутствует. При просмотре через kubectl logs все логи на месте
 Решение проблемы|">
@@ -62,6 +63,9 @@ Of Code & Systems
 <li><a href=#вывод>Вывод</a></li>
 </ul>
 </nav></div>
+<blockquote>
+<p>Эта статья на Хабре <a href=https://habr.com/ru/post/675728/>https://habr.com/ru/post/675728/</a></p>
+</blockquote>
 <h1 id=описание-проблемы>Описание проблемы</h1>
 <p><strong>Дано</strong></p>
 <ul>
