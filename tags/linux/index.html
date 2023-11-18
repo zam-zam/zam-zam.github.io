@@ -3,7 +3,7 @@
 <meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1">
 <title>
-thinstation &ndash; Of Code & Systems
+linux &ndash; Of Code & Systems
 </title>
 <meta name=description property="og:description" content>
 <meta name=apple-mobile-web-app-title content="Of Code & Systems">
@@ -22,42 +22,37 @@ Of Code & Systems
 </div>
 <div role=main id=main class="holy-main markdown-body px-4 bg-white">
 <div>
-<h1>thinstation</h1>
+<h1>linux</h1>
 <div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
 <div class="Subhead mb-2">
 <div class=Subhead-heading>
-<a href=/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/>
-<div class="h2 mt-1 mb-1">Thinstation 5. Делаем окно подключения для rdesktop</div>
+<a href=/posts/2023-11-18-linux-process-envs/>
+<div class="h2 mt-1 mb-1">Переменные окружения процесса в linux</div>
 </a>
 </div>
 <div class=Subhead-description>
 <a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link>
 <span class="Label Label--gray-darker">документация</span>
 </a>
-<a href=/tags/rdesktop class=muted-link>
-<span class="Label Label--gray">rdesktop</span>
-</a>
-<a href=/tags/thinstation class=muted-link>
-<span class="Label Label--gray">thinstation</span>
+<a href=/tags/linux class=muted-link>
+<span class="Label Label--gray">linux</span>
 </a>
 <div class=float-md-right>
-<span>2015-03-12</span>
+<span>2023-11-18</span>
 </div>
 </div>
 </div>
 <div class=text-gray>
-<p>
-<a href=/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/thinstation-logo.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/thinstation-logo_huc673d70d10eff8150c8b64ee4985890d_110066_320x0_resize_box_3.png width=320 height=155></a>
-</p>
-<p>Thinstation - великолепная платформа для сборки тонкого клиента. Но вот некоторые вещи приходится допиливать руками&mldr;</p>
-<p>Ситуация такая: есть несколько серверов windows terminal server, где работают наши юзеры, и нам надо сделать балансировку при подключении юзеров. Для балансировки используем <strong>haproxy</strong>. Нюанс в том, что мы хотим использовать балансировку по rdp-cookie, в котором в том числе передаётся **username. **Это нам даст попадание попадание пользователя на тот же сервер в ту же сессию, если у его тонкого клиента поменялся IP или пользователь заходит с соседнего тонкого клиента.</p>
-<p>Так в чём проблема? Мы не хотим использовать полноценный оконный менеджер, а по-умолчанию, окно подключения в thinstation есть только у freerdp, а вот при загрузке в сессию rdesktop нам через балансировщик бросает сразу на терминальный сервер в сессию, где уже выводится стандартная виндовая форма ввода логина-пароля. А нам нужен именно rdesktop</p>
-<p>Хитрость всего лишь в том, что необходимо подменить бинарник freerdp на бинарник rdesktop и добавить в сборку keymaps, чтобы в rdesktop корректно работала клавиатура</p>
+<h1 id=как-получить-переменные-окружения-процесса>Как получить переменные окружения процесса</h1>
+<p><strong>Простой ответ</strong>: прочитав файл <code>/proc/&lt;pid>/environ</code></p>
+<p>Однако таким образом можно получить только те переменные окружения, которые были заданы на момент создания процесса. Если же во время работы программа меняла/устанавливала новые/удаляла переменные окружения через, например, <a href=https://man7.org/linux/man-pages/man3/setenv.3.html>setenv</a> / <a href=https://man7.org/linux/man-pages/man3/unsetenv.3.html>unsetenv</a>, то эти изменения в файле отражены не будут. Эти значения можно уже будет достать только из оперативной памяти, либо если текущая программа вызовет другую через <a href=https://man7.org/linux/man-pages/man2/fork.2.html>fork</a> или <a href=https://man7.org/linux/man-pages/man3/exec.3.html>exec</a> - в таком случае для нового процесса будет заново проинициализирован <code>/proc/&lt;pid>/environ</code> с переменными окружениям родителя/замещённого процесса</p>
+<h2 id=почему-так-происходит>Почему так происходит?</h2>
+<p>Файл <code>/proc/&lt;pid>/environ</code> находится в директории <code>/proc</code>, которая, по сути, предоставляет доступ к структурам данных ядра в оперативной памяти через специальный драйвер файловой системы procfs</p>
 <div>
-<a href=/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/>Открыть полностью…</a>
+<a href=/posts/2023-11-18-linux-process-envs/>Открыть полностью…</a>
 </div>
 <div class=text-right>
-<a href=/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/#remark42><span class=remark42__counter data-url=https://zzamzam.dev/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/></span> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-chat-text" viewBox="0 0 16 16"><path d="M2.678 11.894a1 1 0 01.287.801 10.97 10.97.0 01-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 01.71-.074A8.06 8.06.0 008 14c3.996.0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682.0 01-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68.0 00.244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37.0 9.76.0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06.0 01-2.347-.306c-.52.263-1.639.742-3.468 1.105z"/><path d="M4 5.5a.5.5.0 01.5-.5h7a.5.5.0 010 1h-7A.5.5.0 014 5.5zM4 8a.5.5.0 01.5-.5h7a.5.5.0 010 1h-7A.5.5.0 014 8zm0 2.5a.5.5.0 01.5-.5h4a.5.5.0 010 1h-4a.5.5.0 01-.5-.5z"/></svg></a>
+<a href=/posts/2023-11-18-linux-process-envs/#remark42><span class=remark42__counter data-url=https://zzamzam.dev/posts/2023-11-18-linux-process-envs/></span> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentcolor" class="bi bi-chat-text" viewBox="0 0 16 16"><path d="M2.678 11.894a1 1 0 01.287.801 10.97 10.97.0 01-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 01.71-.074A8.06 8.06.0 008 14c3.996.0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682.0 01-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68.0 00.244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37.0 9.76.0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06.0 01-2.347-.306c-.52.263-1.639.742-3.468 1.105z"/><path d="M4 5.5a.5.5.0 01.5-.5h7a.5.5.0 010 1h-7A.5.5.0 014 5.5zM4 8a.5.5.0 01.5-.5h7a.5.5.0 010 1h-7A.5.5.0 014 8zm0 2.5a.5.5.0 01.5-.5h4a.5.5.0 010 1h-4a.5.5.0 01-.5-.5z"/></svg></a>
 </div>
 </div>
 </div>
