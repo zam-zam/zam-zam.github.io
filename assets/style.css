@@ -99,3 +99,26 @@ aside {
     display: none;
   }
 }
+
+/* user defined elements (u- prefix */
+
+.u-nav {
+  display: flex;
+}
+
+.u-nav-el {
+  flex: 1 1 auto;
+  padding: 7px 12px;
+}
+
+.u-nav-el:focus,
+.u-nav-el:hover {
+  background-color: #eff3f6;
+  text-decoration: none;
+}
+
+.u-nav-el-current,
+.u-nav-el-current:hover {
+  background-color: #0366d6;
+  color: #fff;
+}
