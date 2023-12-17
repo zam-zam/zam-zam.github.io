@@ -118,6 +118,7 @@ aside {
 }
 
 .u-nav-el-current,
+.u-nav-el-current:focus,
 .u-nav-el-current:hover {
   background-color: #0366d6;
   color: #fff;
