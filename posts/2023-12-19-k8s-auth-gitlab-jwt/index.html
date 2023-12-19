@@ -1,0 +1,282 @@
+<!doctype html><html>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>
+Аутентификация в Kubernetes через Gitlab'овские JWT токены &ndash; Of Code & Systems
+</title>
+<meta name=description property="og:description" content="Введение Зачем? Представим ситуацию, что мы деплоим по push-модели. В качестве платформы для запуска деплоя у нас используется Gitlab: в нём настроен пайплайн и джобы, разворачивающие приложения в разные окружения в Kubernetes
+Какой бы инструмент мы не использовали (kubectl, helm), для манипуляций с ресурсами API нам в любом случае будет необходимо аутентифицироваться при выполнении запросов к Kubernetes. Для этого в запросе надо передать данные для аутентификации, будь то токен или сертификат. И тут возникает несколько вопросов:
+  Где хранить эти креды?
+Хранить креды от кластера можно в Gitlab CICD Variables и подставлять в джобу деплоя, но тогда все пользователи будут деплоить с одними и теми же доступами
+  Как сделать так, чтобы у каждого пользователя были свои данные для доступа в кластер?
+Можно было бы вручную запускать джобы деплоя и в параметры каждый раз подставлять свои аутентификацонные данные, но, очевидно, такой подход неудобен и подходит далеко не всем
+  Попробуем сделать иначе&amp;hellip;
+|">
+<meta name=apple-mobile-web-app-title content="Of Code & Systems">
+<link rel=stylesheet href=/assets/syntax.css>
+<link rel=stylesheet href=/assets/primer-build.css>
+<link rel=stylesheet href=/assets/style.css>
+</head>
+<body class=bg-gray style=background-color:#fdf6e3!important>
+<div id=holy class="container-lg bg-white h-100">
+<div id=header class="px-1 bg-white text-center">
+<div class=u-nav>
+<a class="u-nav-el u-nav-el-current" href=//zzamzam.dev>Blog</a>
+<a class=u-nav-el href=//docs.zzamzam.dev>Docs</a>
+</div>
+<nav class="UnderlineNav UnderlineNav--right px-2">
+<a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>
+Of Code & Systems
+</a>
+</nav>
+</div>
+<div role=main id=main class="holy-main markdown-body px-4 bg-white">
+<div class=Subhead>
+<div class=Subhead-heading>
+<div class="h1 mt-3 mb-1">Аутентификация в Kubernetes через Gitlab'овские JWT токены</div>
+</div>
+<div class=Subhead-description>
+<a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link>
+<span class="Label Label--gray-darker">документация</span>
+</a>
+<a href=/tags/k8s class=muted-link>
+<span class="Label Label--gray">k8s</span>
+</a>
+<div class=float-md-right>
+<span title="Lastmod: 2023-12-19. Published at: 2023-12-19.">
+2023-12-19
+</span>
+</div>
+</div>
+</div>
+<article>
+<section class="pb-6 mb-3 border-bottom">
+<div id=toc class="Box Box--blue mb-3">
+<b>Содержание</b><nav id=TableOfContents>
+<ul>
+<li><a href=#введение>Введение</a>
+<ul>
+<li><a href=#зачем>Зачем?</a></li>
+<li><a href=#знакомьтесь-gitlab-id-tokens>Знакомьтесь. Gitlab ID Tokens</a></li>
+<li><a href=#доступ-в-kubernetes-через-oidc-токены>Доступ в Kubernetes через OIDC токены</a></li>
+</ul>
+</li>
+<li><a href=#аутентифицируемся-в-kubernetes-через-gitlabовские-jwt-токены>Аутентифицируемся в Kubernetes через Gitlab&rsquo;овские JWT токены</a>
+<ul>
+<li><a href=#настройка-oidc-на-kube-api-server>Настройка OIDC на kube-api-server</a></li>
+<li><a href=#создание-rbac>Создание RBAC</a></li>
+<li><a href=#создание-тестовой-джобы-в-gitlab>Создание тестовой джобы в Gitlab</a></li>
+<li><a href=#три-два-один-запуск>Три. Два. Один. Запуск</a></li>
+</ul>
+</li>
+</ul>
+</nav></div>
+<h1 id=введение>Введение</h1>
+<h2 id=зачем>Зачем?</h2>
+<p>Представим ситуацию, что мы деплоим по push-модели. В качестве платформы для запуска деплоя у нас используется Gitlab: в нём настроен пайплайн и джобы, разворачивающие приложения в разные окружения в Kubernetes</p>
+<p>Какой бы инструмент мы не использовали (kubectl, helm), для манипуляций с ресурсами API нам в любом случае будет необходимо аутентифицироваться при выполнении запросов к Kubernetes. Для этого в запросе надо передать данные для аутентификации, будь то токен или сертификат. И тут возникает несколько вопросов:</p>
+<ol>
+<li>
+<p><strong>Где хранить эти креды?</strong></p>
+<p>Хранить креды от кластера можно в Gitlab CICD Variables и подставлять в джобу деплоя, но тогда все пользователи будут деплоить с одними и теми же доступами</p>
+</li>
+<li>
+<p><strong>Как сделать так, чтобы у каждого пользователя были свои данные для доступа в кластер?</strong></p>
+<p>Можно было бы вручную запускать джобы деплоя и в параметры каждый раз подставлять свои аутентификацонные данные, но, очевидно, такой подход неудобен и подходит далеко не всем</p>
+</li>
+</ol>
+<p>Попробуем сделать иначе&mldr;</p>
+<h2 id=знакомьтесь-gitlab-id-tokens>Знакомьтесь. Gitlab ID Tokens</h2>
+<p>В версии Gitlab 15.7 появилась возможность прямо в джобе динамически создавать <a href=https://docs.gitlab.com/ee/ci/secrets/id_token_authentication.html#id-tokens>короткоживующие JWT токены</a>, выпускаемые на имя того, кто запустил джобу</p>
+<p>Всё, что нужно сделать - это дать название переменной с токеном и описать в поле <code>aud</code> (audience) имя потенциального получателя токена (сервиса, которому токен будет отправляться)</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>job_with_id_tokens-job</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=nt>id_tokens</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=nt>MY_JWT_TOKEN</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>aud</span><span class=p>:</span><span class=w> </span><span class=l>https://vault.example.com</span><span class=w>
+</span><span class=w>  </span><span class=nt>script</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=l>echo $($MY_JWT_TOKEN | base64 -w0)</span><span class=w>
+</span></code></pre></div><p>Пример полученного токена</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;namespace_id&#34;</span><span class=p>:</span> <span class=s2>&#34;72&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;namespace_path&#34;</span><span class=p>:</span> <span class=s2>&#34;my-group&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;project_id&#34;</span><span class=p>:</span> <span class=s2>&#34;20&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;project_path&#34;</span><span class=p>:</span> <span class=s2>&#34;my-group/my-project&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;user_id&#34;</span><span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;user_login&#34;</span><span class=p>:</span> <span class=s2>&#34;sample-user&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;user_email&#34;</span><span class=p>:</span> <span class=s2>&#34;sample-user@example.com&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;user_identities&#34;</span><span class=p>:</span> <span class=p>[</span>
+      <span class=p>{</span><span class=nt>&#34;provider&#34;</span><span class=p>:</span> <span class=s2>&#34;github&#34;</span><span class=p>,</span> <span class=nt>&#34;extern_uid&#34;</span><span class=p>:</span> <span class=s2>&#34;2435223452345&#34;</span><span class=p>},</span>
+      <span class=p>{</span><span class=nt>&#34;provider&#34;</span><span class=p>:</span> <span class=s2>&#34;bitbucket&#34;</span><span class=p>,</span> <span class=nt>&#34;extern_uid&#34;</span><span class=p>:</span> <span class=s2>&#34;john.smith&#34;</span><span class=p>},</span>
+  <span class=p>],</span>
+  <span class=nt>&#34;pipeline_id&#34;</span><span class=p>:</span> <span class=s2>&#34;574&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;pipeline_source&#34;</span><span class=p>:</span> <span class=s2>&#34;push&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;job_id&#34;</span><span class=p>:</span> <span class=s2>&#34;302&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;ref&#34;</span><span class=p>:</span> <span class=s2>&#34;feature-branch-1&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;ref_type&#34;</span><span class=p>:</span> <span class=s2>&#34;branch&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;ref_path&#34;</span><span class=p>:</span> <span class=s2>&#34;refs/heads/feature-branch-1&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;ref_protected&#34;</span><span class=p>:</span> <span class=s2>&#34;false&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;environment&#34;</span><span class=p>:</span> <span class=s2>&#34;test-environment2&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;environment_protected&#34;</span><span class=p>:</span> <span class=s2>&#34;false&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;deployment_tier&#34;</span><span class=p>:</span> <span class=s2>&#34;testing&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;environment_action&#34;</span><span class=p>:</span> <span class=s2>&#34;start&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;runner_id&#34;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+  <span class=nt>&#34;runner_environment&#34;</span><span class=p>:</span> <span class=s2>&#34;self-hosted&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;sha&#34;</span><span class=p>:</span> <span class=s2>&#34;714a629c0b401fdce83e847fc9589983fc6f46bc&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;project_visibility&#34;</span><span class=p>:</span> <span class=s2>&#34;public&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;ci_config_ref_uri&#34;</span><span class=p>:</span> <span class=s2>&#34;gitlab.example.com/my-group/my-project//.gitlab-ci.yml@refs/heads/main&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;ci_config_sha&#34;</span><span class=p>:</span> <span class=s2>&#34;714a629c0b401fdce83e847fc9589983fc6f46bc&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;jti&#34;</span><span class=p>:</span> <span class=s2>&#34;235b3a54-b797-45c7-ae9a-f72d7bc6ef5b&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;iss&#34;</span><span class=p>:</span> <span class=s2>&#34;https://gitlab.example.com&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;iat&#34;</span><span class=p>:</span> <span class=mi>1681395193</span><span class=p>,</span>
+  <span class=nt>&#34;nbf&#34;</span><span class=p>:</span> <span class=mi>1681395188</span><span class=p>,</span>
+  <span class=nt>&#34;exp&#34;</span><span class=p>:</span> <span class=mi>1681398793</span><span class=p>,</span>
+  <span class=nt>&#34;sub&#34;</span><span class=p>:</span> <span class=s2>&#34;project_path:my-group/my-project:ref_type:branch:ref:feature-branch-1&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;aud&#34;</span><span class=p>:</span> <span class=s2>&#34;https://vault.example.com&#34;</span>
+<span class=p>}</span>
+</code></pre></div><p>Сам токен содержит множество полей, но нас в первую очередь интересует некий уникальный идентификатор, по которому можно однозначно определить пользователя. Для этого отлично подходит поле <code>user_email</code>, которое содержит, как это не удивительно, пользовательский email</p>
+<p>Таак, ну и что с этим всем можно сделать на стороне Kubernetes?</p>
+<h2 id=доступ-в-kubernetes-через-oidc-токены>Доступ в Kubernetes через OIDC токены</h2>
+<p><a href=https://kubernetes.io/docs/reference/access-authn-authz/authentication/#openid-connect-tokens>Официальная документация k8s</a> говорит нам о том, что кубовый API Server умеет работать со сторонними JWT токенами, а именно: проверять их подпись и вытаскивать из определённых полей имя пользователя и названия групп для того, чтобы матчить их с subjects, заданными в RBAC, для дальнейшей авторизации</p>
+<p>Всё, что для этого нужно, это передать бинарнику kube-api-server <a href=https://kubernetes.io/docs/reference/access-authn-authz/authentication/#using-flags>дополнительные параметры при запуске</a>, в которых мы укажем</p>
+<ul>
+<li>URL того, кто будет выпускать токены (и откуда забирать публичные ключи для проверки подписи)</li>
+<li>ID того, кто является получателем токена (тот самый <code>aud</code>)</li>
+<li>Из какого поля (claim) вытаскивать имя пользователя и названия групп</li>
+<li>Дополнительные параметры, типа уникального префикса для имени пользователя (чтобы не перемешывать с пользователями, аутентифицирующимися другими способами) и CA файла self-hosted инстанса Gitlab</li>
+</ul>
+<p>Что же, пришло время проверить, как это всё будет работать на практике</p>
+<h1 id=аутентифицируемся-в-kubernetes-через-gitlabовские-jwt-токены>Аутентифицируемся в Kubernetes через Gitlab&rsquo;овские JWT токены</h1>
+<p>Чисто для теста в рамках этой статьи представим, что у нас используется:</p>
+<ul>
+<li>Gitlab.com и его бесплатные шаренные раннеры</li>
+<li>Свой Kubernetes кластер с публичным белым IP и с открытым всему миру 6443 портом kube-api-server</li>
+</ul>
+<p>Нам необходимо сделать так, чтобы:</p>
+<ol>
+<li>Можно было аутентифицироваться в кластере по пользовательскому JWT токену, полученному от Gitlab</li>
+<li>Доступы к ресурсам были те, которые прописаны в RBAC для пользователя</li>
+</ol>
+<h2 id=настройка-oidc-на-kube-api-server>Настройка OIDC на kube-api-server</h2>
+<p>Тут всё просто. Передаём kube-api-server следующие параметры запуска</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>--oidc-issuer-url<span class=o>=</span><span class=s2>&#34;https://gitlab.com&#34;</span>
+--oidc-client-id<span class=o>=</span><span class=s2>&#34;a-k8s-01&#34;</span>
+--oidc-username-claim<span class=o>=</span><span class=s2>&#34;user_email&#34;</span>
+--oidc-username-prefix<span class=o>=</span><span class=s2>&#34;oidc:&#34;</span>
+</code></pre></div><ul>
+<li>Токены выпускает <a href=https://gitlab.com>https://gitlab.com</a> (поле <code>iss</code> в токене)</li>
+<li>Токены предназначены для a-k8s-01 (поле <code>aud</code>)</li>
+<li>Имя пользователя берём из поля <code>user_email</code></li>
+<li>В RBAC мы будем использовать префикс <code>oidc:</code> перед именем пользователя</li>
+</ul>
+<h2 id=создание-rbac>Создание RBAC</h2>
+<p>Проверять будем на кластерной роли с какими-нибудь простыми разрешениями (получение списка неймспейсов)</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRole</span><span class=w>
+</span><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>maintainer</span><span class=w>
+</span><span class=w></span><span class=nt>rules</span><span class=p>:</span><span class=w>
+</span><span class=w></span>- <span class=nt>apiGroups</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span>- <span class=s1>&#39;&#39;</span><span class=w>
+</span><span class=w>  </span><span class=nt>resources</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span>- <span class=s1>&#39;namespaces&#39;</span><span class=w>
+</span><span class=w>  </span><span class=nt>verbs</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span>- <span class=s1>&#39;get&#39;</span><span class=w>
+</span><span class=w>  </span>- <span class=s1>&#39;list&#39;</span><span class=w>
+</span><span class=w></span><span class=nn>---</span><span class=w>
+</span><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRoleBinding</span><span class=w>
+</span><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>maintainer</span><span class=w>
+</span><span class=w></span><span class=nt>roleRef</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io</span><span class=w>
+</span><span class=w>  </span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRole</span><span class=w>
+</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>maintainer</span><span class=w>
+</span><span class=w></span><span class=nt>subjects</span><span class=p>:</span><span class=w>
+</span><span class=w></span>- <span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io</span><span class=w>
+</span><span class=w>  </span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>User</span><span class=w>
+</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>oidc:user@example.com</span><span class=w>
+</span></code></pre></div><h2 id=создание-тестовой-джобы-в-gitlab>Создание тестовой джобы в Gitlab</h2>
+<p>Тут тоже всё просто:</p>
+<ul>
+<li>Зададим ID Token <strong>GITLAB_K8S_JWT_TOKEN</strong> с получателем (<code>aud</code>) <strong>a-k8s-01</strong></li>
+<li>Для kubectl создадим конфиг, в который в том числе будет добавлен наш динамически создаваемый <strong>GITLAB_K8S_JWT_TOKEN</strong></li>
+<li>Попробуем произвести какие-нибудь манипуляции с ресурсами кластера</li>
+</ul>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>stages</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span>- <span class=l>deploy</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=nt>kubectl_deploy</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=nt>stage</span><span class=p>:</span><span class=w> </span><span class=l>deploy</span><span class=w>
+</span><span class=w>  </span><span class=nt>id_tokens</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=nt>GITLAB_K8S_JWT_TOKEN</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>aud</span><span class=p>:</span><span class=w> </span><span class=l>a-k8s-01</span><span class=w>
+</span><span class=w>  </span><span class=nt>image</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>bitnami/kubectl:1.28</span><span class=w>
+</span><span class=w>    </span><span class=nt>entrypoint</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span>- <span class=s2>&#34;&#34;</span><span class=w>
+</span><span class=w>  </span><span class=nt>script</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=p>|</span><span class=sd>
+</span><span class=sd>      cat &lt;&lt; EOF &gt; /tmp/ca.pem
+</span><span class=sd>      &lt;CA_CERTIFICATE_CONTENT&gt;
+</span><span class=sd>      EOF</span><span class=w>      
+</span><span class=w>    </span>- <span class=l>API_SERVER=&#34;&lt;api_server_url&gt;&#34;</span><span class=w>
+</span><span class=w>    </span>- <span class=p>|</span><span class=sd>
+</span><span class=sd>      kubectl config set-cluster cluster --server=&#34;${API_SERVER}&#34; --certificate-authority=/tmp/ca.pem
+</span><span class=sd>      kubectl config set-credentials user --token=&#34;${GITLAB_K8S_JWT_TOKEN}&#34;
+</span><span class=sd>      kubectl config set-context context --cluster=cluster --user=user
+</span><span class=sd>      kubectl config use-context context</span><span class=w>      
+</span><span class=w>    </span>- <span class=l>kubectl get ns</span><span class=w>
+</span><span class=w>    </span>- <span class=l>kubectl get svc</span><span class=w>
+</span></code></pre></div><h2 id=три-два-один-запуск>Три. Два. Один. Запуск</h2>
+<p>
+<a href=/posts/2023-12-19-k8s-auth-gitlab-jwt/01.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/posts/2023-12-19-k8s-auth-gitlab-jwt/01.png width=1811 height=683></a>
+</p>
+<p>Всё сработало ровно так, как и ожидалось: неймспейсы получены, к сервисам доступа нет</p>
+</section>
+<section>
+<script async src=https://comments.app/js/widget.js?3 data-comments-app-website=t_mH3MdB data-limit=5></script>
+</section>
+</article>
+</div>
+<div id=side class="pr-1 bg-white">
+<aside class=pr-3>
+<div id=toc class="Box Box--blue mb-3">
+<b>Аутентификация в Kubernetes через Gitlab'овские JWT токены</b><nav id=TableOfContents>
+<ul>
+<li><a href=#введение>Введение</a>
+<ul>
+<li><a href=#зачем>Зачем?</a></li>
+<li><a href=#знакомьтесь-gitlab-id-tokens>Знакомьтесь. Gitlab ID Tokens</a></li>
+<li><a href=#доступ-в-kubernetes-через-oidc-токены>Доступ в Kubernetes через OIDC токены</a></li>
+</ul>
+</li>
+<li><a href=#аутентифицируемся-в-kubernetes-через-gitlabовские-jwt-токены>Аутентифицируемся в Kubernetes через Gitlab&rsquo;овские JWT токены</a>
+<ul>
+<li><a href=#настройка-oidc-на-kube-api-server>Настройка OIDC на kube-api-server</a></li>
+<li><a href=#создание-rbac>Создание RBAC</a></li>
+<li><a href=#создание-тестовой-джобы-в-gitlab>Создание тестовой джобы в Gitlab</a></li>
+<li><a href=#три-два-один-запуск>Три. Два. Один. Запуск</a></li>
+</ul>
+</li>
+</ul>
+</nav></div>
+<div>
+</div>
+</aside>
+</div>
+<div id=footer class="pt-2 pb-3 bg-white text-center">
+<span class="text-small text-gray">
+<p>
+<a href=https://creativecommons.org/licenses/by-sa/4.0/><img src=/images/cc-by-sa.png alt></a>
+</p>
+<p>
+Powered by the
+<a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a>
+</p>
+</span>
+</div>
+</div>
+</body>
+</html>

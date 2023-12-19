@@ -30,6 +30,46 @@ Of Code & Systems
 <div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
 <div class="Subhead mb-2">
 <div class=Subhead-heading>
+<a href=/posts/2023-12-19-k8s-auth-gitlab-jwt/>
+<div class="h2 mt-1 mb-1">Аутентификация в Kubernetes через Gitlab'овские JWT токены</div>
+</a>
+</div>
+<div class=Subhead-description>
+<a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link>
+<span class="Label Label--gray-darker">документация</span>
+</a>
+<a href=/tags/k8s class=muted-link>
+<span class="Label Label--gray">k8s</span>
+</a>
+<div class=float-md-right>
+<span>2023-12-19</span>
+</div>
+</div>
+</div>
+<div class=text-gray>
+<h1 id=введение>Введение</h1>
+<h2 id=зачем>Зачем?</h2>
+<p>Представим ситуацию, что мы деплоим по push-модели. В качестве платформы для запуска деплоя у нас используется Gitlab: в нём настроен пайплайн и джобы, разворачивающие приложения в разные окружения в Kubernetes</p>
+<p>Какой бы инструмент мы не использовали (kubectl, helm), для манипуляций с ресурсами API нам в любом случае будет необходимо аутентифицироваться при выполнении запросов к Kubernetes. Для этого в запросе надо передать данные для аутентификации, будь то токен или сертификат. И тут возникает несколько вопросов:</p>
+<ol>
+<li>
+<p><strong>Где хранить эти креды?</strong></p>
+<p>Хранить креды от кластера можно в Gitlab CICD Variables и подставлять в джобу деплоя, но тогда все пользователи будут деплоить с одними и теми же доступами</p>
+</li>
+<li>
+<p><strong>Как сделать так, чтобы у каждого пользователя были свои данные для доступа в кластер?</strong></p>
+<p>Можно было бы вручную запускать джобы деплоя и в параметры каждый раз подставлять свои аутентификацонные данные, но, очевидно, такой подход неудобен и подходит далеко не всем</p>
+</li>
+</ol>
+<p>Попробуем сделать иначе&mldr;</p>
+<div>
+<a href=/posts/2023-12-19-k8s-auth-gitlab-jwt/>Открыть полностью…</a>
+</div>
+</div>
+</div>
+<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
+<div class="Subhead mb-2">
+<div class=Subhead-heading>
 <a href=/posts/2023-11-18-linux-process-envs/>
 <div class="h2 mt-1 mb-1">Переменные окружения процесса в linux</div>
 </a>
@@ -471,54 +511,6 @@ Of Code & Systems
 </div>
 </div>
 </div>
-<div class="rounded-2 box-shadow-medium px-3 pb-2 pt-2 mb-3">
-<div class="Subhead mb-2">
-<div class=Subhead-heading>
-<a href=/2020/09/scala-akka-graceful-shutdown/>
-<div class="h2 mt-1 mb-1">Graceful Shutdown в Akka HTTP</div>
-</a>
-</div>
-<div class=Subhead-description>
-<a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link>
-<span class="Label Label--gray-darker">документация</span>
-</a>
-<a href=/tags/scala class=muted-link>
-<span class="Label Label--gray">scala</span>
-</a>
-<div class=float-md-right>
-<span>2020-09-22</span>
-</div>
-</div>
-</div>
-<div class=text-gray>
-<p>Атуально для Akka HTTP начиная с версии <a href=https://doc.akka.io/docs/akka-http/current/release-notes/10.2.x.html>10.2.0</a></p>
-<p>Github Issue: <a href=https://github.com/akka/akka-http/pull/3142>Add coordinated shutdown support</a></p>
-<p>По-умолчанию, Akka при завершении (в т.ч. получении SIGTERM) запускает процесс <a href=https://doc.akka.io/docs/akka/current/coordinated-shutdown.html>Coordinated Shutdown</a>, в рамках которого происходят последовательно несколько фаз:</p>
-<ul>
-<li>before-service-unbind</li>
-<li>service-unbind</li>
-<li>service-requests-done</li>
-<li>service-stop</li>
-<li>before-cluster-shutdown</li>
-<li>cluster-sharding-shutdown-region</li>
-<li>cluster-leave</li>
-<li>cluster-exiting</li>
-<li>cluster-exiting-done</li>
-<li>cluster-shutdown</li>
-<li>before-actor-system-terminate</li>
-<li>actor-system-terminate</li>
-</ul>
-<p>В каждой фазе выполняются определённые действия и настроен таймаут, который можно переопределить и в течение которого эти действия должны завершиться. Если действия не успевают завершаться, то фаза заканчивается и начинается следующая</p>
-<p>В рамках Akka HTTP нас в первую очередь интересуют следующие фазы</p>
-<ul>
-<li>service-unbind #перестаёт слушаться tcp порт и перестают приниматься новые соединения. Установленные соединения не разрываются</li>
-<li>service-requests-done #ожидается окончание запросов, которые в данный момент обрабатываются кодом и клиент ожидает на них ответ</li>
-<li>service-stop #закрываются все установленные соединения</li>
-</ul>
-<p>По-умолчанию (<a href=https://github.com/akka/akka/blob/master/akka-actor/src/main/resources/reference.conf#L1162>default-phase-timeout = 5s</a>), после unbind есть 5 секунд на завершение текущих запросов</p>
-<p>При использовании Kubernetes, стоит принимать во внимание также его таймаут <a href=https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#podspec-v1-core>terminationGracePeriodSeconds</a>, в течение которого будет ожидаться реакция на SIGTERM, после чего будет послан SIGKILL. По-умолчанию, он равен 30s</p>
-</div>
-</div>
 <nav class=paginate-container>
 <div class=pagination>
 <ul>
@@ -542,7 +534,7 @@ Of Code & Systems
 </a>
 <span class="css-truncate no-wrap m-1 pl-1" style="display:inline-block;margin:0 4px!important">
 <a href=/categories/%d0%b4%d0%be%d0%ba%d1%83%d0%bc%d0%b5%d0%bd%d1%82%d0%b0%d1%86%d0%b8%d1%8f class="link-gray text-emphasized css-truncate-target"><span>Документация</span></a>
-<span class="text-right Counter">32</span>
+<span class="text-right Counter">33</span>
 </span>
 <span class="css-truncate no-wrap m-1 pl-1" style="display:inline-block;margin:0 4px!important">
 <a href=/categories/%d1%80%d0%b0%d0%b7%d1%80%d0%b0%d0%b1%d0%be%d1%82%d0%ba%d0%b0 class="link-gray text-emphasized css-truncate-target"><span>Разработка</span></a>
@@ -559,7 +551,7 @@ Of Code & Systems
 </a>
 <span class="css-truncate no-wrap m-1 pl-1" style="display:inline-block;margin:0 4px!important">
 <a href=/tags/k8s class="link-gray text-emphasized css-truncate-target"><span>k8s</span></a>
-<span class="text-right Counter">3</span>
+<span class="text-right Counter">4</span>
 </span>
 <span class="css-truncate no-wrap m-1 pl-1" style="display:inline-block;margin:0 4px!important">
 <a href=/tags/keycloak class="link-gray text-emphasized css-truncate-target"><span>keycloak</span></a>
