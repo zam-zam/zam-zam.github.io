@@ -3,10 +3,10 @@
 &lt;blockquote>
 &lt;p>&lt;strong>/etc/selinux/config&lt;/strong>&lt;/p>
 &lt;/blockquote>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="c1"># This file controls the state of SELinux on the system.&lt;/span>
-&lt;span class="c1"># SELINUX= can take one of these three values:&lt;/span>
-&lt;span class="c1"># enforcing - SELinux security policy is enforced.&lt;/span>
-&lt;span class="c1"># permissive - SELinux prints warnings instead of enforcing.&lt;/span>
-&lt;span class="c1"># disabled - No SELinux policy is loaded.&lt;/span>
-&lt;span class="na">SELINUX&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">disabled&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Теперь, наконец разобравшись, я понял, что никогда больше не буду выключать selinux&lt;/p></description></item></channel></rss>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># This file controls the state of SELinux on the system.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># SELINUX= can take one of these three values:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># enforcing - SELinux security policy is enforced.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># permissive - SELinux prints warnings instead of enforcing.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># disabled - No SELinux policy is loaded.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">SELINUX&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">disabled&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Теперь, наконец разобравшись, я понял, что никогда больше не буду выключать selinux&lt;/p></description></item></channel></rss>

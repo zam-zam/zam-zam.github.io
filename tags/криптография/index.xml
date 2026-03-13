@@ -7,10 +7,10 @@
 &lt;ol>
 &lt;li>
 &lt;p>Качаем обновлённый certbot v0.22, разархивируем, переходим в папку&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">wget &lt;span class="s1">&amp;#39;https://github.com/certbot/certbot/archive/v0.22.2.tar.gz&amp;#39;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
-&lt;/span>&lt;span class="se">&lt;/span>tar -xvf v0.22.2.tar.gz &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
-&lt;/span>&lt;span class="se">&lt;/span>&lt;span class="nb">cd&lt;/span> certbot-0.22.2
-&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">wget &lt;span class="s1">&amp;#39;https://github.com/certbot/certbot/archive/v0.22.2.tar.gz&amp;#39;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>tar -xvf v0.22.2.tar.gz &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>&lt;span class="nb">cd&lt;/span> certbot-0.22.2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ol></description></item><item><title>Недоверенные корневые сертификаты от налоговой (ФНС России) в вашей системе</title><link>https://zzamzam.dev/2017/04/nedoverennye-kornevye-sertifikaty-o/</link><pubDate>Fri, 21 Apr 2017 10:34:48 +0000</pubDate><guid>https://zzamzam.dev/2017/04/nedoverennye-kornevye-sertifikaty-o/</guid><description>&lt;p>Чтобы отправить декларацию от доходах 3-НДФЛ в ФНС, можно получить ключ неквалифицированной электронной подписи и его сертификат, сформированные онлайн и отправить декларацию через личные кабинет налогоплательщика.&lt;/p>
 &lt;p>Если решите хранить ключ у себя на компьютере, то ФНС предложит установить «средства электронной подписи, которые установят в систему свои корневые сертификаты с неограниченными правами использования. А это означает, что ваша машина будет доверять любыми сертификатам, выпущенными удостоверяющим центром (УЦ), указанном в корневом сертификате.&lt;/p>
 &lt;p>Проверить установленные недоверенные сертификаты можно с помощью утилиты RCC (&lt;a href="https://www.trustprobe.com/fs1/apps.html">https://www.trustprobe.com/fs1/apps.html&lt;/a>). Утилита запускается в юзер-спейсе без запроса админских прав и только читает сертификаты.&lt;/p>

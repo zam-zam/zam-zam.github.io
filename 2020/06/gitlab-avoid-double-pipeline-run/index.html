@@ -1,105 +1,15 @@
-<!doctype html><html>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>
-Как избежать запуска двойного pipeline при использовании merge requests pipelines? &ndash; Of Code & Systems
-</title>
-<meta name=description property="og:description" content="Пайплайны для Merge Requests существуют отдельно (имеют лейбл detached) и запускается независимо от основного pipeline. Из-за этого если сделать push в репу в ветку, из которой в гитлабе есть открытый МР, то запускаются 2 одинаковых пайплайна
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Как избежать запуска двойного pipeline при использовании merge requests pipelines? &ndash; Of Code & Systems</title><meta name=description property="og:description" content="Пайплайны для Merge Requests существуют отдельно (имеют лейбл detached) и запускается независимо от основного pipeline. Из-за этого если сделать push в репу в ветку, из которой в гитлабе есть открытый МР, то запускаются 2 одинаковых пайплайна
 Есть варианта, чтобы это избежать:
- Дублировать все джобы через extends, чтобы разделить на запускаемые на МРах и на обычные Не запускать CI на некоторых ветках, пока из них нет открытого МРа |">
-<meta name=apple-mobile-web-app-title content="Of Code & Systems">
-<link rel=stylesheet href=/assets/syntax.css>
-<link rel=stylesheet href=/assets/primer-build.css>
-<link rel=stylesheet href=/assets/style.css>
-</head>
-<body class=bg-gray style=background-color:#fdf6e3!important>
-<div id=holy class="container-lg bg-white h-100">
-<div id=header class="px-1 bg-white text-center">
-<div class=u-nav>
-<a class="u-nav-el u-nav-el-current" href=//zzamzam.dev>Blog</a>
-<a class=u-nav-el href=//docs.zzamzam.dev>Docs</a>
-</div>
-<nav class="UnderlineNav UnderlineNav--right px-2">
-<a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>
-Of Code & Systems
-</a>
-</nav>
-</div>
-<div role=main id=main class="holy-main markdown-body px-4 bg-white">
-<div class=Subhead>
-<div class=Subhead-heading>
-<div class="h1 mt-3 mb-1">Как избежать запуска двойного pipeline при использовании merge requests pipelines?</div>
-</div>
-<div class=Subhead-description>
-<a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link>
-<span class="Label Label--gray-darker">документация</span>
-</a>
-<a href=/tags/gitlab class=muted-link>
-<span class="Label Label--gray">gitlab</span>
-</a>
-<div class=float-md-right>
-<span title="Lastmod: 2020-06-15. Published at: 2020-06-15.">
-2020-06-15
-</span>
-</div>
-</div>
-</div>
-<article>
-<section class="pb-6 mb-3 border-bottom">
-<div id=toc class="Box Box--blue mb-3">
-<b>Содержание</b><nav id=TableOfContents></nav></div>
-<p><a href=https://docs.gitlab.com/ee/ci/merge_request_pipelines/>Пайплайны для Merge Requests</a> существуют отдельно (имеют лейбл detached) и запускается независимо от основного pipeline. Из-за этого если сделать push в репу в ветку, из которой в гитлабе есть открытый МР, то запускаются 2 одинаковых пайплайна</p>
-<p><img src=/wp-content/uploads/2020/06/double-pipeline.png alt>
+Дублировать все джобы через extends, чтобы разделить на запускаемые на МРах и на обычные Не запускать CI на некоторых ветках, пока из них нет открытого МРа |"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white text-center"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">Как избежать запуска двойного pipeline при использовании merge requests pipelines?</div></div><div class=Subhead-description><a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link><span class="Label Label--gray-darker">документация</span></a>
+<a href=/tags/gitlab class=muted-link><span class="Label Label--gray">gitlab</span></a><div class=float-md-right><span title="Lastmod: 2020-06-15. Published at: 2020-06-15.">2020-06-15</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><div id=toc class="Box Box--blue mb-3"><b>Содержание</b><nav id=TableOfContents></nav></div><p><a href=https://docs.gitlab.com/ee/ci/merge_request_pipelines/>Пайплайны для Merge Requests</a> существуют отдельно (имеют лейбл detached) и запускается независимо от основного pipeline. Из-за этого если сделать push в репу в ветку, из которой в гитлабе есть открытый МР, то запускаются 2 одинаковых пайплайна</p><p><img src=/wp-content/uploads/2020/06/double-pipeline.png alt>
  
-Есть варианта, чтобы это избежать:</p>
-<ol>
-<li>Дублировать все джобы через extends, чтобы разделить на запускаемые на МРах и на обычные</li>
-<li>Не запускать CI на некоторых ветках, пока из них нет открытого МРа</li>
-</ol>
-<p>Первый вариант предполагает дублирование job, поэтому удобнее сделать второй вариант с использованием <a href=https://docs.gitlab.com/ee/ci/yaml/#workflowrules>workflow:rules</a>, который подразумевает написание правил запуска самого пайплайна, а не отдельных джоб</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>workflow</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>rules</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span>- <span class=nt>if</span><span class=p>:</span><span class=w> </span><span class=l>$CI_MERGE_REQUEST_ID</span><span class=w>
-</span><span class=w>    </span>- <span class=nt>if</span><span class=p>:</span><span class=w> </span><span class=l>$CI_COMMIT_TAG</span><span class=w>
-</span><span class=w>    </span>- <span class=nt>if</span><span class=p>:</span><span class=w> </span><span class=l>$CI_COMMIT_BRANCH == &#34;develop&#34;</span><span class=w>
-</span><span class=w>    </span>- <span class=nt>if</span><span class=p>:</span><span class=w> </span><span class=l>$CI_COMMIT_BRANCH == &#34;master&#34;</span><span class=w>
-</span><span class=w>    </span>- <span class=nt>if</span><span class=p>:</span><span class=w> </span><span class=l>$CI_COMMIT_BRANCH =~ /^release\/.*/</span><span class=w>
-</span></code></pre></div><p>В таком случае все джобы пайплайна всегда будут запускаться на:</p>
-<ol>
-<li>Всех тегах</li>
-<li>Ветках с именами develop, master, release*</li>
-<li>Открытых МРах любой ветки</li>
-</ol>
-<p>При этом на перечисленных ветках (CI_COMMIT_BRANCH) при наличии МРа также будет запускаться двойной pipeline, но это не является проблемой, т.к. эти ветки обычно либо не вливаются, либо вливаются редко и у них нет долгоживущих МРов (если мы говорим про gitflow). Зато на feature ветках мы не будем попусту занимать гитлаб-раннеры</p>
-<p><strong>Заметка</strong></p>
-<p>Detached пайплайны для МРов являются приоритетными и именно они показываются в статусе МРа</p>
-</section>
-<section>
-<script async src=https://comments.app/js/widget.js?3 data-comments-app-website=t_mH3MdB data-limit=5></script>
-</section>
-</article>
-</div>
-<div id=side class="pr-1 bg-white">
-<aside class=pr-3>
-<div id=toc class="Box Box--blue mb-3">
-<b>Как избежать запуска двойного pipeline при использовании merge requests pipelines?</b><nav id=TableOfContents></nav></div>
-<div>
-</div>
-</aside>
-</div>
-<div id=footer class="pt-2 pb-3 bg-white text-center">
-<span class="text-small text-gray">
-<p>
-<a href=https://creativecommons.org/licenses/by-sa/4.0/><img src=/images/cc-by-sa.png alt></a>
-</p>
-<p>
-Powered by the
+Есть варианта, чтобы это избежать:</p><ol><li>Дублировать все джобы через extends, чтобы разделить на запускаемые на МРах и на обычные</li><li>Не запускать CI на некоторых ветках, пока из них нет открытого МРа</li></ol><p>Первый вариант предполагает дублирование job, поэтому удобнее сделать второй вариант с использованием <a href=https://docs.gitlab.com/ee/ci/yaml/#workflowrules>workflow:rules</a>, который подразумевает написание правил запуска самого пайплайна, а не отдельных джоб</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>workflow</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>rules</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>if</span><span class=p>:</span><span class=w> </span><span class=l>$CI_MERGE_REQUEST_ID</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>if</span><span class=p>:</span><span class=w> </span><span class=l>$CI_COMMIT_TAG</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>if</span><span class=p>:</span><span class=w> </span><span class=l>$CI_COMMIT_BRANCH == &#34;develop&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>if</span><span class=p>:</span><span class=w> </span><span class=l>$CI_COMMIT_BRANCH == &#34;master&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>if</span><span class=p>:</span><span class=w> </span><span class=l>$CI_COMMIT_BRANCH =~ /^release\/.*/</span><span class=w>
+</span></span></span></code></pre></div><p>В таком случае все джобы пайплайна всегда будут запускаться на:</p><ol><li>Всех тегах</li><li>Ветках с именами develop, master, release*</li><li>Открытых МРах любой ветки</li></ol><p>При этом на перечисленных ветках (CI_COMMIT_BRANCH) при наличии МРа также будет запускаться двойной pipeline, но это не является проблемой, т.к. эти ветки обычно либо не вливаются, либо вливаются редко и у них нет долгоживущих МРов (если мы говорим про gitflow). Зато на feature ветках мы не будем попусту занимать гитлаб-раннеры</p><p><strong>Заметка</strong></p><p>Detached пайплайны для МРов являются приоритетными и именно они показываются в статусе МРа</p></section><section><script async src=https://comments.app/js/widget.js?3 data-comments-app-website=t_mH3MdB data-limit=5></script></section></article></div><div id=side class="pr-1 bg-white"><aside class=pr-3><div id=toc class="Box Box--blue mb-3"><b>Как избежать запуска двойного pipeline при использовании merge requests pipelines?</b><nav id=TableOfContents></nav></div><div></div></aside></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray"><p><a href=https://creativecommons.org/licenses/by-sa/4.0/><img src=/images/cc-by-sa.png alt></a></p><p>Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
-<a href=https://gohugo.io class=link-gray-dark>Hugo</a>
-</p>
-</span>
-</div>
-</div>
-</body>
-</html>
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a></p></span></div></div></body></html>

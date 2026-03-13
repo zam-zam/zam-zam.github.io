@@ -1,163 +1,54 @@
-<!doctype html><html>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>
-Как определяются права пользователя в kubernetes? &ndash; Of Code & Systems
-</title>
-<meta name=description property="og:description" content="Немного о RBAC В kubernetes есть сущность, которая называется RoleBinding. Она определяет, каким субъектам какая роль будет назначена. RoleBinding действует в рамках namespace, в котором она создана. Для разрешения действий во всех namespace без ограничений необходимо создавать ClusterRoleBinding, который является cluster-wide объектом.
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Как определяются права пользователя в kubernetes? &ndash; Of Code & Systems</title><meta name=description property="og:description" content="Немного о RBAC В kubernetes есть сущность, которая называется RoleBinding. Она определяет, каким субъектам какая роль будет назначена. RoleBinding действует в рамках namespace, в котором она создана. Для разрешения действий во всех namespace без ограничений необходимо создавать ClusterRoleBinding, который является cluster-wide объектом.
 Пример RoleBinding
-apiVersion:rbac.authorization.k8s.io/v1kind:RoleBindingmetadata:name:editnamespace:project-a-develsubjects:- kind:Groupname:sreapiGroup:rbac.authorization.k8s.ioroleRef:kind:ClusterRolename:editapiGroup:rbac.authorization.k8s.ioЭта роль:
- Действует в рамках namespace project-a-devel - (metadata:) Применяется к пользователям в группе sre (/O=sre) - (subjects:) Разрешает действия, описанные в созданной по-умолчанию кластерной роли (ClusterRole) edit - (roleRef:) |">
-<meta name=apple-mobile-web-app-title content="Of Code & Systems">
-<link rel=stylesheet href=/assets/syntax.css>
-<link rel=stylesheet href=/assets/primer-build.css>
-<link rel=stylesheet href=/assets/style.css>
-</head>
-<body class=bg-gray style=background-color:#fdf6e3!important>
-<div id=holy class="container-lg bg-white h-100">
-<div id=header class="px-1 bg-white text-center">
-<div class=u-nav>
-<a class="u-nav-el u-nav-el-current" href=//zzamzam.dev>Blog</a>
-<a class=u-nav-el href=//docs.zzamzam.dev>Docs</a>
-</div>
-<nav class="UnderlineNav UnderlineNav--right px-2">
-<a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>
-Of Code & Systems
-</a>
-</nav>
-</div>
-<div role=main id=main class="holy-main markdown-body px-4 bg-white">
-<div class=Subhead>
-<div class=Subhead-heading>
-<div class="h1 mt-3 mb-1">Как определяются права пользователя в kubernetes?</div>
-</div>
-<div class=Subhead-description>
-<a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link>
-<span class="Label Label--gray-darker">документация</span>
-</a>
-<a href=/tags/k8s class=muted-link>
-<span class="Label Label--gray">k8s</span>
-</a>
-<div class=float-md-right>
-<span title="Lastmod: 2020-06-15. Published at: 2020-06-15.">
-2020-06-15
-</span>
-</div>
-</div>
-</div>
-<article>
-<section class="pb-6 mb-3 border-bottom">
-<div id=toc class="Box Box--blue mb-3">
-<b>Содержание</b><nav id=TableOfContents>
-<ul>
-<li><a href=#немного-о-rbac>Немного о RBAC</a></li>
-<li><a href=#пример-выдачи-прав-пользователю-через-x509-сертификат>Пример выдачи прав пользователю через x509 сертификат</a></li>
-</ul>
-</nav></div>
-<h1 id=немного-о-rbac>Немного о RBAC</h1>
-<p>В kubernetes есть сущность, которая называется <code>RoleBinding</code>. Она определяет, каким субъектам какая роль будет назначена. <code>RoleBinding</code> действует в рамках <code>namespace</code>, в котором она создана. Для разрешения действий во всех <code>namespace</code> без ограничений необходимо создавать <code>ClusterRoleBinding</code>, который является cluster-wide объектом.</p>
-<p>Пример RoleBinding</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
-</span><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>RoleBinding</span><span class=w>
-</span><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>edit</span><span class=w>
-</span><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>project-a-devel</span><span class=w>
-</span><span class=w></span><span class=nt>subjects</span><span class=p>:</span><span class=w>
-</span><span class=w></span>- <span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Group</span><span class=w>
-</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>sre</span><span class=w>
-</span><span class=w>  </span><span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io</span><span class=w>
-</span><span class=w></span><span class=nt>roleRef</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRole</span><span class=w>
-</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>edit</span><span class=w>
-</span><span class=w>  </span><span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io</span><span class=w>
-</span></code></pre></div><p>Эта роль:</p>
-<ul>
-<li>Действует в рамках namespace <code>project-a-devel</code> - (metadata:)</li>
-<li>Применяется к пользователям в группе <code>sre</code> (<code>/O=sre</code>) - (subjects:)</li>
-<li>Разрешает действия, описанные в созданной по-умолчанию кластерной роли (ClusterRole) <code>edit</code> - (roleRef:)</li>
-</ul>
-<p>Какие права предоставляет ClusterRole <code>edit</code> можно посмотреть через <code>kubectl get clusterrole edit -o yaml</code> (ниже приведена часть вывода)</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
-</span><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRole</span><span class=w>
-</span><span class=w></span><span class=nt>aggregationRule</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>clusterRoleSelectors</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span>- <span class=nt>matchLabels</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=nt>rbac.authorization.k8s.io/aggregate-to-edit</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;true&#34;</span><span class=w>
-</span><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>annotations</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span><span class=nt>rbac.authorization.kubernetes.io/autoupdate</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;true&#34;</span><span class=w>
-</span><span class=w>  </span><span class=nt>labels</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span><span class=nt>kubernetes.io/bootstrapping</span><span class=p>:</span><span class=w> </span><span class=l>rbac-defaults</span><span class=w>
-</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>edit</span><span class=w>
-</span><span class=w></span><span class=nt>rules</span><span class=p>:</span><span class=w>
-</span><span class=w></span>- <span class=nt>apiGroups</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span>- <span class=s2>&#34;&#34;</span><span class=w>
-</span><span class=w>  </span><span class=nt>resources</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span>- <span class=l>pods</span><span class=w>
-</span><span class=w>  </span>- <span class=l>pods/attach</span><span class=w>
-</span><span class=w>  </span>- <span class=l>pods/exec</span><span class=w>
-</span><span class=w>  </span>- <span class=l>pods/portforward</span><span class=w>
-</span><span class=w>  </span>- <span class=l>pods/proxy</span><span class=w>
-</span><span class=w>  </span><span class=nt>verbs</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span>- <span class=l>create</span><span class=w>
-</span><span class=w>  </span>- <span class=l>delete</span><span class=w>
-</span><span class=w>  </span>- <span class=l>deletecollection</span><span class=w>
-</span><span class=w>  </span>- <span class=l>get</span><span class=w>
-</span><span class=w>  </span>- <span class=l>list</span><span class=w>
-</span><span class=w>  </span>- <span class=l>patch</span><span class=w>
-</span><span class=w>  </span>- <span class=l>update</span><span class=w>
-</span><span class=w>  </span>- <span class=l>watch</span><span class=w>
-</span><span class=w></span><span class=nn>...</span><span class=w>
-</span></code></pre></div><p>В секции <code>rules</code> описано в каких группах api (<a href=https://kubernetes.io/docs/reference/using-api/api-overview/#api-groups>apiGroups:</a>) над какими ресурсами (resources:) какие действия (verbs:) может совершать данная роль</p>
-<h1 id=пример-выдачи-прав-пользователю-через-x509-сертификат>Пример выдачи прав пользователю через x509 сертификат</h1>
-<p>При использовании сертификатов пользователя и группу как таковые создавать не надо, т.к. аутентификация пользователя происходит по параметрам <code>CN(CommonName)</code> и <code>O(Organization)</code>, указанным в подписанным сертификате, которые означают пользователя и группу(ы) соответственно, а дальнейшая авторизация действия пользователя уже по описанным для этих <code>CN,O</code> в <code>Role</code> и <code>RoleBinding</code></p>
-<p>В случае использования в k8s-кластере сампоподписанного CA процедура выглядит примерно так:</p>
-<ol>
-<li>Создать ключ и сгенерировать csr с соответсвующими CN, O</li>
-</ol>
-<pre tabindex=0><code>openssl genrsa -out vpupkin.key 4096
-openssl req -new -key vpupkin.key -out vpupkin.csr -subj &quot;/CN=v.pupkin/O=devops/O=sre&quot;
-</code></pre><ol start=2>
-<li>Зайти на k8s master и подписать csr с помощью своего CA</li>
-</ol>
-<pre tabindex=0><code>openssl x509 -req -in vpupkin.csr -CA /etc/kubernetes/ssl/ca.pem -CAkey /etc/kubernetes/ssl/ca-key.pem -CAcreateserial -out vpupkin.crt -days &lt;requiredDays&gt;
-</code></pre><ol start=3>
-<li>Полученный сертификат и сгенерированный ранее ключ добавить в конфиг kubectl в <code>${HOME}/.kube/config</code></li>
-</ol>
-<p><strong>Заметка</strong></p>
-<p>Надо внимательно проверять подписываемый csr, чтобы не оказалось, что пользователь себе установил, например, группу <code>/O=system:masters</code>, у которой по-умолчанию права <code>cluster-admin</code></p>
-</section>
-<section>
-<script async src=https://comments.app/js/widget.js?3 data-comments-app-website=t_mH3MdB data-limit=5></script>
-</section>
-</article>
-</div>
-<div id=side class="pr-1 bg-white">
-<aside class=pr-3>
-<div id=toc class="Box Box--blue mb-3">
-<b>Как определяются права пользователя в kubernetes?</b><nav id=TableOfContents>
-<ul>
-<li><a href=#немного-о-rbac>Немного о RBAC</a></li>
-<li><a href=#пример-выдачи-прав-пользователю-через-x509-сертификат>Пример выдачи прав пользователю через x509 сертификат</a></li>
-</ul>
-</nav></div>
-<div>
-</div>
-</aside>
-</div>
-<div id=footer class="pt-2 pb-3 bg-white text-center">
-<span class="text-small text-gray">
-<p>
-<a href=https://creativecommons.org/licenses/by-sa/4.0/><img src=/images/cc-by-sa.png alt></a>
-</p>
-<p>
-Powered by the
+apiVersion: rbac.authorization.k8s.io/v1 kind: RoleBinding metadata: name: edit namespace: project-a-devel subjects: - kind: Group name: sre apiGroup: rbac.authorization.k8s.io roleRef: kind: ClusterRole name: edit apiGroup: rbac.authorization.k8s.io Эта роль:
+Действует в рамках namespace project-a-devel - (metadata:) Применяется к пользователям в группе sre (/O=sre) - (subjects:) Разрешает действия, описанные в созданной по-умолчанию кластерной роли (ClusterRole) edit - (roleRef:) |"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white text-center"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">Как определяются права пользователя в kubernetes?</div></div><div class=Subhead-description><a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link><span class="Label Label--gray-darker">документация</span></a>
+<a href=/tags/k8s class=muted-link><span class="Label Label--gray">k8s</span></a><div class=float-md-right><span title="Lastmod: 2020-06-15. Published at: 2020-06-15.">2020-06-15</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><div id=toc class="Box Box--blue mb-3"><b>Содержание</b><nav id=TableOfContents><ul><li><a href=#немного-о-rbac>Немного о RBAC</a></li><li><a href=#пример-выдачи-прав-пользователю-через-x509-сертификат>Пример выдачи прав пользователю через x509 сертификат</a></li></ul></nav></div><h1 id=немного-о-rbac>Немного о RBAC</h1><p>В kubernetes есть сущность, которая называется <code>RoleBinding</code>. Она определяет, каким субъектам какая роль будет назначена. <code>RoleBinding</code> действует в рамках <code>namespace</code>, в котором она создана. Для разрешения действий во всех <code>namespace</code> без ограничений необходимо создавать <code>ClusterRoleBinding</code>, который является cluster-wide объектом.</p><p>Пример RoleBinding</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>RoleBinding</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>edit</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>namespace</span><span class=p>:</span><span class=w> </span><span class=l>project-a-devel</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>subjects</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>- <span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Group</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>sre</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>roleRef</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRole</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>edit</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>apiGroup</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io</span><span class=w>
+</span></span></span></code></pre></div><p>Эта роль:</p><ul><li>Действует в рамках namespace <code>project-a-devel</code> - (metadata:)</li><li>Применяется к пользователям в группе <code>sre</code> (<code>/O=sre</code>) - (subjects:)</li><li>Разрешает действия, описанные в созданной по-умолчанию кластерной роли (ClusterRole) <code>edit</code> - (roleRef:)</li></ul><p>Какие права предоставляет ClusterRole <code>edit</code> можно посмотреть через <code>kubectl get clusterrole edit -o yaml</code> (ниже приведена часть вывода)</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>rbac.authorization.k8s.io/v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ClusterRole</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>aggregationRule</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>clusterRoleSelectors</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>matchLabels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>rbac.authorization.k8s.io/aggregate-to-edit</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;true&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>annotations</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>rbac.authorization.kubernetes.io/autoupdate</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;true&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>kubernetes.io/bootstrapping</span><span class=p>:</span><span class=w> </span><span class=l>rbac-defaults</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>edit</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>rules</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>- <span class=nt>apiGroups</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=s2>&#34;&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>resources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>pods</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>pods/attach</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>pods/exec</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>pods/portforward</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>pods/proxy</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>verbs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>create</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>delete</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>deletecollection</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>get</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>list</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>patch</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>update</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=l>watch</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nn>...</span><span class=w>
+</span></span></span></code></pre></div><p>В секции <code>rules</code> описано в каких группах api (<a href=https://kubernetes.io/docs/reference/using-api/api-overview/#api-groups>apiGroups:</a>) над какими ресурсами (resources:) какие действия (verbs:) может совершать данная роль</p><h1 id=пример-выдачи-прав-пользователю-через-x509-сертификат>Пример выдачи прав пользователю через x509 сертификат</h1><p>При использовании сертификатов пользователя и группу как таковые создавать не надо, т.к. аутентификация пользователя происходит по параметрам <code>CN(CommonName)</code> и <code>O(Organization)</code>, указанным в подписанным сертификате, которые означают пользователя и группу(ы) соответственно, а дальнейшая авторизация действия пользователя уже по описанным для этих <code>CN,O</code> в <code>Role</code> и <code>RoleBinding</code></p><p>В случае использования в k8s-кластере сампоподписанного CA процедура выглядит примерно так:</p><ol><li>Создать ключ и сгенерировать csr с соответсвующими CN, O</li></ol><pre tabindex=0><code>openssl genrsa -out vpupkin.key 4096
+openssl req -new -key vpupkin.key -out vpupkin.csr -subj &#34;/CN=v.pupkin/O=devops/O=sre&#34;
+</code></pre><ol start=2><li>Зайти на k8s master и подписать csr с помощью своего CA</li></ol><pre tabindex=0><code>openssl x509 -req -in vpupkin.csr -CA /etc/kubernetes/ssl/ca.pem -CAkey /etc/kubernetes/ssl/ca-key.pem -CAcreateserial -out vpupkin.crt -days &lt;requiredDays&gt;
+</code></pre><ol start=3><li>Полученный сертификат и сгенерированный ранее ключ добавить в конфиг kubectl в <code>${HOME}/.kube/config</code></li></ol><p><strong>Заметка</strong></p><p>Надо внимательно проверять подписываемый csr, чтобы не оказалось, что пользователь себе установил, например, группу <code>/O=system:masters</code>, у которой по-умолчанию права <code>cluster-admin</code></p></section><section><script async src=https://comments.app/js/widget.js?3 data-comments-app-website=t_mH3MdB data-limit=5></script></section></article></div><div id=side class="pr-1 bg-white"><aside class=pr-3><div id=toc class="Box Box--blue mb-3"><b>Как определяются права пользователя в kubernetes?</b><nav id=TableOfContents><ul><li><a href=#немного-о-rbac>Немного о RBAC</a></li><li><a href=#пример-выдачи-прав-пользователю-через-x509-сертификат>Пример выдачи прав пользователю через x509 сертификат</a></li></ul></nav></div><div></div></aside></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray"><p><a href=https://creativecommons.org/licenses/by-sa/4.0/><img src=/images/cc-by-sa.png alt></a></p><p>Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
-<a href=https://gohugo.io class=link-gray-dark>Hugo</a>
-</p>
-</span>
-</div>
-</div>
-</body>
-</html>
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a></p></span></div></div></body></html>

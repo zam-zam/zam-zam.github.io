@@ -241,20 +241,20 @@
 &lt;p>При использовании Kubernetes, стоит принимать во внимание также его таймаут &lt;a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#podspec-v1-core">terminationGracePeriodSeconds&lt;/a>, в течение которого будет ожидаться реакция на SIGTERM, после чего будет послан SIGKILL. По-умолчанию, он равен 30s&lt;/p></description></item><item><title>Как определяются права пользователя в kubernetes?</title><link>https://zzamzam.dev/2020/06/kubernetes-rbac-add-user/</link><pubDate>Mon, 15 Jun 2020 22:00:24 +0300</pubDate><guid>https://zzamzam.dev/2020/06/kubernetes-rbac-add-user/</guid><description>&lt;h1 id="немного-о-rbac">Немного о RBAC&lt;/h1>
 &lt;p>В kubernetes есть сущность, которая называется &lt;code>RoleBinding&lt;/code>. Она определяет, каким субъектам какая роль будет назначена. &lt;code>RoleBinding&lt;/code> действует в рамках &lt;code>namespace&lt;/code>, в котором она создана. Для разрешения действий во всех &lt;code>namespace&lt;/code> без ограничений необходимо создавать &lt;code>ClusterRoleBinding&lt;/code>, который является cluster-wide объектом.&lt;/p>
 &lt;p>Пример RoleBinding&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io/v1&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">RoleBinding&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">edit&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">namespace&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">project-a-devel&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">subjects&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>- &lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Group&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">sre&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">apiGroup&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">roleRef&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ClusterRole&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">edit&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">apiGroup&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Эта роль:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io/v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">RoleBinding&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">edit&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">namespace&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">project-a-devel&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">subjects&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Group&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">sre&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">apiGroup&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">roleRef&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ClusterRole&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">edit&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">apiGroup&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">rbac.authorization.k8s.io&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Эта роль:&lt;/p>
 &lt;ul>
 &lt;li>Действует в рамках namespace &lt;code>project-a-devel&lt;/code> - (metadata:)&lt;/li>
 &lt;li>Применяется к пользователям в группе &lt;code>sre&lt;/code> (&lt;code>/O=sre&lt;/code>) - (subjects:)&lt;/li>
@@ -306,20 +306,20 @@
 &lt;h1 id="clusterip">ClusterIP&lt;/h1>
 &lt;p>ClusterIP — это дефолтный тип сервиса в кубах, он поднимает вам сервис внутри кластера на внутрекластеровом IP. Доступа для внешнего трафика нет, только внутри кластера.&lt;/p>
 &lt;p>YAML для ClusterIP выглядит как-то так:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">v1&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Service&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">my-internal-service&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">selector&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">app&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">my-app&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ClusterIP&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">http&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">targetPort&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
-&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nt">protocol&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">TCP&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&amp;ldquo;Так, ну и зачем же рассказывать нам о ClusterIP, если он не принимает внешний трафик?&amp;rdquo; — спросите вы. А всё потому, что попасть на этот сервис можно через Kubernetes proxy!&lt;/p></description></item><item><title>dapp — утилита для сборки и деплоя контейнеров. Особенности работы</title><link>https://zzamzam.dev/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</link><pubDate>Mon, 03 Dec 2018 22:54:56 +0000</pubDate><guid>https://zzamzam.dev/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</guid><description>&lt;p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">my-internal-service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">selector&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">app&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">my-app&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ClusterIP&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">http&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">targetPort&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">protocol&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">TCP&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&amp;ldquo;Так, ну и зачем же рассказывать нам о ClusterIP, если он не принимает внешний трафик?&amp;rdquo; — спросите вы. А всё потому, что попасть на этот сервис можно через Kubernetes proxy!&lt;/p></description></item><item><title>dapp — утилита для сборки и деплоя контейнеров. Особенности работы</title><link>https://zzamzam.dev/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</link><pubDate>Mon, 03 Dec 2018 22:54:56 +0000</pubDate><guid>https://zzamzam.dev/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/</guid><description>&lt;p>
 &lt;a href="https://zzamzam.dev/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/flant.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/flant_hu2d95afc78664deacc037fd44acff9223_17100_120x0_resize_box_3.png" width="120" height="120">&lt;/a>
 &lt;/p>
 &lt;p>&lt;a href="https://github.com/flant/dapp">dapp&lt;/a> — утилита от российской компании Флант, которая занимается внедрением devops-практик (kubernetes, ci/cd и всё такое, ну вы в курсе) Подробное описание можно прочитать на &lt;a href="https://habr.com/company/flant/blog/333682/">Хабре&lt;/a>, а я бы хотел остановиться на некоторых особенностях работы с ней при сборке образов (здесь и далее под образом подразумевается docker image)&lt;/p>
@@ -337,10 +337,10 @@
 &lt;ol>
 &lt;li>
 &lt;p>Качаем обновлённый certbot v0.22, разархивируем, переходим в папку&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">wget &lt;span class="s1">&amp;#39;https://github.com/certbot/certbot/archive/v0.22.2.tar.gz&amp;#39;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
-&lt;/span>&lt;span class="se">&lt;/span>tar -xvf v0.22.2.tar.gz &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
-&lt;/span>&lt;span class="se">&lt;/span>&lt;span class="nb">cd&lt;/span> certbot-0.22.2
-&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">wget &lt;span class="s1">&amp;#39;https://github.com/certbot/certbot/archive/v0.22.2.tar.gz&amp;#39;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>tar -xvf v0.22.2.tar.gz &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>&lt;span class="nb">cd&lt;/span> certbot-0.22.2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
 &lt;/ol></description></item><item><title>Summernote. Автоформатирование при просмотре исходного кода</title><link>https://zzamzam.dev/2017/09/summernote-code-view-html-autoformat/</link><pubDate>Tue, 19 Sep 2017 16:28:56 +0000</pubDate><guid>https://zzamzam.dev/2017/09/summernote-code-view-html-autoformat/</guid><description>&lt;p>
 &lt;a href="https://zzamzam.dev/2017/09/summernote-code-view-html-autoformat/summernote.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2017/09/summernote-code-view-html-autoformat/summernote_hu1ee04cdc4c471e93116b6588931f1279_23867_600x0_resize_box_3.png" width="600" height="209">&lt;/a>
 &lt;/p>
@@ -363,8 +363,8 @@
 &lt;/p>
 &lt;p>Кейс следующий:&lt;/p>
 &lt;p>Есть запросы к API с передачей уникального токена в GET параметре. По этому токену (user_token=) имеются лимиты на запросы через &lt;a href="https://nginx.org/ru/docs/http/ngx_http_limit_req_module.html">limit_req_zone&lt;/a>, типа такого:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-nginx" data-lang="nginx">&lt;span class="k">limit_req_zone&lt;/span> &lt;span class="nv">$arg_user_token&lt;/span> &lt;span class="s">zone=token5:10m&lt;/span> &lt;span class="s">rate=12r/m&lt;/span>&lt;span class="p">;&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Необходимо для некоторых токенов отключить лимиты. Тут на помощь и приходит модуль &lt;a href="https://nginx.org/ru/docs/http/ngx_http_map_module.html">map&lt;/a> nginx. Он позволяет динамически получать переменную, значение которой будет зависеть от значений других, входных, переменных. Т.е., грубо говоря, мы имеем&lt;/p></description></item><item><title>Digital Ocean представил новые дроплеты с высокопроизводительными CPU</title><link>https://zzamzam.dev/2017/05/digital-ocean-predstavil-novye-droplety-s-vysoko/</link><pubDate>Tue, 02 May 2017 20:59:35 +0000</pubDate><guid>https://zzamzam.dev/2017/05/digital-ocean-predstavil-novye-droplety-s-vysoko/</guid><description>&lt;p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-nginx" data-lang="nginx">&lt;span class="line">&lt;span class="cl">&lt;span class="k">limit_req_zone&lt;/span> &lt;span class="nv">$arg_user_token&lt;/span> &lt;span class="s">zone=token5:10m&lt;/span> &lt;span class="s">rate=12r/m&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Необходимо для некоторых токенов отключить лимиты. Тут на помощь и приходит модуль &lt;a href="https://nginx.org/ru/docs/http/ngx_http_map_module.html">map&lt;/a> nginx. Он позволяет динамически получать переменную, значение которой будет зависеть от значений других, входных, переменных. Т.е., грубо говоря, мы имеем&lt;/p></description></item><item><title>Digital Ocean представил новые дроплеты с высокопроизводительными CPU</title><link>https://zzamzam.dev/2017/05/digital-ocean-predstavil-novye-droplety-s-vysoko/</link><pubDate>Tue, 02 May 2017 20:59:35 +0000</pubDate><guid>https://zzamzam.dev/2017/05/digital-ocean-predstavil-novye-droplety-s-vysoko/</guid><description>&lt;p>
 &lt;a href="https://zzamzam.dev/2017/05/digital-ocean-predstavil-novye-droplety-s-vysoko/do-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2017/05/digital-ocean-predstavil-novye-droplety-s-vysoko/do-logo_hu375f1039e7bf73eb43d94d568a84b65f_43515_320x0_resize_box_3.png" width="320" height="320">&lt;/a>
 &lt;/p>
 &lt;p>Упало письмо с рассылкой от DO, в котором говорится что они анонсируют ранний доступ, по запросу, к новым типам дроплетов&lt;/p>
@@ -392,13 +392,13 @@
 &lt;blockquote>
 &lt;p>&lt;strong>/etc/selinux/config&lt;/strong>&lt;/p>
 &lt;/blockquote>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="c1"># This file controls the state of SELinux on the system.&lt;/span>
-&lt;span class="c1"># SELINUX= can take one of these three values:&lt;/span>
-&lt;span class="c1"># enforcing - SELinux security policy is enforced.&lt;/span>
-&lt;span class="c1"># permissive - SELinux prints warnings instead of enforcing.&lt;/span>
-&lt;span class="c1"># disabled - No SELinux policy is loaded.&lt;/span>
-&lt;span class="na">SELINUX&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">disabled&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Теперь, наконец разобравшись, я понял, что никогда больше не буду выключать selinux&lt;/p></description></item><item><title>Thinstation 5. Делаем окно подключения для rdesktop</title><link>https://zzamzam.dev/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/</link><pubDate>Thu, 12 Mar 2015 18:00:00 +0000</pubDate><guid>https://zzamzam.dev/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/</guid><description>&lt;p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># This file controls the state of SELinux on the system.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># SELINUX= can take one of these three values:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># enforcing - SELinux security policy is enforced.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># permissive - SELinux prints warnings instead of enforcing.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># disabled - No SELinux policy is loaded.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">SELINUX&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">disabled&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Теперь, наконец разобравшись, я понял, что никогда больше не буду выключать selinux&lt;/p></description></item><item><title>Thinstation 5. Делаем окно подключения для rdesktop</title><link>https://zzamzam.dev/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/</link><pubDate>Thu, 12 Mar 2015 18:00:00 +0000</pubDate><guid>https://zzamzam.dev/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/</guid><description>&lt;p>
 &lt;a href="https://zzamzam.dev/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/thinstation-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2015/03/rdesktop-s-oknom-podkljuchenija-v-thinstation-5/thinstation-logo_huc673d70d10eff8150c8b64ee4985890d_110066_320x0_resize_box_3.png" width="320" height="155">&lt;/a>
 &lt;/p>
 &lt;p>Thinstation - великолепная платформа для сборки тонкого клиента. Но вот некоторые вещи приходится допиливать руками&amp;hellip;&lt;/p>
@@ -443,10 +443,10 @@
 &lt;p>Модуль Asternic CDR Reports учитывает это, но не выводит аудиофайл.&lt;/p>
 &lt;p>Исправим это.&lt;/p>
 &lt;p>Информация о звонках в Asterisk`е хранится в mysql базе данных asteriskcdrdb, таблица cdr.&lt;/p></description></item><item><title>openSUSE 13.1 NetworkManager-l2tp</title><link>https://zzamzam.dev/2014/07/opensuse-13-1-networkmanager-l2tp/</link><pubDate>Wed, 02 Jul 2014 19:19:00 +0000</pubDate><guid>https://zzamzam.dev/2014/07/opensuse-13-1-networkmanager-l2tp/</guid><description>&lt;p>Исходники &lt;a href="https://github.com/seriyps/NetworkManager-l2tp">https://github.com/seriyps/NetworkManager-l2tp&lt;/a>&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">git clone https://github.com/seriyps/NetworkManager-l2tp.git
-&lt;span class="nb">cd&lt;/span> NetworkManager-l2tp
-./autogen.sh
-&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Nine Eagles 181 TOY NE RC 510A/512A</title><link>https://zzamzam.dev/2014/04/nine-eagles-181-toy-ne-rc-510a512a/</link><pubDate>Wed, 09 Apr 2014 19:50:00 +0000</pubDate><guid>https://zzamzam.dev/2014/04/nine-eagles-181-toy-ne-rc-510a512a/</guid><description>&lt;p>&lt;em>Этот пост написан, потому что по этой модели квадрокоптера в рунете ну очень мало информации, а мне пришлось столкнуться с мелким ремонтом и настройкой данного аппарата. Так что пускай изыскания не пропадут даром и помогут какому-нибудь &amp;ldquo;гуглящему&amp;rdquo;&amp;quot; человеку&lt;/em>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">git clone https://github.com/seriyps/NetworkManager-l2tp.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> NetworkManager-l2tp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">./autogen.sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Nine Eagles 181 TOY NE RC 510A/512A</title><link>https://zzamzam.dev/2014/04/nine-eagles-181-toy-ne-rc-510a512a/</link><pubDate>Wed, 09 Apr 2014 19:50:00 +0000</pubDate><guid>https://zzamzam.dev/2014/04/nine-eagles-181-toy-ne-rc-510a512a/</guid><description>&lt;p>&lt;em>Этот пост написан, потому что по этой модели квадрокоптера в рунете ну очень мало информации, а мне пришлось столкнуться с мелким ремонтом и настройкой данного аппарата. Так что пускай изыскания не пропадут даром и помогут какому-нибудь &amp;ldquo;гуглящему&amp;rdquo;&amp;quot; человеку&lt;/em>&lt;/p>
 &lt;p>Получил в подарок такой квадрокоптер:&lt;/p>
 &lt;p>&lt;strong>Nine Eagles 181 TOY NE RC 512A&lt;/strong>*&lt;/p>
 &lt;p>&lt;img src="https://zzamzam.dev/wp-content/uploads/2014/04/radioupravlyaemyj-kvadrokopter-nine-eagles-181-toy.jpg" alt="">&lt;/p>

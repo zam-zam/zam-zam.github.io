@@ -1,113 +1,12 @@
-<!doctype html><html>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>
-Организация деплоя в множество окружений с помощью helmfile &ndash; Of Code & Systems
-</title>
-<meta name=description property="og:description" content=" Эта статья на Хабре https://habr.com/ru/post/491108/
- Helmfile - обёртка для helm, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Организация деплоя в множество окружений с помощью helmfile &ndash; Of Code & Systems</title><meta name=description property="og:description" content=" Эта статья на Хабре https://habr.com/ru/post/491108/
+Helmfile - обёртка для helm, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.
 О самом helmfile и примерах его использования можно почитать в readme и best practices guide.
 Мы же познакомимся с неочевидными способами описать релизы в helmfile
 Допустим, у нас есть пачка helm-чартов (для примера пусть будет postgres и некое backend приложение) и несколько окружений (несколько kubernetes кластеров, несколько namespace&amp;rsquo;ов или несколько и того, и другого). Берём helmfile, читаем документацию и начинаем описывать наши окружения и релизы:
- . ├── envs │ ├── devel │ │ └── values │ │ ├── backend.yaml │ │ └── postgres.yaml │ └── production │ └── values │ ├── backend.yaml │ └── postgres.yaml └── helmfile.yaml |">
-<meta name=apple-mobile-web-app-title content="Of Code & Systems">
-<link rel=stylesheet href=/assets/syntax.css>
-<link rel=stylesheet href=/assets/primer-build.css>
-<link rel=stylesheet href=/assets/style.css>
-</head>
-<body class=bg-gray style=background-color:#fdf6e3!important>
-<div id=holy class="container-lg bg-white h-100">
-<div id=header class="px-1 bg-white text-center">
-<div class=u-nav>
-<a class="u-nav-el u-nav-el-current" href=//zzamzam.dev>Blog</a>
-<a class=u-nav-el href=//docs.zzamzam.dev>Docs</a>
-</div>
-<nav class="UnderlineNav UnderlineNav--right px-2">
-<a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>
-Of Code & Systems
-</a>
-</nav>
-</div>
-<div role=main id=main class="holy-main markdown-body px-4 bg-white">
-<div class=Subhead>
-<div class=Subhead-heading>
-<div class="h1 mt-3 mb-1">Организация деплоя в множество окружений с помощью helmfile</div>
-</div>
-<div class=Subhead-description>
-<a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link>
-<span class="Label Label--gray-darker">документация</span>
-</a>
-<a href=/tags/helmfile class=muted-link>
-<span class="Label Label--gray">helmfile</span>
-</a>
-<a href=/tags/helm class=muted-link>
-<span class="Label Label--gray">helm</span>
-</a>
-<a href=/tags/cicd class=muted-link>
-<span class="Label Label--gray">cicd</span>
-</a>
-<div class=float-md-right>
-<span title="Lastmod: 2020-03-04. Published at: 2020-03-04.">
-2020-03-04
-</span>
-</div>
-</div>
-</div>
-<article>
-<section class="pb-6 mb-3 border-bottom">
-<div id=toc class="Box Box--blue mb-3">
-<b>Содержание</b><nav id=TableOfContents>
-<ul>
-<li>
-<ul>
-<li>
-<ul>
-<li></li>
-</ul>
-</li>
-<li><a href=#разные-версии-helm-чартов-в-разных-окружениях>Разные версии helm чартов в разных окружениях</a>
-<ul>
-<li></li>
-</ul>
-</li>
-<li><a href=#разный-набор-приложений-в-разных-окружениях>Разный набор приложений в разных окружениях</a>
-<ul>
-<li></li>
-</ul>
-</li>
-<li><a href=#переопределяемые-глобальные-значения-для-релизов>Переопределяемые глобальные значения для релизов</a>
-<ul>
-<li></li>
-</ul>
-</li>
-<li><a href=#определение-глобальных-значений-для-helm-чартов-всех-релизов-на-уровне-окружения>Определение глобальных значений для helm чартов всех релизов на уровне окружения</a>
-<ul>
-<li></li>
-</ul>
-</li>
-<li><a href=#подстановка-секретов-secrets-из-значений-окружения>Подстановка секретов (secrets) из значений окружения</a>
-<ul>
-<li></li>
-</ul>
-</li>
-<li><a href=#заключение>Заключение</a>
-<ul>
-<li></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</nav></div>
-<blockquote>
-<p>Эта статья на Хабре <a href=https://habr.com/ru/post/491108/>https://habr.com/ru/post/491108/</a></p>
-</blockquote>
-<p><a href=https://github.com/roboll/helmfile>Helmfile</a> - обёртка для <a href=https://github.com/helm/helm/>helm</a>, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.</p>
-<p>О самом helmfile и примерах его использования можно почитать в <a href=https://github.com/roboll/helmfile/blob/master/README.md>readme</a> и <a href=https://github.com/roboll/helmfile/blob/master/docs/writing-helmfile.md>best practices guide</a>.</p>
-<p>Мы же познакомимся с неочевидными способами описать релизы в helmfile</p>
-<p>Допустим, у нас есть пачка helm-чартов (для примера пусть будет postgres и некое backend приложение) и несколько окружений (несколько kubernetes кластеров, несколько namespace&rsquo;ов или несколько и того, и другого). Берём helmfile, читаем документацию и начинаем описывать наши окружения и релизы:</p>
-<pre tabindex=0><code>    .
+. ├── envs │ ├── devel │ │ └── values │ │ ├── backend.yaml │ │ └── postgres.yaml │ └── production │ └── values │ ├── backend.yaml │ └── postgres.yaml └── helmfile.yaml |"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white text-center"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">Организация деплоя в множество окружений с помощью helmfile</div></div><div class=Subhead-description><a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link><span class="Label Label--gray-darker">документация</span></a>
+<a href=/tags/helmfile class=muted-link><span class="Label Label--gray">helmfile</span></a>
+<a href=/tags/helm class=muted-link><span class="Label Label--gray">helm</span></a>
+<a href=/tags/cicd class=muted-link><span class="Label Label--gray">cicd</span></a><div class=float-md-right><span title="Lastmod: 2020-03-04. Published at: 2020-03-04.">2020-03-04</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><div id=toc class="Box Box--blue mb-3"><b>Содержание</b><nav id=TableOfContents><ul><li><ul><li><ul><li></li></ul></li><li><a href=#разные-версии-helm-чартов-в-разных-окружениях>Разные версии helm чартов в разных окружениях</a><ul><li></li></ul></li><li><a href=#разный-набор-приложений-в-разных-окружениях>Разный набор приложений в разных окружениях</a><ul><li></li></ul></li><li><a href=#переопределяемые-глобальные-значения-для-релизов>Переопределяемые глобальные значения для релизов</a><ul><li></li></ul></li><li><a href=#определение-глобальных-значений-для-helm-чартов-всех-релизов-на-уровне-окружения>Определение глобальных значений для helm чартов всех релизов на уровне окружения</a><ul><li></li></ul></li><li><a href=#подстановка-секретов-secrets-из-значений-окружения>Подстановка секретов (secrets) из значений окружения</a><ul><li></li></ul></li><li><a href=#заключение>Заключение</a><ul><li></li></ul></li></ul></li></ul></nav></div><blockquote><p>Эта статья на Хабре <a href=https://habr.com/ru/post/491108/>https://habr.com/ru/post/491108/</a></p></blockquote><p><a href=https://github.com/roboll/helmfile>Helmfile</a> - обёртка для <a href=https://github.com/helm/helm/>helm</a>, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.</p><p>О самом helmfile и примерах его использования можно почитать в <a href=https://github.com/roboll/helmfile/blob/master/README.md>readme</a> и <a href=https://github.com/roboll/helmfile/blob/master/docs/writing-helmfile.md>best practices guide</a>.</p><p>Мы же познакомимся с неочевидными способами описать релизы в helmfile</p><p>Допустим, у нас есть пачка helm-чартов (для примера пусть будет postgres и некое backend приложение) и несколько окружений (несколько kubernetes кластеров, несколько namespace&rsquo;ов или несколько и того, и другого). Берём helmfile, читаем документацию и начинаем описывать наши окружения и релизы:</p><pre tabindex=0><code>    .
     ├── envs
     │   ├── devel
     │   │   └── values
@@ -118,417 +17,301 @@ Of Code & Systems
     │           ├── backend.yaml
     │           └── postgres.yaml
     └── helmfile.yaml
-</code></pre><h4 id=helmfileyaml><strong><code>helmfile.yaml</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>environments</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>devel</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>production</span><span class=p>:</span><span class=w>
-</span><span class=w>
-</span><span class=w></span><span class=nt>releases</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>postgres</span><span class=w>
-</span><span class=w>    </span><span class=nt>labels</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>postgres</span><span class=w>
-</span><span class=w>    </span><span class=nt>wait</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>    </span><span class=nt>chart</span><span class=p>:</span><span class=w> </span><span class=l>stable/postgresql</span><span class=w>
-</span><span class=w>    </span><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=m>8.4.0</span><span class=w>
-</span><span class=w>    </span><span class=nt>values</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span>- <span class=l>envs/{{ .Environment.Name }}/values/postgres.yaml</span><span class=w>
-</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>backend</span><span class=w>
-</span><span class=w>    </span><span class=nt>labels</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>backend</span><span class=w>
-</span><span class=w>    </span><span class=nt>wait</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>    </span><span class=nt>chart</span><span class=p>:</span><span class=w> </span><span class=l>private-helm-repo/backend</span><span class=w>
-</span><span class=w>    </span><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=m>1.0.5</span><span class=w>
-</span><span class=w>    </span><span class=nt>needs</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span>- <span class=l>postgres</span><span class=w>
-</span><span class=w>    </span><span class=nt>values</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span>- <span class=l>envs/{{ .Environment.Name }}/values/backend.yaml</span><span class=w>
-</span></code></pre></div><p>У нас получилось 2 окружения: <strong>devel</strong>, <strong>production</strong> - в каждом находятся свои значения для helm чартов релизов. Мы будем деплоить в них так:</p>
-<pre tabindex=0><code>helmfile -n &lt;namespace&gt; -e &lt;env&gt; apply
-</code></pre><h2 id=разные-версии-helm-чартов-в-разных-окружениях>Разные версии helm чартов в разных окружениях</h2>
-<p>Что делать, если нам надо выкатывать разные версии бэкенда в разные окружения? Как параметризовать версию релиза? На помощь приходят значения окружения, доступные через <code>{{ .Values }}</code></p>
-<h4 id=helmfileyaml-1><strong><code>helmfile.yaml</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff>environments:
-  devel:
-<span class=gi>+   values:
-</span><span class=gi>+   - charts:
-</span><span class=gi>+       versions:
-</span><span class=gi>+         backend: 1.1.0
-</span><span class=gi></span>  production:
-<span class=gi>+   values:
-</span><span class=gi>+   - charts:
-</span><span class=gi>+       versions:
-</span><span class=gi>+         backend: 1.0.5
-</span><span class=gi></span>...
-  - name: backend
-    labels:
-      app: backend
-    wait: true
-    chart: private-helm-repo/backend
-<span class=gd>-   version: 1.0.5
-</span><span class=gd></span><span class=gi>+   version: {{ .Values.charts.versions.backend }}
-</span><span class=gi></span>...
-</code></pre></div><h2 id=разный-набор-приложений-в-разных-окружениях>Разный набор приложений в разных окружениях</h2>
-<p>Отлично, но что если нам не надо в <code>production</code> выкатывать postgres, потому что мы знаем, что не надо базу данных пихать в k8s и для прода у нас есть замечательный отдельный кластер postgres? Для решения этой проблемы у нас есть лейблы (labels)</p>
-<pre tabindex=0><code>helmfile -n &lt;namespace&gt; -e devel apply
+</code></pre><h4 id=helmfileyaml><strong><code>helmfile.yaml</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>environments</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>devel</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>production</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>releases</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>postgres</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>postgres</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>wait</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>chart</span><span class=p>:</span><span class=w> </span><span class=l>stable/postgresql</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=m>8.4.0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>values</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>envs/{{ .Environment.Name }}/values/postgres.yaml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>backend</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>backend</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>wait</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>chart</span><span class=p>:</span><span class=w> </span><span class=l>private-helm-repo/backend</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=m>1.0.5</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>needs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>postgres</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>values</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>envs/{{ .Environment.Name }}/values/backend.yaml</span><span class=w>
+</span></span></span></code></pre></div><p>У нас получилось 2 окружения: <strong>devel</strong>, <strong>production</strong> - в каждом находятся свои значения для helm чартов релизов. Мы будем деплоить в них так:</p><pre tabindex=0><code>helmfile -n &lt;namespace&gt; -e &lt;env&gt; apply
+</code></pre><h2 id=разные-версии-helm-чартов-в-разных-окружениях>Разные версии helm чартов в разных окружениях</h2><p>Что делать, если нам надо выкатывать разные версии бэкенда в разные окружения? Как параметризовать версию релиза? На помощь приходят значения окружения, доступные через <code>{{ .Values }}</code></p><h4 id=helmfileyaml-1><strong><code>helmfile.yaml</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff><span class=line><span class=cl>environments:
+</span></span><span class=line><span class=cl>  devel:
+</span></span><span class=line><span class=cl><span class=gi>+   values:
+</span></span></span><span class=line><span class=cl><span class=gi>+   - charts:
+</span></span></span><span class=line><span class=cl><span class=gi>+       versions:
+</span></span></span><span class=line><span class=cl><span class=gi>+         backend: 1.1.0
+</span></span></span><span class=line><span class=cl><span class=gi></span>  production:
+</span></span><span class=line><span class=cl><span class=gi>+   values:
+</span></span></span><span class=line><span class=cl><span class=gi>+   - charts:
+</span></span></span><span class=line><span class=cl><span class=gi>+       versions:
+</span></span></span><span class=line><span class=cl><span class=gi>+         backend: 1.0.5
+</span></span></span><span class=line><span class=cl><span class=gi></span>...
+</span></span><span class=line><span class=cl>  - name: backend
+</span></span><span class=line><span class=cl>    labels:
+</span></span><span class=line><span class=cl>      app: backend
+</span></span><span class=line><span class=cl>    wait: true
+</span></span><span class=line><span class=cl>    chart: private-helm-repo/backend
+</span></span><span class=line><span class=cl><span class=gd>-   version: 1.0.5
+</span></span></span><span class=line><span class=cl><span class=gd></span><span class=gi>+   version: {{ .Values.charts.versions.backend }}
+</span></span></span><span class=line><span class=cl><span class=gi></span>...
+</span></span></code></pre></div><h2 id=разный-набор-приложений-в-разных-окружениях>Разный набор приложений в разных окружениях</h2><p>Отлично, но что если нам не надо в <code>production</code> выкатывать postgres, потому что мы знаем, что не надо базу данных пихать в k8s и для прода у нас есть замечательный отдельный кластер postgres? Для решения этой проблемы у нас есть лейблы (labels)</p><pre tabindex=0><code>helmfile -n &lt;namespace&gt; -e devel apply
 helmfile -n &lt;namespace&gt; -e production -l app=backend apply
-</code></pre><p>Это здорово, но лично я предпочту описывать, какие приложения разворачивать в окружении не с помощью аргументов запуска, а в описании самих окружений. Что делать? Можно поместить описание релизов в отдельную папку, в описании окружения завести список нужных релизов и &ldquo;подцеплять&rdquo; только нужные релизы, игнорируя остальные</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff>    .
-    ├── envs
-    │   ├── devel
-    │   │   └── values
-    │   │       ├── backend.yaml
-    │   │       └── postgres.yaml
-    │   └── production
-    │       └── values
-    │           ├── backend.yaml
-    │           └── postgres.yaml
-<span class=gi>+   ├── releases
-</span><span class=gi>+   │   ├── backend.yaml
-</span><span class=gi>+   │   └── postgres.yaml
-</span><span class=gi></span>    └── helmfile.yaml
-
-</code></pre></div><h4 id=helmfileyaml-2><strong><code>helmfile.yaml</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff>
-  environments:
-    devel:
-      values:
-      - charts:
-          versions:
-            backend: 1.1.0
-      - apps:
-        - postgres
-        - backend
-
-    production:
-      values:
-      - charts:
-          versions:
-            backend: 1.0.5
-      - apps:
-        - backend
-
-<span class=gd>- releases:
-</span><span class=gd>-    - name: postgres
-</span><span class=gd>-      labels:
-</span><span class=gd>-        app: postgres
-</span><span class=gd>-      wait: true
-</span><span class=gd>-      chart: stable/postgresql
-</span><span class=gd>-      version: 8.4.0
-</span><span class=gd>-      values:
-</span><span class=gd>-        - envs/{{ .Environment.Name }}/values/postgres.yaml
-</span><span class=gd>-    - name: backend
-</span><span class=gd>-      labels:
-</span><span class=gd>-        app: backend
-</span><span class=gd>-      wait: true
-</span><span class=gd>-      chart: private-helm-repo/backend
-</span><span class=gd>-     version: {{ .Values.charts.versions.backend }}
-</span><span class=gd>-     needs:
-</span><span class=gd>-       - postgres
-</span><span class=gd>-     values:
-</span><span class=gd>-       - envs/{{ .Environment.Name }}/values/backend.yaml
-</span><span class=gd></span><span class=gi>+ ---
-</span><span class=gi>+ bases:
-</span><span class=gi>+ {{- range .Values.apps }}
-</span><span class=gi>+   - releases/{{ . }}.yaml
-</span><span class=gi>+ {{- end }}
-</span></code></pre></div><h4 id=releasespostgresyaml><strong><code>releases/postgres.yaml</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>releases</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>postgres</span><span class=w>
-</span><span class=w>    </span><span class=nt>labels</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>postgres</span><span class=w>
-</span><span class=w>    </span><span class=nt>wait</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>    </span><span class=nt>chart</span><span class=p>:</span><span class=w> </span><span class=l>stable/postgresql</span><span class=w>
-</span><span class=w>    </span><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=m>8.4.0</span><span class=w>
-</span><span class=w>    </span><span class=nt>values</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span>- <span class=l>envs/{{ .Environment.Name }}/values/postgres.yaml</span><span class=w>
-</span></code></pre></div><h4 id=releasesbackendyaml><strong><code>releases/backend.yaml</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>releases</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>backend</span><span class=w>
-</span><span class=w>    </span><span class=nt>labels</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>backend</span><span class=w>
-</span><span class=w>    </span><span class=nt>wait</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>    </span><span class=nt>chart</span><span class=p>:</span><span class=w> </span><span class=l>private-helm-repo/backend</span><span class=w>
-</span><span class=w>    </span><span class=nt>version</span><span class=p>:</span><span class=w> </span>{{<span class=w> </span><span class=l>.Values.charts.versions.backend }}</span><span class=w>
-</span><span class=w>    </span><span class=nt>needs</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span>- <span class=l>postgres</span><span class=w>
-</span><span class=w>    </span><span class=nt>values</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span>- <span class=l>envs/{{ .Environment.Name }}/values/backend.yaml</span><span class=w>
-</span></code></pre></div><hr>
-<p><strong>Заметка</strong></p>
-<p>При использовании <code>bases:</code> необходимо обязательно использовать yaml разделитель <code>---</code>, чтобы можно было шаблонизировать releases (и остальные части, типа helmDefaults) значениями из environments</p>
-<hr>
-<p>В таком случае релиз postgres даже не попадёт в описание для production. Очень удобно!</p>
-<h2 id=переопределяемые-глобальные-значения-для-релизов>Переопределяемые глобальные значения для релизов</h2>
-<p>Конечно, здорово, что можно для каждого окружения задавать значения для helm чартов, но что если у нас описано несколько окружений, и мы хотим, допустим, задать одинаковый для всех <code>affinity</code>, но не хотим настраивать его по-умолчанию в самих чартах, которые хранятся в репах.</p>
-<p>В таком случае мы могли бы для каждого релиза задать 2 файла с values: первый с дефолтными значениями, которые будут определять значения самого чарта, а второй со значениями для окружения, который в свою очередь уже будет переопределять дефолтные.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff>    .
-    ├── envs
-<span class=gi>+   │   ├── default
-</span><span class=gi>+   │   │   └── values
-</span><span class=gi>+   │   │       ├── backend.yaml
-</span><span class=gi>+   │   │       └── postgres.yaml
-</span><span class=gi></span>    │   ├── devel
-    │   │   └── values
-    │   │       ├── backend.yaml
-    │   │       └── postgres.yaml
-    │   └── production
-    │       └── values
-    │           ├── backend.yaml
-    │           └── postgres.yaml
-    ├── releases
-    │   ├── backend.yaml
-    │   └── postgres.yaml
-    └── helmfile.yaml
-</code></pre></div><h4 id=releasesbackendyaml-1><strong><code>releases/backend.yaml</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff>releases:
-  - name: backend
-    labels:
-      app: backend
-    wait: true
-    chart: private-helm-repo/backend
-    version: {{ .Values.charts.versions.backend }}
-    needs:
-      - postgres
-    values:
-<span class=gi>+     - envs/default/values/backend.yaml
-</span><span class=gi></span>      - envs/{{ .Environment.Name }}/values/backend.yaml
-</code></pre></div><h4 id=envsdefaultvaluesbackendyaml><strong><code>envs/default/values/backend.yaml</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>affinity</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>podAntiAffinity</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span><span class=nt>preferredDuringSchedulingIgnoredDuringExecution</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span>- <span class=nt>weight</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
-</span><span class=w>      </span><span class=nt>podAffinityTerm</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=nt>labelSelector</span><span class=p>:</span><span class=w>
-</span><span class=w>          </span><span class=nt>matchExpressions</span><span class=p>:</span><span class=w>
-</span><span class=w>          </span>- <span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>app.kubernetes.io/name</span><span class=w>
-</span><span class=w>            </span><span class=nt>operator</span><span class=p>:</span><span class=w> </span><span class=l>In</span><span class=w>
-</span><span class=w>            </span><span class=nt>values</span><span class=p>:</span><span class=w>
-</span><span class=w>            </span>- <span class=l>backend</span><span class=w>
-</span><span class=w>        </span><span class=nt>topologyKey</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;kubernetes.io/hostname&#34;</span><span class=w>
-</span></code></pre></div><h2 id=определение-глобальных-значений-для-helm-чартов-всех-релизов-на-уровне-окружения>Определение глобальных значений для helm чартов всех релизов на уровне окружения</h2>
-<p>Допустим, у нас в нескольких релизах создаются несколько ingress - мы могли бы вручную для каждого чарта определить <code>hosts:</code>, но в нашем случае домен один и тот же, так почему же его не вынести в некую глобальную переменную и просто подставлять её значение в чарты? Для этого те файлы с values, которые мы хотим параметризовать, должны будут иметь расширение <code>.gotmpl</code>, чтобы helmfile знал, что его надо прогнать через шаблонизатор.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff>    .
-    ├── envs
-    │   ├── default
-    │   │   └── values
-<span class=gd>-   │   │       ├── backend.yaml
-</span><span class=gd>-   │   │       ├── postgres.yaml
-</span><span class=gd></span><span class=gi>+   │   │       ├── backend.yaml.gotmpl
-</span><span class=gi>+   │   │       └── postgres.yaml.gotmpl
-</span><span class=gi></span>    │   ├── devel
-    │   │   └── values
-    │   │       ├── backend.yaml
-    │   │       └── postgres.yaml
-    │   └── production
-    │       └── values
-    │           ├── backend.yaml
-    │           └── postgres.yaml
-    ├── releases
-    │   ├── backend.yaml
-    │   └── postgres.yaml
-    └── helmfile.yaml
-</code></pre></div><h4 id=helmfileyaml-3><strong><code>helmfile.yaml</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff>  environments:
-    devel:
-      values:
-      - charts:
-          versions:
-            backend: 1.1.0
-      - apps:
-        - postgres
-        - backend
-<span class=gi>+     - global:
-</span><span class=gi>+         ingressDomain: k8s.devel.domain
-</span><span class=gi></span>
-    production:
-      values:
-      - charts:
-          versions:
-            backend: 1.0.5
-      - apps:
-        - backend
-<span class=gi>+     - global:
-</span><span class=gi>+         ingressDomain: production.domain
-</span><span class=gi></span>  ---
-  bases:
-  {{- range .Values.apps }}
-    - releases/{{ . }}.yaml
-  {{- end }}
-</code></pre></div><h4 id=envsdefaultvaluesbackendyamlgotmpl><strong><code>envs/default/values/backend.yaml.gotmpl</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>ingress</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>  </span><span class=nt>paths</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span>- <span class=l>/api</span><span class=w>
-</span><span class=w>  </span><span class=nt>hosts</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span>- {{<span class=w> </span><span class=l>.Values.global.ingressDomain }}</span><span class=w>
-</span></code></pre></div><h4 id=envsdefaultvaluespostgresyamlgotmpl><strong><code>envs/default/values/postgres.yaml.gotmpl</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>ingress</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
-</span><span class=w>  </span><span class=nt>paths</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span>- <span class=l>/</span><span class=w>
-</span><span class=w>  </span><span class=nt>hosts</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span>- <span class=l>postgres.{{ .Values.global.ingressDomain }}</span><span class=w>
-</span></code></pre></div><hr>
-<p><strong>Заметка</strong></p>
-<p>Очевидно, что ingress в чарте postgres - это нечто крайне сомнительное, поэтому в статье это приведено просто в качестве сферического примера в вакууме и для того, чтобы не вводить в статью какой-то новый релиз только ради описания ingress</p>
-<hr>
-<h2 id=подстановка-секретов-secrets-из-значений-окружения>Подстановка секретов (secrets) из значений окружения</h2>
-<p>По аналогии с вышеприведённым примером можно подставлять и зашифрованные с помощью <a href=https://github.com/futuresimple/helm-secrets>helm secrets</a> значения. Вместо того, чтобы для каждого релиза создавать свой файл secrets, в котором определять для чарта зашифрованные значения, мы можем просто определить в релизном default.yaml.gotmpl значения, которые будут браться из переменных, заданных на уровне окружений. А значения, которые нам не надо ни от кого скрывать, можно уже спокойно переопределить в значениях релиза в конкретном окружении.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff>    .
-    ├── envs
-    │   ├── default
-    │   │   └── values
-    │   │       ├── backend.yaml
-    │   │       └── postgres.yaml
-    │   ├── devel
-    │   │   ├── values
-    │   │   │   ├── backend.yaml
-    │   │   │   └── postgres.yaml
-<span class=gi>+   │   │   └── secrets.yaml
-</span><span class=gi></span>    │   └── production
-    │       ├── values
-    │       │   ├── backend.yaml
-    │       │   └── postgres.yaml
-<span class=gi>+   │       └── secrets.yaml
-</span><span class=gi></span>    ├── releases
-    │   ├── backend.yaml
-    │   └── postgres.yaml
-    └── helmfile.yaml
-</code></pre></div><h4 id=helmfileyaml-4><strong><code>helmfile.yaml</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff>  environments:
-    devel:
-      values:
-      - charts:
-          versions:
-            backend: 1.1.0
-      - apps:
-        - postgres
-        - backend
-      - global:
-          ingressDomain: k8s.devel.domain
-<span class=gi>+     secrets:
-</span><span class=gi>+       - envs/devel/secrets.yaml
-</span><span class=gi></span>
-    production:
-      values:
-      - charts:
-          versions:
-            backend: 1.0.5
-      - apps:
-        - backend
-      - global:
-          ingressDomain: production.domain
-<span class=gi>+     secrets:
-</span><span class=gi>+       - envs/production/secrets.yaml
-</span><span class=gi></span>  ---
-  bases:
-  {{- range .Values.apps }}
-    - releases/{{ . }}.yaml
-  {{- end }}
-</code></pre></div><h4 id=envsdevelsecretsyaml><strong><code>envs/devel/secrets.yaml</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>secrets</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span><span class=nt>elastic</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=nt>password</span><span class=p>:</span><span class=w> </span><span class=l>ENC[AES256_GCM,data:hjCB,iv:Z1P6/6xBJgJoKLJ0UUVfqZ80o4L84jvZfM+uH9gBelc=,tag:dGqQlCZnLdRAGoJSj63rBQ==,type:int]</span><span class=w>
-</span><span class=w></span><span class=nn>...</span><span class=w>
-</span></code></pre></div><h4 id=envsproductionsecretsyaml><strong><code>envs/production/secrets.yaml</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>secrets</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span><span class=nt>elastic</span><span class=p>:</span><span class=w>
-</span><span class=w>        </span><span class=nt>password</span><span class=p>:</span><span class=w> </span><span class=l>ENC[AES256_GCM,data:ZB/VpTFk8f0=,iv:EA//oT1Cb5wNFigTDOz3nA80qD9UwTjK5cpUwLnEXjs=,tag:hMdIUaqLRA8zuFBd82bz6A==,type:str]</span><span class=w>
-</span><span class=w></span><span class=nn>...</span><span class=w>
-</span></code></pre></div><h4 id=envsdefaultvaluesbackendyamlgotmpl-1><strong><code>envs/default/values/backend.yaml.gotmpl</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>elasticsearch</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=l>elasticsearch</span><span class=w>
-</span><span class=w>  </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=m>9200</span><span class=w>
-</span><span class=w>  </span><span class=nt>password</span><span class=p>:</span><span class=w> </span>{{<span class=w> </span><span class=l>.Values | getOrNil &#34;secrets.elastic.password&#34; | default &#34;password&#34; }}</span><span class=w>
-</span></code></pre></div><h4 id=envsdevelvaluesbackendyaml><strong><code>envs/devel/values/backend.yaml</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>elasticsearch</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=l>elastic-0.devel.domain</span><span class=w>
-</span></code></pre></div><h4 id=envsproductionvaluesbackendyaml><strong><code>envs/production/values/backend.yaml</code></strong></h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>elasticsearch</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=l>elastic-0.production.domain</span><span class=w>
-</span></code></pre></div><hr>
-<p><strong>Заметка</strong></p>
-<p>Кстати, <code>getOrNil</code> - специальная функция для go шаблонов в helmfile, которая, даже если <code>.Values.secrets</code> не будет существовать, не выкинет ошибку, а позволит в результате с помощью функции <code>default</code> подставить значение по-умолчанию</p>
-<hr>
-<h2 id=заключение>Заключение</h2>
-<p>Описанные вещи кажутся довольно очевидными, но информация по удобному описанию деплоя в несколько окружений с помощью helmfile очень скудна, а я люблю IaC(Infrastructure-as-Code) и хочу иметь чёткое описание стейта деплоя.</p>
-<p>В заключение хочу добавить, что переменные для окружения default можно в свою очередь параметризовать переменными окружения ОС некоего раннера, с которого будет запускаться деплой, и таким образом получить динамические окружения</p>
-<h4 id=helmfileyaml-5><strong><code>helmfile.yaml</code></strong></h4>
-<pre tabindex=0><code>environments:
+</code></pre><p>Это здорово, но лично я предпочту описывать, какие приложения разворачивать в окружении не с помощью аргументов запуска, а в описании самих окружений. Что делать? Можно поместить описание релизов в отдельную папку, в описании окружения завести список нужных релизов и &ldquo;подцеплять&rdquo; только нужные релизы, игнорируя остальные</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff><span class=line><span class=cl>    .
+</span></span><span class=line><span class=cl>    ├── envs
+</span></span><span class=line><span class=cl>    │   ├── devel
+</span></span><span class=line><span class=cl>    │   │   └── values
+</span></span><span class=line><span class=cl>    │   │       ├── backend.yaml
+</span></span><span class=line><span class=cl>    │   │       └── postgres.yaml
+</span></span><span class=line><span class=cl>    │   └── production
+</span></span><span class=line><span class=cl>    │       └── values
+</span></span><span class=line><span class=cl>    │           ├── backend.yaml
+</span></span><span class=line><span class=cl>    │           └── postgres.yaml
+</span></span><span class=line><span class=cl><span class=gi>+   ├── releases
+</span></span></span><span class=line><span class=cl><span class=gi>+   │   ├── backend.yaml
+</span></span></span><span class=line><span class=cl><span class=gi>+   │   └── postgres.yaml
+</span></span></span><span class=line><span class=cl><span class=gi></span>    └── helmfile.yaml
+</span></span></code></pre></div><h4 id=helmfileyaml-2><strong><code>helmfile.yaml</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  environments:
+</span></span><span class=line><span class=cl>    devel:
+</span></span><span class=line><span class=cl>      values:
+</span></span><span class=line><span class=cl>      - charts:
+</span></span><span class=line><span class=cl>          versions:
+</span></span><span class=line><span class=cl>            backend: 1.1.0
+</span></span><span class=line><span class=cl>      - apps:
+</span></span><span class=line><span class=cl>        - postgres
+</span></span><span class=line><span class=cl>        - backend
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    production:
+</span></span><span class=line><span class=cl>      values:
+</span></span><span class=line><span class=cl>      - charts:
+</span></span><span class=line><span class=cl>          versions:
+</span></span><span class=line><span class=cl>            backend: 1.0.5
+</span></span><span class=line><span class=cl>      - apps:
+</span></span><span class=line><span class=cl>        - backend
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=gd>- releases:
+</span></span></span><span class=line><span class=cl><span class=gd>-    - name: postgres
+</span></span></span><span class=line><span class=cl><span class=gd>-      labels:
+</span></span></span><span class=line><span class=cl><span class=gd>-        app: postgres
+</span></span></span><span class=line><span class=cl><span class=gd>-      wait: true
+</span></span></span><span class=line><span class=cl><span class=gd>-      chart: stable/postgresql
+</span></span></span><span class=line><span class=cl><span class=gd>-      version: 8.4.0
+</span></span></span><span class=line><span class=cl><span class=gd>-      values:
+</span></span></span><span class=line><span class=cl><span class=gd>-        - envs/{{ .Environment.Name }}/values/postgres.yaml
+</span></span></span><span class=line><span class=cl><span class=gd>-    - name: backend
+</span></span></span><span class=line><span class=cl><span class=gd>-      labels:
+</span></span></span><span class=line><span class=cl><span class=gd>-        app: backend
+</span></span></span><span class=line><span class=cl><span class=gd>-      wait: true
+</span></span></span><span class=line><span class=cl><span class=gd>-      chart: private-helm-repo/backend
+</span></span></span><span class=line><span class=cl><span class=gd>-     version: {{ .Values.charts.versions.backend }}
+</span></span></span><span class=line><span class=cl><span class=gd>-     needs:
+</span></span></span><span class=line><span class=cl><span class=gd>-       - postgres
+</span></span></span><span class=line><span class=cl><span class=gd>-     values:
+</span></span></span><span class=line><span class=cl><span class=gd>-       - envs/{{ .Environment.Name }}/values/backend.yaml
+</span></span></span><span class=line><span class=cl><span class=gd></span><span class=gi>+ ---
+</span></span></span><span class=line><span class=cl><span class=gi>+ bases:
+</span></span></span><span class=line><span class=cl><span class=gi>+ {{- range .Values.apps }}
+</span></span></span><span class=line><span class=cl><span class=gi>+   - releases/{{ . }}.yaml
+</span></span></span><span class=line><span class=cl><span class=gi>+ {{- end }}
+</span></span></span></code></pre></div><h4 id=releasespostgresyaml><strong><code>releases/postgres.yaml</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>releases</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>postgres</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>postgres</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>wait</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>chart</span><span class=p>:</span><span class=w> </span><span class=l>stable/postgresql</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=m>8.4.0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>values</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>envs/{{ .Environment.Name }}/values/postgres.yaml</span><span class=w>
+</span></span></span></code></pre></div><h4 id=releasesbackendyaml><strong><code>releases/backend.yaml</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>releases</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>backend</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>app</span><span class=p>:</span><span class=w> </span><span class=l>backend</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>wait</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>chart</span><span class=p>:</span><span class=w> </span><span class=l>private-helm-repo/backend</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>version</span><span class=p>:</span><span class=w> </span>{{<span class=w> </span><span class=l>.Values.charts.versions.backend }}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>needs</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>postgres</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>values</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>envs/{{ .Environment.Name }}/values/backend.yaml</span><span class=w>
+</span></span></span></code></pre></div><hr><p><strong>Заметка</strong></p><p>При использовании <code>bases:</code> необходимо обязательно использовать yaml разделитель <code>---</code>, чтобы можно было шаблонизировать releases (и остальные части, типа helmDefaults) значениями из environments</p><hr><p>В таком случае релиз postgres даже не попадёт в описание для production. Очень удобно!</p><h2 id=переопределяемые-глобальные-значения-для-релизов>Переопределяемые глобальные значения для релизов</h2><p>Конечно, здорово, что можно для каждого окружения задавать значения для helm чартов, но что если у нас описано несколько окружений, и мы хотим, допустим, задать одинаковый для всех <code>affinity</code>, но не хотим настраивать его по-умолчанию в самих чартах, которые хранятся в репах.</p><p>В таком случае мы могли бы для каждого релиза задать 2 файла с values: первый с дефолтными значениями, которые будут определять значения самого чарта, а второй со значениями для окружения, который в свою очередь уже будет переопределять дефолтные.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff><span class=line><span class=cl>    .
+</span></span><span class=line><span class=cl>    ├── envs
+</span></span><span class=line><span class=cl><span class=gi>+   │   ├── default
+</span></span></span><span class=line><span class=cl><span class=gi>+   │   │   └── values
+</span></span></span><span class=line><span class=cl><span class=gi>+   │   │       ├── backend.yaml
+</span></span></span><span class=line><span class=cl><span class=gi>+   │   │       └── postgres.yaml
+</span></span></span><span class=line><span class=cl><span class=gi></span>    │   ├── devel
+</span></span><span class=line><span class=cl>    │   │   └── values
+</span></span><span class=line><span class=cl>    │   │       ├── backend.yaml
+</span></span><span class=line><span class=cl>    │   │       └── postgres.yaml
+</span></span><span class=line><span class=cl>    │   └── production
+</span></span><span class=line><span class=cl>    │       └── values
+</span></span><span class=line><span class=cl>    │           ├── backend.yaml
+</span></span><span class=line><span class=cl>    │           └── postgres.yaml
+</span></span><span class=line><span class=cl>    ├── releases
+</span></span><span class=line><span class=cl>    │   ├── backend.yaml
+</span></span><span class=line><span class=cl>    │   └── postgres.yaml
+</span></span><span class=line><span class=cl>    └── helmfile.yaml
+</span></span></code></pre></div><h4 id=releasesbackendyaml-1><strong><code>releases/backend.yaml</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff><span class=line><span class=cl>releases:
+</span></span><span class=line><span class=cl>  - name: backend
+</span></span><span class=line><span class=cl>    labels:
+</span></span><span class=line><span class=cl>      app: backend
+</span></span><span class=line><span class=cl>    wait: true
+</span></span><span class=line><span class=cl>    chart: private-helm-repo/backend
+</span></span><span class=line><span class=cl>    version: {{ .Values.charts.versions.backend }}
+</span></span><span class=line><span class=cl>    needs:
+</span></span><span class=line><span class=cl>      - postgres
+</span></span><span class=line><span class=cl>    values:
+</span></span><span class=line><span class=cl><span class=gi>+     - envs/default/values/backend.yaml
+</span></span></span><span class=line><span class=cl><span class=gi></span>      - envs/{{ .Environment.Name }}/values/backend.yaml
+</span></span></code></pre></div><h4 id=envsdefaultvaluesbackendyaml><strong><code>envs/default/values/backend.yaml</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>affinity</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>podAntiAffinity</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>preferredDuringSchedulingIgnoredDuringExecution</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>weight</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>podAffinityTerm</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>labelSelector</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>matchExpressions</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>key</span><span class=p>:</span><span class=w> </span><span class=l>app.kubernetes.io/name</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>operator</span><span class=p>:</span><span class=w> </span><span class=l>In</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>values</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=l>backend</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>topologyKey</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;kubernetes.io/hostname&#34;</span><span class=w>
+</span></span></span></code></pre></div><h2 id=определение-глобальных-значений-для-helm-чартов-всех-релизов-на-уровне-окружения>Определение глобальных значений для helm чартов всех релизов на уровне окружения</h2><p>Допустим, у нас в нескольких релизах создаются несколько ingress - мы могли бы вручную для каждого чарта определить <code>hosts:</code>, но в нашем случае домен один и тот же, так почему же его не вынести в некую глобальную переменную и просто подставлять её значение в чарты? Для этого те файлы с values, которые мы хотим параметризовать, должны будут иметь расширение <code>.gotmpl</code>, чтобы helmfile знал, что его надо прогнать через шаблонизатор.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff><span class=line><span class=cl>    .
+</span></span><span class=line><span class=cl>    ├── envs
+</span></span><span class=line><span class=cl>    │   ├── default
+</span></span><span class=line><span class=cl>    │   │   └── values
+</span></span><span class=line><span class=cl><span class=gd>-   │   │       ├── backend.yaml
+</span></span></span><span class=line><span class=cl><span class=gd>-   │   │       ├── postgres.yaml
+</span></span></span><span class=line><span class=cl><span class=gd></span><span class=gi>+   │   │       ├── backend.yaml.gotmpl
+</span></span></span><span class=line><span class=cl><span class=gi>+   │   │       └── postgres.yaml.gotmpl
+</span></span></span><span class=line><span class=cl><span class=gi></span>    │   ├── devel
+</span></span><span class=line><span class=cl>    │   │   └── values
+</span></span><span class=line><span class=cl>    │   │       ├── backend.yaml
+</span></span><span class=line><span class=cl>    │   │       └── postgres.yaml
+</span></span><span class=line><span class=cl>    │   └── production
+</span></span><span class=line><span class=cl>    │       └── values
+</span></span><span class=line><span class=cl>    │           ├── backend.yaml
+</span></span><span class=line><span class=cl>    │           └── postgres.yaml
+</span></span><span class=line><span class=cl>    ├── releases
+</span></span><span class=line><span class=cl>    │   ├── backend.yaml
+</span></span><span class=line><span class=cl>    │   └── postgres.yaml
+</span></span><span class=line><span class=cl>    └── helmfile.yaml
+</span></span></code></pre></div><h4 id=helmfileyaml-3><strong><code>helmfile.yaml</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff><span class=line><span class=cl>  environments:
+</span></span><span class=line><span class=cl>    devel:
+</span></span><span class=line><span class=cl>      values:
+</span></span><span class=line><span class=cl>      - charts:
+</span></span><span class=line><span class=cl>          versions:
+</span></span><span class=line><span class=cl>            backend: 1.1.0
+</span></span><span class=line><span class=cl>      - apps:
+</span></span><span class=line><span class=cl>        - postgres
+</span></span><span class=line><span class=cl>        - backend
+</span></span><span class=line><span class=cl><span class=gi>+     - global:
+</span></span></span><span class=line><span class=cl><span class=gi>+         ingressDomain: k8s.devel.domain
+</span></span></span><span class=line><span class=cl><span class=gi></span>
+</span></span><span class=line><span class=cl>    production:
+</span></span><span class=line><span class=cl>      values:
+</span></span><span class=line><span class=cl>      - charts:
+</span></span><span class=line><span class=cl>          versions:
+</span></span><span class=line><span class=cl>            backend: 1.0.5
+</span></span><span class=line><span class=cl>      - apps:
+</span></span><span class=line><span class=cl>        - backend
+</span></span><span class=line><span class=cl><span class=gi>+     - global:
+</span></span></span><span class=line><span class=cl><span class=gi>+         ingressDomain: production.domain
+</span></span></span><span class=line><span class=cl><span class=gi></span>  ---
+</span></span><span class=line><span class=cl>  bases:
+</span></span><span class=line><span class=cl>  {{- range .Values.apps }}
+</span></span><span class=line><span class=cl>    - releases/{{ . }}.yaml
+</span></span><span class=line><span class=cl>  {{- end }}
+</span></span></code></pre></div><h4 id=envsdefaultvaluesbackendyamlgotmpl><strong><code>envs/default/values/backend.yaml.gotmpl</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>ingress</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>paths</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=l>/api</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>hosts</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- {{<span class=w> </span><span class=l>.Values.global.ingressDomain }}</span><span class=w>
+</span></span></span></code></pre></div><h4 id=envsdefaultvaluespostgresyamlgotmpl><strong><code>envs/default/values/postgres.yaml.gotmpl</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>ingress</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>paths</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=l>/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>hosts</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=l>postgres.{{ .Values.global.ingressDomain }}</span><span class=w>
+</span></span></span></code></pre></div><hr><p><strong>Заметка</strong></p><p>Очевидно, что ingress в чарте postgres - это нечто крайне сомнительное, поэтому в статье это приведено просто в качестве сферического примера в вакууме и для того, чтобы не вводить в статью какой-то новый релиз только ради описания ingress</p><hr><h2 id=подстановка-секретов-secrets-из-значений-окружения>Подстановка секретов (secrets) из значений окружения</h2><p>По аналогии с вышеприведённым примером можно подставлять и зашифрованные с помощью <a href=https://github.com/futuresimple/helm-secrets>helm secrets</a> значения. Вместо того, чтобы для каждого релиза создавать свой файл secrets, в котором определять для чарта зашифрованные значения, мы можем просто определить в релизном default.yaml.gotmpl значения, которые будут браться из переменных, заданных на уровне окружений. А значения, которые нам не надо ни от кого скрывать, можно уже спокойно переопределить в значениях релиза в конкретном окружении.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff><span class=line><span class=cl>    .
+</span></span><span class=line><span class=cl>    ├── envs
+</span></span><span class=line><span class=cl>    │   ├── default
+</span></span><span class=line><span class=cl>    │   │   └── values
+</span></span><span class=line><span class=cl>    │   │       ├── backend.yaml
+</span></span><span class=line><span class=cl>    │   │       └── postgres.yaml
+</span></span><span class=line><span class=cl>    │   ├── devel
+</span></span><span class=line><span class=cl>    │   │   ├── values
+</span></span><span class=line><span class=cl>    │   │   │   ├── backend.yaml
+</span></span><span class=line><span class=cl>    │   │   │   └── postgres.yaml
+</span></span><span class=line><span class=cl><span class=gi>+   │   │   └── secrets.yaml
+</span></span></span><span class=line><span class=cl><span class=gi></span>    │   └── production
+</span></span><span class=line><span class=cl>    │       ├── values
+</span></span><span class=line><span class=cl>    │       │   ├── backend.yaml
+</span></span><span class=line><span class=cl>    │       │   └── postgres.yaml
+</span></span><span class=line><span class=cl><span class=gi>+   │       └── secrets.yaml
+</span></span></span><span class=line><span class=cl><span class=gi></span>    ├── releases
+</span></span><span class=line><span class=cl>    │   ├── backend.yaml
+</span></span><span class=line><span class=cl>    │   └── postgres.yaml
+</span></span><span class=line><span class=cl>    └── helmfile.yaml
+</span></span></code></pre></div><h4 id=helmfileyaml-4><strong><code>helmfile.yaml</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-diff data-lang=diff><span class=line><span class=cl>  environments:
+</span></span><span class=line><span class=cl>    devel:
+</span></span><span class=line><span class=cl>      values:
+</span></span><span class=line><span class=cl>      - charts:
+</span></span><span class=line><span class=cl>          versions:
+</span></span><span class=line><span class=cl>            backend: 1.1.0
+</span></span><span class=line><span class=cl>      - apps:
+</span></span><span class=line><span class=cl>        - postgres
+</span></span><span class=line><span class=cl>        - backend
+</span></span><span class=line><span class=cl>      - global:
+</span></span><span class=line><span class=cl>          ingressDomain: k8s.devel.domain
+</span></span><span class=line><span class=cl><span class=gi>+     secrets:
+</span></span></span><span class=line><span class=cl><span class=gi>+       - envs/devel/secrets.yaml
+</span></span></span><span class=line><span class=cl><span class=gi></span>
+</span></span><span class=line><span class=cl>    production:
+</span></span><span class=line><span class=cl>      values:
+</span></span><span class=line><span class=cl>      - charts:
+</span></span><span class=line><span class=cl>          versions:
+</span></span><span class=line><span class=cl>            backend: 1.0.5
+</span></span><span class=line><span class=cl>      - apps:
+</span></span><span class=line><span class=cl>        - backend
+</span></span><span class=line><span class=cl>      - global:
+</span></span><span class=line><span class=cl>          ingressDomain: production.domain
+</span></span><span class=line><span class=cl><span class=gi>+     secrets:
+</span></span></span><span class=line><span class=cl><span class=gi>+       - envs/production/secrets.yaml
+</span></span></span><span class=line><span class=cl><span class=gi></span>  ---
+</span></span><span class=line><span class=cl>  bases:
+</span></span><span class=line><span class=cl>  {{- range .Values.apps }}
+</span></span><span class=line><span class=cl>    - releases/{{ . }}.yaml
+</span></span><span class=line><span class=cl>  {{- end }}
+</span></span></code></pre></div><h4 id=envsdevelsecretsyaml><strong><code>envs/devel/secrets.yaml</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>secrets</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>elastic</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>password</span><span class=p>:</span><span class=w> </span><span class=l>ENC[AES256_GCM,data:hjCB,iv:Z1P6/6xBJgJoKLJ0UUVfqZ80o4L84jvZfM+uH9gBelc=,tag:dGqQlCZnLdRAGoJSj63rBQ==,type:int]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nn>...</span><span class=w>
+</span></span></span></code></pre></div><h4 id=envsproductionsecretsyaml><strong><code>envs/production/secrets.yaml</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>secrets</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>elastic</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>password</span><span class=p>:</span><span class=w> </span><span class=l>ENC[AES256_GCM,data:ZB/VpTFk8f0=,iv:EA//oT1Cb5wNFigTDOz3nA80qD9UwTjK5cpUwLnEXjs=,tag:hMdIUaqLRA8zuFBd82bz6A==,type:str]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nn>...</span><span class=w>
+</span></span></span></code></pre></div><h4 id=envsdefaultvaluesbackendyamlgotmpl-1><strong><code>envs/default/values/backend.yaml.gotmpl</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>elasticsearch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=l>elasticsearch</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=m>9200</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>password</span><span class=p>:</span><span class=w> </span>{{<span class=w> </span><span class=l>.Values | getOrNil &#34;secrets.elastic.password&#34; | default &#34;password&#34; }}</span><span class=w>
+</span></span></span></code></pre></div><h4 id=envsdevelvaluesbackendyaml><strong><code>envs/devel/values/backend.yaml</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>elasticsearch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=l>elastic-0.devel.domain</span><span class=w>
+</span></span></span></code></pre></div><h4 id=envsproductionvaluesbackendyaml><strong><code>envs/production/values/backend.yaml</code></strong></h4><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>elasticsearch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=l>elastic-0.production.domain</span><span class=w>
+</span></span></span></code></pre></div><hr><p><strong>Заметка</strong></p><p>Кстати, <code>getOrNil</code> - специальная функция для go шаблонов в helmfile, которая, даже если <code>.Values.secrets</code> не будет существовать, не выкинет ошибку, а позволит в результате с помощью функции <code>default</code> подставить значение по-умолчанию</p><hr><h2 id=заключение>Заключение</h2><p>Описанные вещи кажутся довольно очевидными, но информация по удобному описанию деплоя в несколько окружений с помощью helmfile очень скудна, а я люблю IaC(Infrastructure-as-Code) и хочу иметь чёткое описание стейта деплоя.</p><p>В заключение хочу добавить, что переменные для окружения default можно в свою очередь параметризовать переменными окружения ОС некоего раннера, с которого будет запускаться деплой, и таким образом получить динамические окружения</p><h4 id=helmfileyaml-5><strong><code>helmfile.yaml</code></strong></h4><pre tabindex=0><code>environments:
   default:
     values:
     - global:
-        clusterDomain: {{ env &quot;CLUSTER_DOMAIN&quot; | default &quot;cluster.local&quot; }}
-        ingressDomain: {{ env &quot;INGRESS_DOMAIN&quot; }}
-</code></pre>
-</section>
-<section>
-<script async src=https://comments.app/js/widget.js?3 data-comments-app-website=t_mH3MdB data-limit=5></script>
-</section>
-</article>
-</div>
-<div id=side class="pr-1 bg-white">
-<aside class=pr-3>
-<div id=toc class="Box Box--blue mb-3">
-<b>Организация деплоя в множество окружений с помощью helmfile</b><nav id=TableOfContents>
-<ul>
-<li>
-<ul>
-<li>
-<ul>
-<li></li>
-</ul>
-</li>
-<li><a href=#разные-версии-helm-чартов-в-разных-окружениях>Разные версии helm чартов в разных окружениях</a>
-<ul>
-<li></li>
-</ul>
-</li>
-<li><a href=#разный-набор-приложений-в-разных-окружениях>Разный набор приложений в разных окружениях</a>
-<ul>
-<li></li>
-</ul>
-</li>
-<li><a href=#переопределяемые-глобальные-значения-для-релизов>Переопределяемые глобальные значения для релизов</a>
-<ul>
-<li></li>
-</ul>
-</li>
-<li><a href=#определение-глобальных-значений-для-helm-чартов-всех-релизов-на-уровне-окружения>Определение глобальных значений для helm чартов всех релизов на уровне окружения</a>
-<ul>
-<li></li>
-</ul>
-</li>
-<li><a href=#подстановка-секретов-secrets-из-значений-окружения>Подстановка секретов (secrets) из значений окружения</a>
-<ul>
-<li></li>
-</ul>
-</li>
-<li><a href=#заключение>Заключение</a>
-<ul>
-<li></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</nav></div>
-<div>
-</div>
-</aside>
-</div>
-<div id=footer class="pt-2 pb-3 bg-white text-center">
-<span class="text-small text-gray">
-<p>
-<a href=https://creativecommons.org/licenses/by-sa/4.0/><img src=/images/cc-by-sa.png alt></a>
-</p>
-<p>
-Powered by the
+        clusterDomain: {{ env &#34;CLUSTER_DOMAIN&#34; | default &#34;cluster.local&#34; }}
+        ingressDomain: {{ env &#34;INGRESS_DOMAIN&#34; }}
+</code></pre></section><section><script async src=https://comments.app/js/widget.js?3 data-comments-app-website=t_mH3MdB data-limit=5></script></section></article></div><div id=side class="pr-1 bg-white"><aside class=pr-3><div id=toc class="Box Box--blue mb-3"><b>Организация деплоя в множество окружений с помощью helmfile</b><nav id=TableOfContents><ul><li><ul><li><ul><li></li></ul></li><li><a href=#разные-версии-helm-чартов-в-разных-окружениях>Разные версии helm чартов в разных окружениях</a><ul><li></li></ul></li><li><a href=#разный-набор-приложений-в-разных-окружениях>Разный набор приложений в разных окружениях</a><ul><li></li></ul></li><li><a href=#переопределяемые-глобальные-значения-для-релизов>Переопределяемые глобальные значения для релизов</a><ul><li></li></ul></li><li><a href=#определение-глобальных-значений-для-helm-чартов-всех-релизов-на-уровне-окружения>Определение глобальных значений для helm чартов всех релизов на уровне окружения</a><ul><li></li></ul></li><li><a href=#подстановка-секретов-secrets-из-значений-окружения>Подстановка секретов (secrets) из значений окружения</a><ul><li></li></ul></li><li><a href=#заключение>Заключение</a><ul><li></li></ul></li></ul></li></ul></nav></div><div></div></aside></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray"><p><a href=https://creativecommons.org/licenses/by-sa/4.0/><img src=/images/cc-by-sa.png alt></a></p><p>Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
-<a href=https://gohugo.io class=link-gray-dark>Hugo</a>
-</p>
-</span>
-</div>
-</div>
-</body>
-</html>
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a></p></span></div></div></body></html>

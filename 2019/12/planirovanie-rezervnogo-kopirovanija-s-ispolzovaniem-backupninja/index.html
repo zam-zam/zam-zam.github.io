@@ -1,176 +1,64 @@
-<!doctype html><html>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>
-Планирование резервного копирования с использованием backupninja &ndash; Of Code & Systems
-</title>
-<meta name=description property="og:description" content=" Эта заметка - перепечатка своего ответа на вопрос в сервисе toster.ru
- Искал решение для планирование резервных копий различными утилитами на различные хранилища и остановился на backupninjaУмеет по расписанию бэкапить БД и файлы и отправлять их на сторонний сервер разными способами, включая rsync, rdiff, duplicity
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Планирование резервного копирования с использованием backupninja &ndash; Of Code & Systems</title><meta name=description property="og:description" content="Эта заметка - перепечатка своего ответа на вопрос в сервисе toster.ru
+Искал решение для планирование резервных копий различными утилитами на различные хранилища и остановился на backupninja
+Умеет по расписанию бэкапить БД и файлы и отправлять их на сторонний сервер разными способами, включая rsync, rdiff, duplicity
 В /etc/backup.d/ создаёте конфиги вида 10-db.mysql , 50-ftp.dup
 Числа в начале файла описывают очерёдность выполнения в случае одновременного запуска (сначала сдампить базу, а затем заливать из папки с архивом на ftp).
 Расширение файла указывает на тип задачи (.mysql - бэкап mysql, .dup - используем duplicity)
-|">
-<meta name=apple-mobile-web-app-title content="Of Code & Systems">
-<link rel=stylesheet href=/assets/syntax.css>
-<link rel=stylesheet href=/assets/primer-build.css>
-<link rel=stylesheet href=/assets/style.css>
-</head>
-<body class=bg-gray style=background-color:#fdf6e3!important>
-<div id=holy class="container-lg bg-white h-100">
-<div id=header class="px-1 bg-white text-center">
-<div class=u-nav>
-<a class="u-nav-el u-nav-el-current" href=//zzamzam.dev>Blog</a>
-<a class=u-nav-el href=//docs.zzamzam.dev>Docs</a>
-</div>
-<nav class="UnderlineNav UnderlineNav--right px-2">
-<a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>
-Of Code & Systems
-</a>
-</nav>
-</div>
-<div role=main id=main class="holy-main markdown-body px-4 bg-white">
-<div class=Subhead>
-<div class=Subhead-heading>
-<div class="h1 mt-3 mb-1">Планирование резервного копирования с использованием backupninja</div>
-</div>
-<div class=Subhead-description>
-<a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link>
-<span class="Label Label--gray-darker">документация</span>
-</a>
-<a href=/tags/backup class=muted-link>
-<span class="Label Label--gray">backup</span>
-</a>
-<a href=/tags/backupninja class=muted-link>
-<span class="Label Label--gray">backupninja</span>
-</a>
-<div class=float-md-right>
-<span title="Lastmod: 2019-12-06. Published at: 2019-12-06.">
-2019-12-06
-</span>
-</div>
-</div>
-</div>
-<article>
-<section class="pb-6 mb-3 border-bottom">
-<div id=toc class="Box Box--blue mb-3">
-<b>Содержание</b><nav id=TableOfContents></nav></div>
-<p>
-<a href=/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/backupninja.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/backupninja_hufa854ffe5905694c03d3be5b15ff844b_5154_120x0_resize_box_3.png width=120 height=120></a>
-</p>
-<blockquote>
-<p>Эта заметка - перепечатка своего ответа на <a href="https://toster.ru/answer?answer_id=1007582">вопрос в сервисе toster.ru</a></p>
-</blockquote>
-<p>Искал решение для планирование резервных копий различными утилитами на различные хранилища и остановился на backupninja</p>
-<p>Умеет по расписанию бэкапить БД и файлы и отправлять их на сторонний сервер разными способами, включая rsync, rdiff, duplicity</p>
-<p>В /etc/backup.d/ создаёте конфиги вида 10-db.mysql , 50-ftp.dup</p>
-<p>Числа в начале файла описывают очерёдность выполнения в случае одновременного запуска (сначала сдампить базу, а затем заливать из папки с архивом на ftp).</p>
-<p>Расширение файла указывает на тип задачи (.mysql - бэкап mysql, .dup - используем duplicity)</p>
-<p>Время выполнение бэкапов по-умолчанию задаётся в /etc/backupninja.conf</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>...
-<span class=nv>when</span> <span class=o>=</span> everyday at 01:00
-...
-</code></pre></div><p>Его можно переопределить для каждого отдельного бэкапа в начале его конфига</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nv>when</span> <span class=o>=</span> sundays at 02:00
-<span class=nv>when</span> <span class=o>=</span> 30th at <span class=m>22</span>
-<span class=nv>when</span> <span class=o>=</span> <span class=m>30</span> at 22:00
-<span class=nv>when</span> <span class=o>=</span> everyday at <span class=m>01</span>            <span class=c1># the default</span>
-<span class=nv>when</span> <span class=o>=</span> Tuesday at 05:00
-<span class=nv>when</span> <span class=o>=</span> hourly
-</code></pre></div><p>Подробнее о конфигах backupninja здесь</p>
-<p>Сам duplicity, которым я, например, делаю бэкапы, поддерживает кучу протоколов, в том числе и передачу по ftp. Также поддерживает ротацию бэкапов</p>
-<p>Конфиг для duplicity выглядит примерно так:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1>## Переопределяем время выполнения</span>
-<span class=nv>when</span> <span class=o>=</span> sundays at 02:00
-<span class=c1>## Параметры, передаваемые напрямую duplicity при запуске бэкапа</span>
-<span class=c1>## --no-encryption позволяет отключить шифрование архивов с бэкапом и получить обычный .tar.gz</span>
-<span class=c1>#options = --no-encryption</span>
-
-<span class=nv>testconnect</span> <span class=o>=</span> no
-<span class=nv>tmpdir</span> <span class=o>=</span> /tmp
-
-<span class=o>[</span>source<span class=o>]</span>
-<span class=nv>include</span> <span class=o>=</span> /var/backups/mysql
-<span class=nv>include</span> <span class=o>=</span> /home/user/projects/site1
-<span class=nv>exclude</span> <span class=o>=</span> /home/user/projects/.git
-
-<span class=o>[</span>gpg<span class=o>]</span>
-<span class=c1>## Ключ для симметричного шифрования. Duplicity шифрует бэкапы с помощью gpg. Должен быть указан, даже если стоит --no-encryption, хоть и не будет использоваться</span>
-<span class=nv>password</span> <span class=o>=</span> <span class=m>123</span>
-
-<span class=o>[</span>dest<span class=o>]</span>
-<span class=c1>## perform incremental backups</span>
-<span class=nv>incremental</span> <span class=o>=</span> yes
-
-<span class=c1>## days of incremental backups before doing full backup again</span>
-<span class=nv>increments</span> <span class=o>=</span> <span class=m>7</span>
-
-<span class=c1>## how many days of data to keep</span>
-<span class=nv>keep</span> <span class=o>=</span> <span class=m>14</span>
-
-<span class=c1>## for how many full backups do we keep their later increments</span>
-<span class=nv>keepincroffulls</span> <span class=o>=</span> all
-
-<span class=nv>desturl</span> <span class=o>=</span> ftp://backup_user@your_backup_server/
-<span class=nv>ftp_password</span> <span class=o>=</span> backup_user_password
-</code></pre></div><p>В бэкапах получаются на первый взгляд не очень понятные файлы, типа</p>
-<p>duplicity-full-signatures.20130510T160711Z.sigtar.gpg</p>
-<p>duplicity-full.20130510T160711Z.manifest.gpg</p>
-<p>duplicity-full.20130510T160711Z.vol1.difftar.gpg</p>
-<p>Тут можно чуть поподробнее прочитать про них</p>
-<p>С бэкапами лучше работать самой утилитой duplicity, но можно и вручную их вытащить. Вручную минус в том, что инкрементальные бэкапы придётся вручную накатывать на полные, когда duplicity сделает это автоматом при указании даты восстановления.</p>
-<p>duplicity collection-status _src _выдаст что-то типа этого</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>Total number of contained volumes: <span class=m>3</span>
-Type of backup set:                        Time:                        Num volumes:
-Full                            Mon Apr <span class=m>17</span> 00:24:46 <span class=m>2017</span>                 <span class=m>1</span>
-Incremental                     Mon Apr <span class=m>17</span> 01:00:03 <span class=m>2017</span>                 <span class=m>1</span>
-Incremental                     Mon Apr <span class=m>17</span> 09:53:38 <span class=m>2017</span>                 <span class=m>1</span>
-</code></pre></div><p>после чего можно прочитать содержимое архива на определённую дату</p>
-<p>duplicity list-current-files -time 2017-04-17T05:00:00 _src _(покажет бэкап Mon Apr 17 01:00:03 2017, т.е. ближайший ДО указанного времени)</p>
-<p>и восстановить</p>
-<p>duplicity restore -time 2017-04-17T05:00:00 <em>src</em> <em>dst</em></p>
-<p><em>src</em> - это то, где ваши бэкапы хранятся.</p>
-<p>Это может быть и локальная директория file:///var/backups//</p>
-<p>И ftp ftp://user:password@backup_server//var/backups</p>
-<p>Сами файлы хранятся в vol#.difftar.[tar.gz|gpg], если надо вручную вытащить
-Если шифровали, то сначала расшифровать .gpg, чтобы получить .tar.gz</p>
-<p>Шифрование можно отключить, в примере конфига выше есть информация</p>
-<p>В самом начале задания на бэкап ставите</p>
-<pre><code>options = --no-encryption
-</code></pre>
-<p>options передаёт любые параметры запуска для duplicity</p>
-<p>Но всё равно обязательно должна быть секции [gpg] и password</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=o>[</span>gpg<span class=o>]</span>
-<span class=c1>## Ключ для симметричного шифрования. Duplicity шифрует бэкапы с помощью gpg. </span>
-<span class=c1>## Должен быть указан, даже если стоит --no-encryption, хоть и не будет использоваться</span>
-<span class=nv>password</span> <span class=o>=</span> <span class=m>123</span>
-</code></pre></div>
-</section>
-<section>
-<script async src=https://comments.app/js/widget.js?3 data-comments-app-website=t_mH3MdB data-limit=5></script>
-</section>
-</article>
-</div>
-<div id=side class="pr-1 bg-white">
-<aside class=pr-3>
-<div id=toc class="Box Box--blue mb-3">
-<b>Планирование резервного копирования с использованием backupninja</b><nav id=TableOfContents></nav></div>
-<div>
-</div>
-</aside>
-</div>
-<div id=footer class="pt-2 pb-3 bg-white text-center">
-<span class="text-small text-gray">
-<p>
-<a href=https://creativecommons.org/licenses/by-sa/4.0/><img src=/images/cc-by-sa.png alt></a>
-</p>
-<p>
-Powered by the
+|"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white text-center"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">Планирование резервного копирования с использованием backupninja</div></div><div class=Subhead-description><a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link><span class="Label Label--gray-darker">документация</span></a>
+<a href=/tags/backup class=muted-link><span class="Label Label--gray">backup</span></a>
+<a href=/tags/backupninja class=muted-link><span class="Label Label--gray">backupninja</span></a><div class=float-md-right><span title="Lastmod: 2019-12-06. Published at: 2019-12-06.">2019-12-06</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><div id=toc class="Box Box--blue mb-3"><b>Содержание</b><nav id=TableOfContents></nav></div><p><a href=/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/backupninja.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2019/12/planirovanie-rezervnogo-kopirovanija-s-ispolzovaniem-backupninja/backupninja_hufa854ffe5905694c03d3be5b15ff844b_5154_120x0_resize_box_3.png width=120 height=120></a></p><blockquote><p>Эта заметка - перепечатка своего ответа на <a href="https://toster.ru/answer?answer_id=1007582">вопрос в сервисе toster.ru</a></p></blockquote><p>Искал решение для планирование резервных копий различными утилитами на различные хранилища и остановился на backupninja</p><p>Умеет по расписанию бэкапить БД и файлы и отправлять их на сторонний сервер разными способами, включая rsync, rdiff, duplicity</p><p>В /etc/backup.d/ создаёте конфиги вида 10-db.mysql , 50-ftp.dup</p><p>Числа в начале файла описывают очерёдность выполнения в случае одновременного запуска (сначала сдампить базу, а затем заливать из папки с архивом на ftp).</p><p>Расширение файла указывает на тип задачи (.mysql - бэкап mysql, .dup - используем duplicity)</p><p>Время выполнение бэкапов по-умолчанию задаётся в /etc/backupninja.conf</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>...
+</span></span><span class=line><span class=cl><span class=nv>when</span> <span class=o>=</span> everyday at 01:00
+</span></span><span class=line><span class=cl>...
+</span></span></code></pre></div><p>Его можно переопределить для каждого отдельного бэкапа в начале его конфига</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nv>when</span> <span class=o>=</span> sundays at 02:00
+</span></span><span class=line><span class=cl><span class=nv>when</span> <span class=o>=</span> 30th at <span class=m>22</span>
+</span></span><span class=line><span class=cl><span class=nv>when</span> <span class=o>=</span> <span class=m>30</span> at 22:00
+</span></span><span class=line><span class=cl><span class=nv>when</span> <span class=o>=</span> everyday at <span class=m>01</span>            <span class=c1># the default</span>
+</span></span><span class=line><span class=cl><span class=nv>when</span> <span class=o>=</span> Tuesday at 05:00
+</span></span><span class=line><span class=cl><span class=nv>when</span> <span class=o>=</span> hourly
+</span></span></code></pre></div><p>Подробнее о конфигах backupninja здесь</p><p>Сам duplicity, которым я, например, делаю бэкапы, поддерживает кучу протоколов, в том числе и передачу по ftp. Также поддерживает ротацию бэкапов</p><p>Конфиг для duplicity выглядит примерно так:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1>## Переопределяем время выполнения</span>
+</span></span><span class=line><span class=cl><span class=nv>when</span> <span class=o>=</span> sundays at 02:00
+</span></span><span class=line><span class=cl><span class=c1>## Параметры, передаваемые напрямую duplicity при запуске бэкапа</span>
+</span></span><span class=line><span class=cl><span class=c1>## --no-encryption позволяет отключить шифрование архивов с бэкапом и получить обычный .tar.gz</span>
+</span></span><span class=line><span class=cl><span class=c1>#options = --no-encryption</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>testconnect</span> <span class=o>=</span> no
+</span></span><span class=line><span class=cl><span class=nv>tmpdir</span> <span class=o>=</span> /tmp
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>source<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=nv>include</span> <span class=o>=</span> /var/backups/mysql
+</span></span><span class=line><span class=cl><span class=nv>include</span> <span class=o>=</span> /home/user/projects/site1
+</span></span><span class=line><span class=cl><span class=nv>exclude</span> <span class=o>=</span> /home/user/projects/.git
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>gpg<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=c1>## Ключ для симметричного шифрования. Duplicity шифрует бэкапы с помощью gpg. Должен быть указан, даже если стоит --no-encryption, хоть и не будет использоваться</span>
+</span></span><span class=line><span class=cl><span class=nv>password</span> <span class=o>=</span> <span class=m>123</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>[</span>dest<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=c1>## perform incremental backups</span>
+</span></span><span class=line><span class=cl><span class=nv>incremental</span> <span class=o>=</span> yes
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## days of incremental backups before doing full backup again</span>
+</span></span><span class=line><span class=cl><span class=nv>increments</span> <span class=o>=</span> <span class=m>7</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## how many days of data to keep</span>
+</span></span><span class=line><span class=cl><span class=nv>keep</span> <span class=o>=</span> <span class=m>14</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## for how many full backups do we keep their later increments</span>
+</span></span><span class=line><span class=cl><span class=nv>keepincroffulls</span> <span class=o>=</span> all
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>desturl</span> <span class=o>=</span> ftp://backup_user@your_backup_server/
+</span></span><span class=line><span class=cl><span class=nv>ftp_password</span> <span class=o>=</span> backup_user_password
+</span></span></code></pre></div><p>В бэкапах получаются на первый взгляд не очень понятные файлы, типа</p><p>duplicity-full-signatures.20130510T160711Z.sigtar.gpg</p><p>duplicity-full.20130510T160711Z.manifest.gpg</p><p>duplicity-full.20130510T160711Z.vol1.difftar.gpg</p><p>Тут можно чуть поподробнее прочитать про них</p><p>С бэкапами лучше работать самой утилитой duplicity, но можно и вручную их вытащить. Вручную минус в том, что инкрементальные бэкапы придётся вручную накатывать на полные, когда duplicity сделает это автоматом при указании даты восстановления.</p><p>duplicity collection-status _src _выдаст что-то типа этого</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>Total number of contained volumes: <span class=m>3</span>
+</span></span><span class=line><span class=cl>Type of backup set:                        Time:                        Num volumes:
+</span></span><span class=line><span class=cl>Full                            Mon Apr <span class=m>17</span> 00:24:46 <span class=m>2017</span>                 <span class=m>1</span>
+</span></span><span class=line><span class=cl>Incremental                     Mon Apr <span class=m>17</span> 01:00:03 <span class=m>2017</span>                 <span class=m>1</span>
+</span></span><span class=line><span class=cl>Incremental                     Mon Apr <span class=m>17</span> 09:53:38 <span class=m>2017</span>                 <span class=m>1</span>
+</span></span></code></pre></div><p>после чего можно прочитать содержимое архива на определённую дату</p><p>duplicity list-current-files -time 2017-04-17T05:00:00 _src _(покажет бэкап Mon Apr 17 01:00:03 2017, т.е. ближайший ДО указанного времени)</p><p>и восстановить</p><p>duplicity restore -time 2017-04-17T05:00:00 <em>src</em> <em>dst</em></p><p><em>src</em> - это то, где ваши бэкапы хранятся.</p><p>Это может быть и локальная директория file:///var/backups//</p><p>И ftp ftp://user:password@backup_server//var/backups</p><p>Сами файлы хранятся в vol#.difftar.[tar.gz|gpg], если надо вручную вытащить
+Если шифровали, то сначала расшифровать .gpg, чтобы получить .tar.gz</p><p>Шифрование можно отключить, в примере конфига выше есть информация</p><p>В самом начале задания на бэкап ставите</p><pre><code>options = --no-encryption
+</code></pre><p>options передаёт любые параметры запуска для duplicity</p><p>Но всё равно обязательно должна быть секции [gpg] и password</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=o>[</span>gpg<span class=o>]</span>
+</span></span><span class=line><span class=cl><span class=c1>## Ключ для симметричного шифрования. Duplicity шифрует бэкапы с помощью gpg. </span>
+</span></span><span class=line><span class=cl><span class=c1>## Должен быть указан, даже если стоит --no-encryption, хоть и не будет использоваться</span>
+</span></span><span class=line><span class=cl><span class=nv>password</span> <span class=o>=</span> <span class=m>123</span>
+</span></span></code></pre></div></section><section><script async src=https://comments.app/js/widget.js?3 data-comments-app-website=t_mH3MdB data-limit=5></script></section></article></div><div id=side class="pr-1 bg-white"><aside class=pr-3><div id=toc class="Box Box--blue mb-3"><b>Планирование резервного копирования с использованием backupninja</b><nav id=TableOfContents></nav></div><div></div></aside></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray"><p><a href=https://creativecommons.org/licenses/by-sa/4.0/><img src=/images/cc-by-sa.png alt></a></p><p>Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
-<a href=https://gohugo.io class=link-gray-dark>Hugo</a>
-</p>
-</span>
-</div>
-</div>
-</body>
-</html>
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a></p></span></div></div></body></html>

@@ -1,212 +1,106 @@
-<!doctype html><html>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>
-dapp — утилита для сборки и деплоя контейнеров. Особенности работы &ndash; Of Code & Systems
-</title>
-<meta name=description property="og:description" content="dapp — утилита от российской компании Флант, которая занимается внедрением devops-практик (kubernetes, ci/cd и всё такое, ну вы в курсе) Подробное описание можно прочитать на Хабре, а я бы хотел остановиться на некоторых особенностях работы с ней при сборке образов (здесь и далее под образом подразумевается docker image)
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>dapp — утилита для сборки и деплоя контейнеров. Особенности работы &ndash; Of Code & Systems</title><meta name=description property="og:description" content="dapp — утилита от российской компании Флант, которая занимается внедрением devops-практик (kubernetes, ci/cd и всё такое, ну вы в курсе) Подробное описание можно прочитать на Хабре, а я бы хотел остановиться на некоторых особенностях работы с ней при сборке образов (здесь и далее под образом подразумевается docker image)
 На момент написания статьи актуальная версия dapp 0.36.*
 В качестве примера для наглядности и понимания общей картины возьмём за основу немного урезанное содержимое dappfile.yaml из официальной документации
-|">
-<meta name=apple-mobile-web-app-title content="Of Code & Systems">
-<link rel=stylesheet href=/assets/syntax.css>
-<link rel=stylesheet href=/assets/primer-build.css>
-<link rel=stylesheet href=/assets/style.css>
-</head>
-<body class=bg-gray style=background-color:#fdf6e3!important>
-<div id=holy class="container-lg bg-white h-100">
-<div id=header class="px-1 bg-white text-center">
-<div class=u-nav>
-<a class="u-nav-el u-nav-el-current" href=//zzamzam.dev>Blog</a>
-<a class=u-nav-el href=//docs.zzamzam.dev>Docs</a>
-</div>
-<nav class="UnderlineNav UnderlineNav--right px-2">
-<a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>
-Of Code & Systems
-</a>
-</nav>
-</div>
-<div role=main id=main class="holy-main markdown-body px-4 bg-white">
-<div class=Subhead>
-<div class=Subhead-heading>
-<div class="h1 mt-3 mb-1">dapp — утилита для сборки и деплоя контейнеров. Особенности работы</div>
-</div>
-<div class=Subhead-description>
-<a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link>
-<span class="Label Label--gray-darker">документация</span>
-</a>
-<a href=/tags/dapp class=muted-link>
-<span class="Label Label--gray">dapp</span>
-</a>
-<a href=/tags/cicd class=muted-link>
-<span class="Label Label--gray">cicd</span>
-</a>
-<div class=float-md-right>
-<span title="Lastmod: 2018-12-03. Published at: 2018-12-03.">
-2018-12-03
-</span>
-</div>
-</div>
-</div>
-<article>
-<section class="pb-6 mb-3 border-bottom">
-<div id=toc class="Box Box--blue mb-3">
-<b>Содержание</b><nav id=TableOfContents></nav></div>
-<p>
-<a href=/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/flant.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/flant_hu2d95afc78664deacc037fd44acff9223_17100_120x0_resize_box_3.png width=120 height=120></a>
-</p>
-<p><a href=https://github.com/flant/dapp>dapp</a> — утилита от российской компании Флант, которая занимается внедрением devops-практик (kubernetes, ci/cd и всё такое, ну вы в курсе) Подробное описание можно прочитать на <a href=https://habr.com/company/flant/blog/333682/>Хабре</a>, а я бы хотел остановиться на некоторых особенностях работы с ней при сборке образов (здесь и далее под образом подразумевается docker image)</p>
-<p>На момент написания статьи актуальная версия dapp 0.36.*</p>
-<p>В качестве примера для наглядности и понимания общей картины возьмём за основу немного урезанное содержимое <strong>dappfile.yaml</strong> из <a href=https://flant.github.io/dapp/how_to/getting_started.html>официальной документации</a></p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>dimg</span><span class=p>:</span><span class=w> </span><span class=l>~</span><span class=w>
-</span><span class=w></span><span class=nt>from</span><span class=p>:</span><span class=w> </span><span class=l>ubuntu:16.04</span><span class=w>
-</span><span class=w></span><span class=nt>docker</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>WORKDIR</span><span class=p>:</span><span class=w> </span><span class=l>/app</span><span class=w>
-</span><span class=w></span><span class=nt>git</span><span class=p>:</span><span class=w>
-</span><span class=w></span>- <span class=nt>add</span><span class=p>:</span><span class=w> </span><span class=l>/</span><span class=w>
-</span><span class=w>  </span><span class=nt>to</span><span class=p>:</span><span class=w> </span><span class=l>/app</span><span class=w>
-</span><span class=w>  </span><span class=nt>stageDependencies</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span><span class=nt>install</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span>- <span class=s2>&#34;*&#34;</span><span class=w>
-</span><span class=w></span><span class=nt>ansible</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>beforeInstall</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Install additional packages&#34;</span><span class=w>
-</span><span class=w>    </span><span class=nt>apt</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;{{`{{ item }}`}}&#34;</span><span class=w>
-</span><span class=w>      </span><span class=nt>state</span><span class=p>:</span><span class=w> </span><span class=l>present</span><span class=w>
-</span><span class=w>      </span><span class=nt>update_cache</span><span class=p>:</span><span class=w> </span><span class=kc>yes</span><span class=w>
-</span><span class=w>    </span><span class=nt>with_items</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span>- <span class=l>locales</span><span class=w>
-</span><span class=w>      </span>- <span class=l>ca-certificates</span><span class=w>
-</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Add repository key</span><span class=w>
-</span><span class=w>    </span><span class=nt>apt_key</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=nt>keyserver</span><span class=p>:</span><span class=w> </span><span class=l>keyserver.ubuntu.com</span><span class=w>
-</span><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>E5267A6C</span><span class=w>
-</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Add PHP apt repository&#34;</span><span class=w>
-</span><span class=w>    </span><span class=nt>apt_repository</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=nt>repo</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial main&#39;</span><span class=w>
-</span><span class=w>      </span><span class=nt>update_cache</span><span class=p>:</span><span class=w> </span><span class=kc>yes</span><span class=w>
-</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Install PHP and modules&#34;</span><span class=w>
-</span><span class=w>    </span><span class=nt>apt</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;{{`{{ item }}`}}&#34;</span><span class=w>
-</span><span class=w>      </span><span class=nt>state</span><span class=p>:</span><span class=w> </span><span class=l>present</span><span class=w>
-</span><span class=w>      </span><span class=nt>update_cache</span><span class=p>:</span><span class=w> </span><span class=kc>yes</span><span class=w>
-</span><span class=w>    </span><span class=nt>with_items</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span>- <span class=l>php7.2</span><span class=w>
-</span><span class=w>      </span>- <span class=l>php-sqlite3</span><span class=w>
-</span><span class=w>      </span>- <span class=l>php-xml</span><span class=w>
-</span><span class=w>      </span>- <span class=l>php-zip</span><span class=w>
-</span><span class=w>      </span>- <span class=l>php-mbstring</span><span class=w>
-</span><span class=w>      </span>- <span class=l>php-intl</span><span class=w>
-</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Install composer</span><span class=w>
-</span><span class=w>    </span><span class=nt>get_url</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=nt>url</span><span class=p>:</span><span class=w> </span><span class=l>https://getcomposer.org/download/1.6.5/composer.phar</span><span class=w>
-</span><span class=w>      </span><span class=nt>dest</span><span class=p>:</span><span class=w> </span><span class=l>/usr/local/bin/composer</span><span class=w>
-</span><span class=w>      </span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>a+x</span><span class=w>
-</span><span class=w>  </span><span class=nt>install</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Install app deps&#34;</span><span class=w>
-</span><span class=w>    </span><span class=c># NOTICE: Always use `composer install` command in real world environment!</span><span class=w>
-</span><span class=w>    </span><span class=nt>shell</span><span class=p>:</span><span class=w> </span><span class=l>composer update</span><span class=w>
-</span><span class=w>    </span><span class=nt>become</span><span class=p>:</span><span class=w> </span><span class=kc>yes</span><span class=w>
-</span><span class=w>    </span><span class=nt>become_user</span><span class=p>:</span><span class=w> </span><span class=l>app</span><span class=w>
-</span><span class=w>    </span><span class=nt>args</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=nt>creates</span><span class=p>:</span><span class=w> </span><span class=l>/app/vendor/</span><span class=w>
-</span><span class=w>      </span><span class=nt>chdir</span><span class=p>:</span><span class=w> </span><span class=l>/app/</span><span class=w>
-</span><span class=w>  </span><span class=nt>setup</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Create start script&#34;</span><span class=w>
-</span><span class=w>    </span><span class=nt>copy</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=nt>content</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
-</span><span class=sd>        #!/bin/bash
-</span><span class=sd>        php bin/console server:run 0.0.0.0:8000</span><span class=w>        
-</span><span class=w>      </span><span class=nt>dest</span><span class=p>:</span><span class=w> </span><span class=l>/app/start.sh</span><span class=w>
-</span></code></pre></div><ul>
-<li>Если в <strong>dappfile.yaml</strong> описан только один образ, мы можем использовать тильду <code>~</code> для обозначения образа по-умолчанию</li>
-</ul>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>dimg</span><span class=p>:</span><span class=w> </span><span class=l>~</span><span class=w>
-</span></code></pre></div><ul>
-<li>Если мы хотим указать в качестве зависимостей этапа сборки (stageDependencies) все файлы, которые добавляются в образ, используем астериск в кавычках <code>"*"</code></li>
-</ul>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>git</span><span class=p>:</span><span class=w>
-</span><span class=w></span>- <span class=nt>add</span><span class=p>:</span><span class=w> </span><span class=l>/</span><span class=w>
-</span><span class=w>  </span><span class=nt>to</span><span class=p>:</span><span class=w> </span><span class=l>/app</span><span class=w>
-</span><span class=w>  </span><span class=nt>stageDependencies</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span><span class=nt>install</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span>- <span class=s2>&#34;*&#34;</span><span class=w>
-</span></code></pre></div><ul>
-<li>При указании stageDependencies пути должны быть указаны относительные (относительно указанного в <code>- add:</code>)</li>
-</ul>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>git</span><span class=p>:</span><span class=w>
-</span><span class=w></span>- <span class=nt>add</span><span class=p>:</span><span class=w> </span><span class=l>/</span><span class=w>
-</span><span class=w>  </span><span class=nt>to</span><span class=p>:</span><span class=w> </span><span class=l>/app</span><span class=w>
-</span><span class=w>  </span><span class=nt>stageDependencies</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span><span class=nt>install</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span>- <span class=l>composer.json</span><span class=w>
-</span></code></pre></div><ul>
-<li>
-<p>Добавление файлов в образ командой git происходит между этапами <code>beforeInstall</code> и <code>install</code>, поэтому stageDependencies нет смысла задавать для beforeInstall, к тому же такая попытка приведёт к ошибке
-<img src=/wp-content/uploads/2018/12/Screenshot-from-2018-12-04-01-16-14.png alt></p>
-</li>
-<li>
-<p>Для директивы git можно указывать несколько <code>- add:</code> со своими stageDependencies для работы с разными каталогами</p>
-</li>
-</ul>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>git</span><span class=p>:</span><span class=w>
-</span><span class=w></span>- <span class=nt>add</span><span class=p>:</span><span class=w> </span><span class=l>/src</span><span class=w>
-</span><span class=w>  </span><span class=nt>to</span><span class=p>:</span><span class=w> </span><span class=l>/app</span><span class=w>
-</span><span class=w>  </span><span class=nt>stageDependencies</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span><span class=nt>install</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span>- <span class=s2>&#34;*&#34;</span><span class=w>
-</span><span class=w></span>- <span class=nt>add</span><span class=p>:</span><span class=w> </span><span class=l>/assets</span><span class=w>
-</span><span class=w>  </span><span class=nt>to</span><span class=p>:</span><span class=w> </span><span class=l>/assets</span><span class=w>
-</span><span class=w>  </span><span class=nt>stageDependencies</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span><span class=nt>install</span><span class=p>:</span><span class=w>
-</span><span class=w>    </span>- <span class=s2>&#34;style.css&#34;</span><span class=w>
-</span></code></pre></div><ul>
-<li>Для использования ansible переменных конструкцию с названием переменной и двойными фигурными скобками <code>{{ }}</code> надо дополнительно заключать в гравис, заключая уже это в ещё одни фигурные скобки с двойными кавычками — вспоминаем, что dapp написан на ruby</li>
-</ul>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>ansible</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span><span class=nt>beforeInstall</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Install additional packages&#34;</span><span class=w>
-</span><span class=w>    </span><span class=nt>apt</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;{{`{{ item }}`}}&#34;</span><span class=w>
-</span><span class=w>      </span><span class=nt>state</span><span class=p>:</span><span class=w> </span><span class=l>present</span><span class=w>
-</span><span class=w>      </span><span class=nt>update_cache</span><span class=p>:</span><span class=w> </span><span class=kc>yes</span><span class=w>
-</span></code></pre></div><ul>
-<li>Чтобы с помощью ansible скопировать содержимое какого-либо файла в файл в образе, можно использовать функцию <code>.Files.Get</code>. Пути указываем относительно местоположение самого <strong>dappfile.yaml</strong>. Не забываем использовать <code>indent</code>, чтобы получить правильные отступы в yaml-файле, иначе получим ошибку</li>
-</ul>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>ansible</span><span class=p>:</span><span class=w>
-</span><span class=w>  </span>- <span class=nt>copy</span><span class=p>:</span><span class=w>
-</span><span class=w>      </span><span class=nt>content</span><span class=p>:</span><span class=w> </span><span class=l>|</span><span class=w>
-</span><span class=w></span>{{<span class=w> </span><span class=l>.Files.Get &#34;files/nginx/nginx.conf&#34; | indent 8 }}</span><span class=w>
-</span><span class=w>      </span><span class=nt>dest</span><span class=p>:</span><span class=w> </span><span class=l>/etc/nginx/nginx.conf</span><span class=w>
-</span></code></pre></div><p>Также за дополнительными полезностями в работе с dapp можно обратиться к официальному <a href=https://flant.github.io/dapp/faq.html>FAQ</a></p>
-</section>
-<section>
-<script async src=https://comments.app/js/widget.js?3 data-comments-app-website=t_mH3MdB data-limit=5></script>
-</section>
-</article>
-</div>
-<div id=side class="pr-1 bg-white">
-<aside class=pr-3>
-<div id=toc class="Box Box--blue mb-3">
-<b>dapp — утилита для сборки и деплоя контейнеров. Особенности работы</b><nav id=TableOfContents></nav></div>
-<div>
-</div>
-</aside>
-</div>
-<div id=footer class="pt-2 pb-3 bg-white text-center">
-<span class="text-small text-gray">
-<p>
-<a href=https://creativecommons.org/licenses/by-sa/4.0/><img src=/images/cc-by-sa.png alt></a>
-</p>
-<p>
-Powered by the
+|"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white text-center"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">dapp — утилита для сборки и деплоя контейнеров. Особенности работы</div></div><div class=Subhead-description><a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link><span class="Label Label--gray-darker">документация</span></a>
+<a href=/tags/dapp class=muted-link><span class="Label Label--gray">dapp</span></a>
+<a href=/tags/cicd class=muted-link><span class="Label Label--gray">cicd</span></a><div class=float-md-right><span title="Lastmod: 2018-12-03. Published at: 2018-12-03.">2018-12-03</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><div id=toc class="Box Box--blue mb-3"><b>Содержание</b><nav id=TableOfContents></nav></div><p><a href=/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/flant.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2018/12/dapp-utilita-dlja-sborki-i-deploja-kontejne/flant_hu2d95afc78664deacc037fd44acff9223_17100_120x0_resize_box_3.png width=120 height=120></a></p><p><a href=https://github.com/flant/dapp>dapp</a> — утилита от российской компании Флант, которая занимается внедрением devops-практик (kubernetes, ci/cd и всё такое, ну вы в курсе) Подробное описание можно прочитать на <a href=https://habr.com/company/flant/blog/333682/>Хабре</a>, а я бы хотел остановиться на некоторых особенностях работы с ней при сборке образов (здесь и далее под образом подразумевается docker image)</p><p>На момент написания статьи актуальная версия dapp 0.36.*</p><p>В качестве примера для наглядности и понимания общей картины возьмём за основу немного урезанное содержимое <strong>dappfile.yaml</strong> из <a href=https://flant.github.io/dapp/how_to/getting_started.html>официальной документации</a></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>dimg</span><span class=p>:</span><span class=w> </span><span class=l>~</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>from</span><span class=p>:</span><span class=w> </span><span class=l>ubuntu:16.04</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>docker</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>WORKDIR</span><span class=p>:</span><span class=w> </span><span class=l>/app</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>git</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>- <span class=nt>add</span><span class=p>:</span><span class=w> </span><span class=l>/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>to</span><span class=p>:</span><span class=w> </span><span class=l>/app</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>stageDependencies</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>install</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=s2>&#34;*&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>ansible</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>beforeInstall</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Install additional packages&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>apt</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;{{`{{ item }}`}}&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state</span><span class=p>:</span><span class=w> </span><span class=l>present</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_cache</span><span class=p>:</span><span class=w> </span><span class=kc>yes</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>with_items</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>locales</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>ca-certificates</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Add repository key</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>apt_key</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>keyserver</span><span class=p>:</span><span class=w> </span><span class=l>keyserver.ubuntu.com</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>E5267A6C</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Add PHP apt repository&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>apt_repository</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>repo</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;deb http://ppa.launchpad.net/ondrej/php/ubuntu xenial main&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_cache</span><span class=p>:</span><span class=w> </span><span class=kc>yes</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Install PHP and modules&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>apt</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;{{`{{ item }}`}}&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state</span><span class=p>:</span><span class=w> </span><span class=l>present</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_cache</span><span class=p>:</span><span class=w> </span><span class=kc>yes</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>with_items</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>php7.2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>php-sqlite3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>php-xml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>php-zip</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>php-mbstring</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>php-intl</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Install composer</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>get_url</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>url</span><span class=p>:</span><span class=w> </span><span class=l>https://getcomposer.org/download/1.6.5/composer.phar</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>dest</span><span class=p>:</span><span class=w> </span><span class=l>/usr/local/bin/composer</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>a+x</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>install</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Install app deps&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># NOTICE: Always use `composer install` command in real world environment!</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>shell</span><span class=p>:</span><span class=w> </span><span class=l>composer update</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>become</span><span class=p>:</span><span class=w> </span><span class=kc>yes</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>become_user</span><span class=p>:</span><span class=w> </span><span class=l>app</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>args</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>creates</span><span class=p>:</span><span class=w> </span><span class=l>/app/vendor/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>chdir</span><span class=p>:</span><span class=w> </span><span class=l>/app/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>setup</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Create start script&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>copy</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>content</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>        #!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=sd>        php bin/console server:run 0.0.0.0:8000</span><span class=w>        
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>dest</span><span class=p>:</span><span class=w> </span><span class=l>/app/start.sh</span><span class=w>
+</span></span></span></code></pre></div><ul><li>Если в <strong>dappfile.yaml</strong> описан только один образ, мы можем использовать тильду <code>~</code> для обозначения образа по-умолчанию</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>dimg</span><span class=p>:</span><span class=w> </span><span class=l>~</span><span class=w>
+</span></span></span></code></pre></div><ul><li>Если мы хотим указать в качестве зависимостей этапа сборки (stageDependencies) все файлы, которые добавляются в образ, используем астериск в кавычках <code>"*"</code></li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>git</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>- <span class=nt>add</span><span class=p>:</span><span class=w> </span><span class=l>/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>to</span><span class=p>:</span><span class=w> </span><span class=l>/app</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>stageDependencies</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>install</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=s2>&#34;*&#34;</span><span class=w>
+</span></span></span></code></pre></div><ul><li>При указании stageDependencies пути должны быть указаны относительные (относительно указанного в <code>- add:</code>)</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>git</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>- <span class=nt>add</span><span class=p>:</span><span class=w> </span><span class=l>/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>to</span><span class=p>:</span><span class=w> </span><span class=l>/app</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>stageDependencies</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>install</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=l>composer.json</span><span class=w>
+</span></span></span></code></pre></div><ul><li><p>Добавление файлов в образ командой git происходит между этапами <code>beforeInstall</code> и <code>install</code>, поэтому stageDependencies нет смысла задавать для beforeInstall, к тому же такая попытка приведёт к ошибке
+<img src=/wp-content/uploads/2018/12/Screenshot-from-2018-12-04-01-16-14.png alt></p></li><li><p>Для директивы git можно указывать несколько <code>- add:</code> со своими stageDependencies для работы с разными каталогами</p></li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>git</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>- <span class=nt>add</span><span class=p>:</span><span class=w> </span><span class=l>/src</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>to</span><span class=p>:</span><span class=w> </span><span class=l>/app</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>stageDependencies</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>install</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=s2>&#34;*&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>- <span class=nt>add</span><span class=p>:</span><span class=w> </span><span class=l>/assets</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>to</span><span class=p>:</span><span class=w> </span><span class=l>/assets</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>stageDependencies</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>install</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=s2>&#34;style.css&#34;</span><span class=w>
+</span></span></span></code></pre></div><ul><li>Для использования ansible переменных конструкцию с названием переменной и двойными фигурными скобками <code>{{ }}</code> надо дополнительно заключать в гравис, заключая уже это в ещё одни фигурные скобки с двойными кавычками — вспоминаем, что dapp написан на ruby</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>ansible</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>beforeInstall</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Install additional packages&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>apt</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;{{`{{ item }}`}}&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state</span><span class=p>:</span><span class=w> </span><span class=l>present</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_cache</span><span class=p>:</span><span class=w> </span><span class=kc>yes</span><span class=w>
+</span></span></span></code></pre></div><ul><li>Чтобы с помощью ansible скопировать содержимое какого-либо файла в файл в образе, можно использовать функцию <code>.Files.Get</code>. Пути указываем относительно местоположение самого <strong>dappfile.yaml</strong>. Не забываем использовать <code>indent</code>, чтобы получить правильные отступы в yaml-файле, иначе получим ошибку</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>ansible</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>copy</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>content</span><span class=p>:</span><span class=w> </span><span class=l>|</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span>{{<span class=w> </span><span class=l>.Files.Get &#34;files/nginx/nginx.conf&#34; | indent 8 }}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>dest</span><span class=p>:</span><span class=w> </span><span class=l>/etc/nginx/nginx.conf</span><span class=w>
+</span></span></span></code></pre></div><p>Также за дополнительными полезностями в работе с dapp можно обратиться к официальному <a href=https://flant.github.io/dapp/faq.html>FAQ</a></p></section><section><script async src=https://comments.app/js/widget.js?3 data-comments-app-website=t_mH3MdB data-limit=5></script></section></article></div><div id=side class="pr-1 bg-white"><aside class=pr-3><div id=toc class="Box Box--blue mb-3"><b>dapp — утилита для сборки и деплоя контейнеров. Особенности работы</b><nav id=TableOfContents></nav></div><div></div></aside></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray"><p><a href=https://creativecommons.org/licenses/by-sa/4.0/><img src=/images/cc-by-sa.png alt></a></p><p>Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
-<a href=https://gohugo.io class=link-gray-dark>Hugo</a>
-</p>
-</span>
-</div>
-</div>
-</body>
-</html>
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a></p></span></div></div></body></html>

@@ -1,197 +1,61 @@
-<!doctype html><html>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>
-PHP профайлер tideways + xhgui &ndash; Of Code & Systems
-</title>
-<meta name=description property="og:description" content="Введение Об удобстве использования профайлера, да ещё с графическим интерфейсом и говорить нечего, особенно когда надо найти узкие места под нагрузкой.
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>PHP профайлер tideways + xhgui &ndash; Of Code & Systems</title><meta name=description property="og:description" content="Введение Об удобстве использования профайлера, да ещё с графическим интерфейсом и говорить нечего, особенно когда надо найти узкие места под нагрузкой.
 tideways - само расширение php для сбора данных о производительности кода
 xhgui - графический веб-интерфейс (см. скриншот выше), который, помимо всего прочего, сохраняет данные профилирования в mongodb и затем использует их для вывода статистики
-|">
-<meta name=apple-mobile-web-app-title content="Of Code & Systems">
-<link rel=stylesheet href=/assets/syntax.css>
-<link rel=stylesheet href=/assets/primer-build.css>
-<link rel=stylesheet href=/assets/style.css>
-</head>
-<body class=bg-gray style=background-color:#fdf6e3!important>
-<div id=holy class="container-lg bg-white h-100">
-<div id=header class="px-1 bg-white text-center">
-<div class=u-nav>
-<a class="u-nav-el u-nav-el-current" href=//zzamzam.dev>Blog</a>
-<a class=u-nav-el href=//docs.zzamzam.dev>Docs</a>
-</div>
-<nav class="UnderlineNav UnderlineNav--right px-2">
-<a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>
-Of Code & Systems
-</a>
-</nav>
-</div>
-<div role=main id=main class="holy-main markdown-body px-4 bg-white">
-<div class=Subhead>
-<div class=Subhead-heading>
-<div class="h1 mt-3 mb-1">PHP профайлер tideways + xhgui</div>
-</div>
-<div class=Subhead-description>
-<a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link>
-<span class="Label Label--gray-darker">документация</span>
-</a>
-<a href=/tags/php class=muted-link>
-<span class="Label Label--gray">php</span>
-</a>
-<div class=float-md-right>
-<span title="Lastmod: 2017-08-16. Published at: 2017-08-16.">
-2017-08-16
-</span>
-</div>
-</div>
-</div>
-<article>
-<section class="pb-6 mb-3 border-bottom">
-<div id=toc class="Box Box--blue mb-3">
-<b>Содержание</b><nav id=TableOfContents>
-<ul>
-<li>
-<ul>
-<li><a href=#введение>Введение</a></li>
-<li><a href=#установка>Установка</a>
-<ul>
-<li><a href=#как-собрать-tideways>Как собрать tideways</a></li>
-<li><a href=#устанавливаем-xhgui>Устанавливаем xhgui</a></li>
-<li><a href=#создадим-конфиг-чтобы-настроить-частоту-профилирования>Создадим конфиг, чтобы настроить частоту профилирования</a></li>
-<li><a href=#кусок-конфига-xhguiconfigconfigphp-отвечающий-за-частоту-профилирования>Кусок конфига xhgui/config/config.php, отвечающий за частоту профилирования</a></li>
-</ul>
-</li>
-<li><a href=#включаем-профилирование>Включаем профилирование</a></li>
-</ul>
-</li>
-</ul>
-</nav></div>
-<p>
-<a href=/2017/08/php-profajler-tideways-xhgui/php-logo.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2017/08/php-profajler-tideways-xhgui/php-logo_hub5e048af1cb548a04bf727f259434501_42802_320x0_resize_box_3.png width=320 height=201></a>
-</p>
-<h2 id=введение>Введение</h2>
-<p>Об удобстве использования профайлера, да ещё с графическим интерфейсом и говорить нечего, особенно когда надо найти узкие места под нагрузкой.</p>
-<p><a href=https://github.com/tideways/php-profiler-extension>tideways</a> - само расширение php для сбора данных о производительности кода</p>
-<p><a href=https://github.com/perftools/xhgui>xhgui</a> - графический веб-интерфейс (см. скриншот выше), который, помимо всего прочего, сохраняет данные профилирования в mongodb и затем использует их для вывода статистики</p>
-<h2 id=установка>Установка</h2>
-<p>Нам понадобятся:</p>
-<ol>
-<li>Настроенный веб-сервер с fastcgi (в данном примере nginx + php-fpm)</li>
-<li>Сервер mongodb</li>
-<li>php-mongod</li>
-<li>gcc, make, php-devel, чтобы собрать расширение tideways</li>
-</ol>
-<h3 id=как-собрать-tideways>Как собрать tideways</h3>
-<p>Клонируем репозиторий и собираем модуль</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>git clone https://github.com/tideways/php-profiler-extension.git
-<span class=nb>cd</span> php-profiler-extension/
-phpize
-./configure
-make
-</code></pre></div><p>Ставим tideways.so</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>cp modules/tideways.so /usr/lib64/php/modules/tideways.so
-</code></pre></div><p>Добавляем /etc/php.d/40-tideways.ini</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-pkgconfig data-lang=pkgconfig>; Configuration for Tideways Profiler Extension<span class=err>
-</span><span class=err></span>; priority=40<span class=err>
-</span><span class=err></span><span class=na>extension</span><span class=o>=</span>tideways.so<span class=err>
-</span></code></pre></div><p>И рестартим php-fpm</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>service php-fpm restart
-</code></pre></div><h3 id=устанавливаем-xhgui>Устанавливаем xhgui</h3>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> /var/www
-git clone https://github.com/perftools/xhgui.git xhgui
-</code></pre></div><h3 id=создадим-конфиг-чтобы-настроить-частоту-профилирования>Создадим конфиг, чтобы настроить частоту профилирования</h3>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>cp xhgui/config/config.default.php xhgui/config/config.php
-</code></pre></div><h3 id=кусок-конфига-xhguiconfigconfigphp-отвечающий-за-частоту-профилирования>Кусок конфига xhgui/config/config.php, отвечающий за частоту профилирования</h3>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=o>&lt;?</span><span class=nx>php</span>
-
-<span class=o>...</span>
-    <span class=c1>// Profile 1 in 100 requests.
-</span><span class=c1></span>    <span class=c1>// You can return true to profile every request.
-</span><span class=c1></span>    <span class=s1>&#39;profiler.enable&#39;</span> <span class=o>=&amp;</span><span class=nx>gt</span><span class=p>;</span> <span class=k>function</span><span class=p>()</span> <span class=p>{</span>
-        <span class=c1>#return rand(1, 100) === 42;
-</span><span class=c1></span>        <span class=k>return</span> <span class=k>true</span><span class=p>;</span> <span class=c1># будет профилировать каждый запрос
-</span><span class=c1></span>    <span class=p>},</span>
-<span class=o>...</span>
-</code></pre></div><h2 id=включаем-профилирование>Включаем профилирование</h2>
-<p>Чтобы получить доступ к веб-интерфейсу xhgui, для nginx надо создать конфиг следующего вида:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=k>server</span> <span class=p>{</span>
-    <span class=kn>listen</span>   <span class=mi>8888</span><span class=p>;</span>
-
-    <span class=c1># root directive should be global
-</span><span class=c1></span>    <span class=kn>root</span>   <span class=s>/var/www/xhgui/webroot/</span><span class=p>;</span>
-    <span class=kn>index</span>  <span class=s>index.php</span><span class=p>;</span>
-
-    <span class=kn>location</span> <span class=s>/</span> <span class=p>{</span>
-        <span class=kn>try_files</span> <span class=nv>$uri</span> <span class=nv>$uri/</span> <span class=s>/index.php?</span><span class=nv>$args</span><span class=p>;</span>
-    <span class=p>}</span>
-
-    <span class=kn>location</span> <span class=p>~</span> <span class=sr>\.php$</span> <span class=p>{</span>
-        <span class=kn>try_files</span> <span class=nv>$uri</span> <span class=p>=</span><span class=mi>404</span><span class=p>;</span>
-        <span class=kn>include</span> <span class=s>/etc/nginx/fastcgi_params</span><span class=p>;</span>
-        <span class=kn>fastcgi_pass</span>    <span class=n>127.0.0.1</span><span class=p>:</span><span class=mi>9001</span><span class=p>;</span> <span class=c1># конечно, тут надо указать свой fastcgi обработчик
-</span><span class=c1></span>        <span class=kn>fastcgi_index</span>   <span class=s>index.php</span><span class=p>;</span>
-        <span class=kn>fastcgi_param</span> <span class=s>SCRIPT_FILENAME</span> <span class=nv>$document_root$fastcgi_script_name</span><span class=p>;</span>
-    <span class=p>}</span>
-<span class=p>}</span>
-</code></pre></div><p>А теперь для сайта, на котором будет профилировани, надо к каждому выполняемому php-скрипту добавить файл от xhgui</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=k>location</span> <span class=p>~</span> <span class=sr>\.php$</span> <span class=p>{</span>
-        <span class=kn>try_files</span> <span class=nv>$uri</span> <span class=p>=</span><span class=mi>404</span><span class=p>;</span>
-        <span class=kn>fastcgi_split_path_info</span> <span class=s>^(.+\.php)(.*)</span>$<span class=p>;</span>
-        <span class=kn>fastcgi_pass</span> <span class=n>127.0.0.1</span><span class=p>:</span><span class=mi>9001</span><span class=p>;</span>
-        <span class=kn>fastcgi_index</span>  <span class=s>index.php</span><span class=p>;</span>
-        <span class=kn>fastcgi_param</span>  <span class=s>SCRIPT_FILENAME</span>  <span class=nv>$document_root$fastcgi_script_name</span><span class=p>;</span>
-        <span class=kn>include</span> <span class=s>fastcgi_params</span><span class=p>;</span>
-        <span class=kn>fastcgi_ignore_client_abort</span> <span class=no>off</span><span class=p>;</span>
-        <span class=kn>fastcgi_param</span>  <span class=s>SERVER_NAME</span> <span class=nv>$http_host</span><span class=p>;</span>
-
-        <span class=kn>fastcgi_param</span> <span class=s>PHP_VALUE</span> <span class=s>&#34;auto_prepend_file=/var/www/xhgui/external/header.php&#34;</span><span class=p>;</span> <span class=c1># &amp;lt;--
-</span><span class=c1></span>    <span class=p>}</span>
-</code></pre></div><p>Всё. Теперь нужно перезапустить nginx и подключиться к интерфейсу xhgui на 8888 порту</p>
-<p><img src=/uploads/2017/08/2017-08-16_21-13-30.png alt></p>
-</section>
-<section>
-<script async src=https://comments.app/js/widget.js?3 data-comments-app-website=t_mH3MdB data-limit=5></script>
-</section>
-</article>
-</div>
-<div id=side class="pr-1 bg-white">
-<aside class=pr-3>
-<div id=toc class="Box Box--blue mb-3">
-<b>PHP профайлер tideways + xhgui</b><nav id=TableOfContents>
-<ul>
-<li>
-<ul>
-<li><a href=#введение>Введение</a></li>
-<li><a href=#установка>Установка</a>
-<ul>
-<li><a href=#как-собрать-tideways>Как собрать tideways</a></li>
-<li><a href=#устанавливаем-xhgui>Устанавливаем xhgui</a></li>
-<li><a href=#создадим-конфиг-чтобы-настроить-частоту-профилирования>Создадим конфиг, чтобы настроить частоту профилирования</a></li>
-<li><a href=#кусок-конфига-xhguiconfigconfigphp-отвечающий-за-частоту-профилирования>Кусок конфига xhgui/config/config.php, отвечающий за частоту профилирования</a></li>
-</ul>
-</li>
-<li><a href=#включаем-профилирование>Включаем профилирование</a></li>
-</ul>
-</li>
-</ul>
-</nav></div>
-<div>
-</div>
-</aside>
-</div>
-<div id=footer class="pt-2 pb-3 bg-white text-center">
-<span class="text-small text-gray">
-<p>
-<a href=https://creativecommons.org/licenses/by-sa/4.0/><img src=/images/cc-by-sa.png alt></a>
-</p>
-<p>
-Powered by the
+|"><meta name=apple-mobile-web-app-title content="Of Code & Systems"><link rel=stylesheet href=/assets/syntax.css><link rel=stylesheet href=/assets/primer-build.css><link rel=stylesheet href=/assets/style.css></head><body class=bg-gray style=background-color:#fdf6e3!important><div id=holy class="container-lg bg-white h-100"><div id=header class="px-1 bg-white text-center"><nav class="UnderlineNav UnderlineNav--right px-2"><a class="UnderlineNav-actions muted-link h1" href=https://zzamzam.dev/>Of Code & Systems</a></nav></div><div role=main id=main class="holy-main markdown-body px-4 bg-white"><div class=Subhead><div class=Subhead-heading><div class="h1 mt-3 mb-1">PHP профайлер tideways + xhgui</div></div><div class=Subhead-description><a href=/categories/%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F class=muted-link><span class="Label Label--gray-darker">документация</span></a>
+<a href=/tags/php class=muted-link><span class="Label Label--gray">php</span></a><div class=float-md-right><span title="Lastmod: 2017-08-16. Published at: 2017-08-16.">2017-08-16</span></div></div></div><article><section class="pb-6 mb-3 border-bottom"><div id=toc class="Box Box--blue mb-3"><b>Содержание</b><nav id=TableOfContents><ul><li><ul><li><a href=#введение>Введение</a></li><li><a href=#установка>Установка</a><ul><li><a href=#как-собрать-tideways>Как собрать tideways</a></li><li><a href=#устанавливаем-xhgui>Устанавливаем xhgui</a></li><li><a href=#создадим-конфиг-чтобы-настроить-частоту-профилирования>Создадим конфиг, чтобы настроить частоту профилирования</a></li><li><a href=#кусок-конфига-xhguiconfigconfigphp-отвечающий-за-частоту-профилирования>Кусок конфига xhgui/config/config.php, отвечающий за частоту профилирования</a></li></ul></li><li><a href=#включаем-профилирование>Включаем профилирование</a></li></ul></li></ul></nav></div><p><a href=/2017/08/php-profajler-tideways-xhgui/php-logo.png><img style="max-width:100%;width:auto;height:auto;display:block;margin:0 auto" src=/2017/08/php-profajler-tideways-xhgui/php-logo_hub5e048af1cb548a04bf727f259434501_42802_320x0_resize_box_3.png width=320 height=201></a></p><h2 id=введение>Введение</h2><p>Об удобстве использования профайлера, да ещё с графическим интерфейсом и говорить нечего, особенно когда надо найти узкие места под нагрузкой.</p><p><a href=https://github.com/tideways/php-profiler-extension>tideways</a> - само расширение php для сбора данных о производительности кода</p><p><a href=https://github.com/perftools/xhgui>xhgui</a> - графический веб-интерфейс (см. скриншот выше), который, помимо всего прочего, сохраняет данные профилирования в mongodb и затем использует их для вывода статистики</p><h2 id=установка>Установка</h2><p>Нам понадобятся:</p><ol><li>Настроенный веб-сервер с fastcgi (в данном примере nginx + php-fpm)</li><li>Сервер mongodb</li><li>php-mongod</li><li>gcc, make, php-devel, чтобы собрать расширение tideways</li></ol><h3 id=как-собрать-tideways>Как собрать tideways</h3><p>Клонируем репозиторий и собираем модуль</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>git clone https://github.com/tideways/php-profiler-extension.git
+</span></span><span class=line><span class=cl><span class=nb>cd</span> php-profiler-extension/
+</span></span><span class=line><span class=cl>phpize
+</span></span><span class=line><span class=cl>./configure
+</span></span><span class=line><span class=cl>make
+</span></span></code></pre></div><p>Ставим tideways.so</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>cp modules/tideways.so /usr/lib64/php/modules/tideways.so
+</span></span></code></pre></div><p>Добавляем /etc/php.d/40-tideways.ini</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-pkgconfig data-lang=pkgconfig><span class=line><span class=cl>; Configuration for Tideways Profiler Extension<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>; priority=40<span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=na>extension</span><span class=o>=</span>tideways.so<span class=err>
+</span></span></span></code></pre></div><p>И рестартим php-fpm</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>service php-fpm restart
+</span></span></code></pre></div><h3 id=устанавливаем-xhgui>Устанавливаем xhgui</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>cd</span> /var/www
+</span></span><span class=line><span class=cl>git clone https://github.com/perftools/xhgui.git xhgui
+</span></span></code></pre></div><h3 id=создадим-конфиг-чтобы-настроить-частоту-профилирования>Создадим конфиг, чтобы настроить частоту профилирования</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>cp xhgui/config/config.default.php xhgui/config/config.php
+</span></span></code></pre></div><h3 id=кусок-конфига-xhguiconfigconfigphp-отвечающий-за-частоту-профилирования>Кусок конфига xhgui/config/config.php, отвечающий за частоту профилирования</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=o>&lt;?</span><span class=nx>php</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>...</span>
+</span></span><span class=line><span class=cl>    <span class=c1>// Profile 1 in 100 requests.
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// You can return true to profile every request.
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=s1>&#39;profiler.enable&#39;</span> <span class=o>=&amp;</span><span class=nx>gt</span><span class=p>;</span> <span class=k>function</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>#return rand(1, 100) === 42;
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=k>return</span> <span class=k>true</span><span class=p>;</span> <span class=c1># будет профилировать каждый запрос
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>},</span>
+</span></span><span class=line><span class=cl><span class=o>...</span>
+</span></span></code></pre></div><h2 id=включаем-профилирование>Включаем профилирование</h2><p>Чтобы получить доступ к веб-интерфейсу xhgui, для nginx надо создать конфиг следующего вида:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=line><span class=cl><span class=k>server</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kn>listen</span>   <span class=mi>8888</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># root directive should be global
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kn>root</span>   <span class=s>/var/www/xhgui/webroot/</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kn>index</span>  <span class=s>index.php</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kn>location</span> <span class=s>/</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kn>try_files</span> <span class=nv>$uri</span> <span class=nv>$uri/</span> <span class=s>/index.php?</span><span class=nv>$args</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kn>location</span> <span class=p>~</span> <span class=sr>\.php$</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kn>try_files</span> <span class=nv>$uri</span> <span class=p>=</span><span class=mi>404</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=kn>include</span> <span class=s>/etc/nginx/fastcgi_params</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=kn>fastcgi_pass</span>    <span class=n>127.0.0.1</span><span class=p>:</span><span class=mi>9001</span><span class=p>;</span> <span class=c1># конечно, тут надо указать свой fastcgi обработчик
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kn>fastcgi_index</span>   <span class=s>index.php</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=kn>fastcgi_param</span> <span class=s>SCRIPT_FILENAME</span> <span class=nv>$document_root$fastcgi_script_name</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p>А теперь для сайта, на котором будет профилировани, надо к каждому выполняемому php-скрипту добавить файл от xhgui</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-nginx data-lang=nginx><span class=line><span class=cl><span class=k>location</span> <span class=p>~</span> <span class=sr>\.php$</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kn>try_files</span> <span class=nv>$uri</span> <span class=p>=</span><span class=mi>404</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=kn>fastcgi_split_path_info</span> <span class=s>^(.+\.php)(.*)</span>$<span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=kn>fastcgi_pass</span> <span class=n>127.0.0.1</span><span class=p>:</span><span class=mi>9001</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=kn>fastcgi_index</span>  <span class=s>index.php</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=kn>fastcgi_param</span>  <span class=s>SCRIPT_FILENAME</span>  <span class=nv>$document_root$fastcgi_script_name</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=kn>include</span> <span class=s>fastcgi_params</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=kn>fastcgi_ignore_client_abort</span> <span class=no>off</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=kn>fastcgi_param</span>  <span class=s>SERVER_NAME</span> <span class=nv>$http_host</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kn>fastcgi_param</span> <span class=s>PHP_VALUE</span> <span class=s>&#34;auto_prepend_file=/var/www/xhgui/external/header.php&#34;</span><span class=p>;</span> <span class=c1># &amp;lt;--
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=p>}</span>
+</span></span></code></pre></div><p>Всё. Теперь нужно перезапустить nginx и подключиться к интерфейсу xhgui на 8888 порту</p><p><img src=/uploads/2017/08/2017-08-16_21-13-30.png alt></p></section><section><script async src=https://comments.app/js/widget.js?3 data-comments-app-website=t_mH3MdB data-limit=5></script></section></article></div><div id=side class="pr-1 bg-white"><aside class=pr-3><div id=toc class="Box Box--blue mb-3"><b>PHP профайлер tideways + xhgui</b><nav id=TableOfContents><ul><li><ul><li><a href=#введение>Введение</a></li><li><a href=#установка>Установка</a><ul><li><a href=#как-собрать-tideways>Как собрать tideways</a></li><li><a href=#устанавливаем-xhgui>Устанавливаем xhgui</a></li><li><a href=#создадим-конфиг-чтобы-настроить-частоту-профилирования>Создадим конфиг, чтобы настроить частоту профилирования</a></li><li><a href=#кусок-конфига-xhguiconfigconfigphp-отвечающий-за-частоту-профилирования>Кусок конфига xhgui/config/config.php, отвечающий за частоту профилирования</a></li></ul></li><li><a href=#включаем-профилирование>Включаем профилирование</a></li></ul></li></ul></nav></div><div></div></aside></div><div id=footer class="pt-2 pb-3 bg-white text-center"><span class="text-small text-gray"><p><a href=https://creativecommons.org/licenses/by-sa/4.0/><img src=/images/cc-by-sa.png alt></a></p><p>Powered by the
 <a href=https://github.com/qqhann/hugo-primer class=link-gray-dark>Hugo-Primer</a> theme for
-<a href=https://gohugo.io class=link-gray-dark>Hugo</a>
-</p>
-</span>
-</div>
-</div>
-</body>
-</html>
+<a href=https://gohugo.io class=link-gray-dark>Hugo</a></p></span></div></div></body></html>
