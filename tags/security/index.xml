@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>security on Of Code &amp; Systems</title><link>https://zzamzam.dev/tags/security/</link><description>Recent content in security on Of Code &amp; Systems</description><generator>Hugo -- gohugo.io</generator><language>ru-RU</language><lastBuildDate>Thu, 17 Mar 2022 12:53:05 +0300</lastBuildDate><atom:link href="https://zzamzam.dev/tags/security/index.xml" rel="self" type="application/rss+xml"/><item><title>Keycloak. Описание настроек Clients</title><link>https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/</link><pubDate>Thu, 17 Mar 2022 12:53:05 +0300</pubDate><guid>https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/00.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/00.png" width="1404" height="53">&lt;/a>
+&lt;/p>
+&lt;h1 id="settings">Settings&lt;/h1>
+&lt;ul>
+&lt;li>
+&lt;p>Client ID&lt;/p>
+&lt;blockquote>
+&lt;p>Уникальный идентификатор клиента&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Name&lt;/p>
+&lt;blockquote>
+&lt;p>Отображаемое имя (например, в окне согласия (Consent))&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Description&lt;/p>
+&lt;blockquote>
+&lt;p>Описание&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Enabled&lt;/p>
+&lt;blockquote>
+&lt;p>Вкл/Выкл&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Always Display in Console&lt;/p>
+&lt;blockquote>
+&lt;p>Всегда показываться клиента в списках приложений пользователя в Account Management Console
+&lt;p>
+&lt;a href="https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/01.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/posts/2022-03-17-keycloak-client-settings/01.png" width="1920" height="530">&lt;/a>
+&lt;/p>
+&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;/ul></description></item><item><title>Keycloak. Описание Scopes и Roles</title><link>https://zzamzam.dev/posts/2022-03-16-keycloak-scopes-and-roles/</link><pubDate>Wed, 16 Mar 2022 16:53:05 +0300</pubDate><guid>https://zzamzam.dev/posts/2022-03-16-keycloak-scopes-and-roles/</guid><description>&lt;h1 id="keycloak-scopes-oidc">Keycloak Scopes OIDC&lt;/h1>
+&lt;p>default - включен в scopes по-умолчанию&lt;/p>
+&lt;p>optional - включается в scopes при запроса&lt;/p>
+&lt;p>consent - отображать в окне согласия при запросе разрешения на аутентификацию у пользователя&lt;/p>
+&lt;p>scope - добавлять в список scope токена&lt;/p>
+&lt;h2 id="oidc">OIDC&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>profile&lt;/p>
+&lt;blockquote>
+&lt;p>default, consent, scope&lt;/p>
+&lt;/blockquote>
+&lt;p>mappers:&lt;/p>
+&lt;ul>
+&lt;li>profile, name, gender, locale, etc&amp;hellip;&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>Keycloak. Описание настроек Realm'а</title><link>https://zzamzam.dev/posts/2022-03-16-keycloak-realm-settings/</link><pubDate>Wed, 16 Mar 2022 16:52:05 +0300</pubDate><guid>https://zzamzam.dev/posts/2022-03-16-keycloak-realm-settings/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/posts/2022-03-16-keycloak-realm-settings/keycloak.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/posts/2022-03-16-keycloak-realm-settings/keycloak.png" width="1054" height="281">&lt;/a>
+&lt;/p>
+&lt;h1 id="realm-settings">Realm Settings&lt;/h1>
+&lt;h2 id="general">General&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>Name&lt;/p>
+&lt;blockquote>
+&lt;p>Название/ID реалма&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Display name&lt;/p>
+&lt;blockquote>
+&lt;p>Отображаемое имя&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>HTML Display name&lt;/p>
+&lt;blockquote>
+&lt;p>Отображаемое имя с возможность использования html-тегов (например, добавление лого). Если задано, то имеет приоритет над Display name&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Frontend URL&lt;/p>
+&lt;blockquote>
+&lt;p>Позволяет для реалма задать отдельное доменное имя. Например, можно сделать такой матчинг &lt;code>auth.example.com -&amp;gt; sso.example.com/auth/realms/myrealm&lt;/code>. Обработкой занимается встроенный веб-сервер. То же самое можно реализовать через reverse-proxy, типа nginx, с установкой &lt;code>Host&lt;/code> хидера при проксировании и &amp;ldquo;обрезанием&amp;rdquo; путей&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Enabled&lt;/p>
+&lt;blockquote>
+&lt;p>Вкл/Выкл&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>User-Managed Access&lt;/p>
+&lt;blockquote>
+&lt;p>Включить управление своими ресурсами в Account Management Console (auth/realms/myrealm/account/resource)&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>Endpoints&lt;/p>
+&lt;blockquote>
+&lt;p>Ссылки OIDC/SAML, где можно получить все доступные точки входа для проктоколов&lt;/p>
+&lt;/blockquote>
+&lt;/li>
+&lt;/ul></description></item><item><title>Проблема безопасности SSH Agent Forwarding</title><link>https://zzamzam.dev/2019/12/problema-bezopasnosti-ssh-agent-forwarding/</link><pubDate>Fri, 06 Dec 2019 19:02:24 +0000</pubDate><guid>https://zzamzam.dev/2019/12/problema-bezopasnosti-ssh-agent-forwarding/</guid><description>&lt;p>Вот что говорит нам &lt;code>man ssh_config&lt;/code> про &lt;code>ForwardAgent&lt;/code>(перевод):&lt;/p>
+&lt;blockquote>
+&lt;p>Agent forwarding нужно включать с осторожностью. Пользователи, которые смогут обойти настройки разрешений файлов на удалённом хосте (в частности для unix-socket агента (ssh-agent)) могут получить доступ к локальному агенту через перенаправленное(forwarded)-соединение. Атакующий не сможет вытащить сами ключи из агента, однако получит возможность проводить с ключами действия, позволяющие ему проходить аутентификацию, используя загруженные в агент идентификаторы&lt;/p>
+&lt;/blockquote>
+&lt;p>Просто запомните: если ваш бастион(&lt;em>прим. пер.:&lt;/em> &lt;a href="https://en.wikipedia.org/wiki/Jump_server">jump box&lt;/a> - сервер-бастион для доступа в закрытый сетевой контур) скомпроментирован, и вы используете SSH agent forwarding, чтобы через него подключаться к другим машинам, то высок риск компроментации и этих удалённых машин.&lt;/p>
+&lt;p>Вместо этого лучше используйте &lt;code>ProxyCommand&lt;/code> или &lt;code>ProxyJump&lt;/code> (добавлен в OpenSSH 7.3). В таком случае ssh перенаправит TCP-соединение на удалённую машину через бастион, а само соединение будет установлено с вашей локальной машины. Если кто-нибудь на бастионе попробует провести MITM (man-in-the-middle) атаку на ваше соединение, то ssh об этом предупредит (&lt;em>прим. пер.: видимо, речь идёт о предупреждении об изменившимся ssh fingerprint(отпечатке)&lt;/em>)&lt;/p></description></item><item><title>Получаем wildcard сертификаты LetsEncrypt</title><link>https://zzamzam.dev/2018/03/poluchaem-wildcard-sertifikaty-letsencrypt/</link><pubDate>Mon, 26 Mar 2018 19:38:38 +0000</pubDate><guid>https://zzamzam.dev/2018/03/poluchaem-wildcard-sertifikaty-letsencrypt/</guid><description>&lt;p>
+&lt;a href="https://zzamzam.dev/2018/03/poluchaem-wildcard-sertifikaty-letsencrypt/letsencrypt-logo.png">&lt;img style="max-width: 100%; width: auto; height: auto; display: block; margin: 0 auto;" src="https://zzamzam.dev/2018/03/poluchaem-wildcard-sertifikaty-letsencrypt/letsencrypt-logo_huf2faf598ec360181ff1fa5e568772309_7226_320x0_resize_box_3.png" width="320" height="73">&lt;/a>
+&lt;/p>
+&lt;p>13 март 2018 года LetsEncrypt наконец &lt;a href="https://community.letsencrypt.org/t/acme-v2-and-wildcard-certificate-support-is-live/55579">объявила&lt;/a>, что, они начали поддерживать wildcard-сертификаты. Теперь можно за раз получить сертификат, включащий в себя все субдомены&lt;/p>
+&lt;p>&lt;img src="https://zzamzam.dev/wp-content/uploads/2018/03/2018-03-26_22-22-42.png" alt="">&lt;/p>
+&lt;p>Процесс всё так же автоматизирован через консольную утилиту certbot. Отличие в том, что теперь подтверждение домена можно сделать только через TXT-запись в DNS-зоне, а не через webroot, как раньше.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Качаем обновлённый certbot v0.22, разархивируем, переходим в папку&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">wget &lt;span class="s1">&amp;#39;https://github.com/certbot/certbot/archive/v0.22.2.tar.gz&amp;#39;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>tar -xvf v0.22.2.tar.gz &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>&lt;span class="nb">cd&lt;/span> certbot-0.22.2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;/li>
+&lt;/ol></description></item><item><title>Недоверенные корневые сертификаты от налоговой (ФНС России) в вашей системе</title><link>https://zzamzam.dev/2017/04/nedoverennye-kornevye-sertifikaty-o/</link><pubDate>Fri, 21 Apr 2017 10:34:48 +0000</pubDate><guid>https://zzamzam.dev/2017/04/nedoverennye-kornevye-sertifikaty-o/</guid><description>&lt;p>Чтобы отправить декларацию от доходах 3-НДФЛ в ФНС, можно получить ключ неквалифицированной электронной подписи и его сертификат, сформированные онлайн и отправить декларацию через личные кабинет налогоплательщика.&lt;/p>
+&lt;p>Если решите хранить ключ у себя на компьютере, то ФНС предложит установить «средства электронной подписи, которые установят в систему свои корневые сертификаты с неограниченными правами использования. А это означает, что ваша машина будет доверять любыми сертификатам, выпущенными удостоверяющим центром (УЦ), указанном в корневом сертификате.&lt;/p>
+&lt;p>Проверить установленные недоверенные сертификаты можно с помощью утилиты RCC (&lt;a href="https://www.trustprobe.com/fs1/apps.html">https://www.trustprobe.com/fs1/apps.html&lt;/a>). Утилита запускается в юзер-спейсе без запроса админских прав и только читает сертификаты.&lt;/p>
+&lt;p>&lt;strong>До установки средств электронной подписи&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://zzamzam.dev/wp-content/uploads/2017/08/01.png" alt="">&lt;/p>
+&lt;p>&lt;strong>После установки средств электронной подписи&lt;/strong> появляется аж четыре корневых УЦ&lt;/p></description></item><item><title>SELinux на веб-сервере</title><link>https://zzamzam.dev/2017/04/selinux-na-veb-servere/</link><pubDate>Wed, 19 Apr 2017 15:00:10 +0000</pubDate><guid>https://zzamzam.dev/2017/04/selinux-na-veb-servere/</guid><description>&lt;h3 id="введение">Введение&lt;/h3>
+&lt;p>Когда-то, настраивая nginx+php-fpm, я просто делал &lt;strong>setenforce 0&lt;/strong> или правил &lt;strong>/etc/selinux/config&lt;/strong>, перманентно отключая selinux на сервере&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>/etc/selinux/config&lt;/strong>&lt;/p>
+&lt;/blockquote>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-ini" data-lang="ini">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># This file controls the state of SELinux on the system.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># SELINUX= can take one of these three values:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># enforcing - SELinux security policy is enforced.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># permissive - SELinux prints warnings instead of enforcing.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># disabled - No SELinux policy is loaded.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">SELINUX&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s">disabled&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Теперь, наконец разобравшись, я понял, что никогда больше не буду выключать selinux&lt;/p></description></item></channel></rss>

@@ -2,7 +2,69 @@
 &lt;p>Из-за того, что индексный файл helm репы bitnami стал весить слишком много (23МБ+ на момент написания этой заметки), разработчики стали &amp;ldquo;выкидывать&amp;rdquo; оттуда старые версии чартов&lt;/p>
 &lt;h1 id="что-делать">Что делать&lt;/h1>
 &lt;p>Полный индекс со всеми версиями можно забирать из специальной ветки на гитхабе&lt;/p>
-&lt;p>Для этого надо заменить url helm репозитория &lt;code>https://charts.bitnami.com/bitnami&lt;/code> на &lt;code>https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami&lt;/code>&lt;/p></description></item><item><title>Организация деплоя в множество окружений с помощью helmfile</title><link>https://zzamzam.dev/2020/03/helmfile-ogranization/</link><pubDate>Wed, 04 Mar 2020 23:32:24 +0300</pubDate><guid>https://zzamzam.dev/2020/03/helmfile-ogranization/</guid><description>&lt;blockquote>
+&lt;p>Для этого надо заменить url helm репозитория &lt;code>https://charts.bitnami.com/bitnami&lt;/code> на &lt;code>https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami&lt;/code>&lt;/p></description></item><item><title>Как можно собирать образы контейнеров</title><link>https://zzamzam.dev/2021/04/docker-build-options-on-ci/</link><pubDate>Mon, 26 Apr 2021 11:33:00 +0300</pubDate><guid>https://zzamzam.dev/2021/04/docker-build-options-on-ci/</guid><description>&lt;h1 id="варианты-запуска-сборок">Варианты запуска сборок&lt;/h1>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Shell executor&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>docker-in-docker&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Изолированные друг от друга контейнеры, т.к. здесь child контейнеры от контейнера dind, а не от хостового docker.sock&lt;/li>
+&lt;li>Необходим запуск с privileged (небезопасно)&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Проброс docker.sock&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Все контейнеры - siblings (видят друг друга), т.к. запускается через хостовый docker&lt;/li>
+&lt;li>Небезопасно, т.к. можно выполнять какие угодно docker команды на хосте, в т.ч. пробрасывать хостовые папки и запускать privileged контейнеры&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>buildah/buildkit/img&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Позволяют внутри докер контейнера запускать сборку образа без докер-демона&lt;/li>
+&lt;li>Требуется unprivileged_userns_clone (user namespaces), у которого свои security-риски&lt;/li>
+&lt;li>Синтаксис запуска отличается -&amp;gt; переучивать команду&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>kaniko&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Позволяют внутри докер контейнера запускать сборку образа без докер-демона&lt;/li>
+&lt;li>Не поддерживается установка бинарника в свой образ. Необходимо использовать официальный образ&lt;/li>
+&lt;li>Синтаксис запуска отличается -&amp;gt; переучивать команду&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h1 id="потенциальные-векторы-атаки">Потенциальные векторы атаки&lt;/h1>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>Источник&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>В сборке используется публичный образ, в котором в entrypoint выполняется команда проверки docker.sock и запуск контейнера через него&lt;/li>
+&lt;li>При сборке в зависимостях (напрмер, node) скачивается зловред, который запускается в процессе сборки. Далее проверка docker.sock и запуск контейнера через него&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;strong>Цель&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Закрепиться в системе. Через докер возможно установить свои бинарники и сервисы в систему&lt;/li>
+&lt;li>Дальнейший скан сети и поиск уязвимостей для распространения и закрепления&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol></description></item><item><title>Как избежать запуска двойного pipeline при использовании merge requests pipelines?</title><link>https://zzamzam.dev/2020/06/gitlab-avoid-double-pipeline-run/</link><pubDate>Mon, 15 Jun 2020 21:00:24 +0300</pubDate><guid>https://zzamzam.dev/2020/06/gitlab-avoid-double-pipeline-run/</guid><description>&lt;p>&lt;a href="https://docs.gitlab.com/ee/ci/merge_request_pipelines/">Пайплайны для Merge Requests&lt;/a> существуют отдельно (имеют лейбл detached) и запускается независимо от основного pipeline. Из-за этого если сделать push в репу в ветку, из которой в гитлабе есть открытый МР, то запускаются 2 одинаковых пайплайна&lt;/p>
+&lt;p>&lt;img src="https://zzamzam.dev/wp-content/uploads/2020/06/double-pipeline.png" alt="">
+ 
+Есть варианта, чтобы это избежать:&lt;/p>
+&lt;ol>
+&lt;li>Дублировать все джобы через extends, чтобы разделить на запускаемые на МРах и на обычные&lt;/li>
+&lt;li>Не запускать CI на некоторых ветках, пока из них нет открытого МРа&lt;/li>
+&lt;/ol></description></item><item><title>Организация деплоя в множество окружений с помощью helmfile</title><link>https://zzamzam.dev/2020/03/helmfile-ogranization/</link><pubDate>Wed, 04 Mar 2020 23:32:24 +0300</pubDate><guid>https://zzamzam.dev/2020/03/helmfile-ogranization/</guid><description>&lt;blockquote>
 &lt;p>Эта статья на Хабре &lt;a href="https://habr.com/ru/post/491108/">https://habr.com/ru/post/491108/&lt;/a>&lt;/p>
 &lt;/blockquote>
 &lt;p>&lt;a href="https://github.com/roboll/helmfile">Helmfile&lt;/a> - обёртка для &lt;a href="https://github.com/helm/helm/">helm&lt;/a>, которая позволяет в одном месте описывать множество helm релизов, параметризовать их чарты для нескольких окружений, а также задавать порядок их деплоя.&lt;/p>
