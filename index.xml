@@ -76,8 +76,7 @@ done
 &lt;pre tabindex="0">&lt;code>docker pull centos@sha256:be65f488b7764ad3638f236b7b515b3678369a5124c47b8d32916d6487418ea4
 docker pull centos:7.9.2009
 docker pull centos:7
-&lt;/code>&lt;/pre>&lt;p>Чтобы удалить образы, нам нужно удалять их по дайджестам, а затем средствами Nexus подчистить &amp;ldquo;осиротевшие&amp;rdquo; теги, которые не ссылаются ни на какой дайджест, после чего выполнить compact blobstore
-{.is-info}&lt;/p>
+&lt;/code>&lt;/pre>&lt;p>Чтобы удалить образы, нам нужно удалять их по дайджестам, а затем средствами Nexus подчистить &amp;ldquo;осиротевшие&amp;rdquo; теги, которые не ссылаются ни на какой дайджест, после чего выполнить compact blobstore&lt;/p>
 &lt;/blockquote>
 &lt;ol>
 &lt;li>Установить утилиту crane&lt;/li>
@@ -90,7 +89,7 @@ cat /dev/null &amp;gt; all_tags.txt
 for tag in $(crane ls &amp;#34;${REGISTRY_URL}/${IMAGE}&amp;#34;); do
 echo &amp;#34;${REGISTRY_URL}/${IMAGE}:${tag}&amp;#34; &amp;gt;&amp;gt; all_tags.txt
 done
-&lt;/code>&lt;/pre>&lt;ol start="4">
+&lt;/code>&lt;/pre>&lt;ol>
 &lt;li>Сформировать список НУЖНЫХ тегов целевого образа
 Тут, по сути, надо из всех тегов выделить те теги, которые нужно оставить. Например, исключить все, которые заканчиваются на PIPELINE_ID (5,6 - значный из gitlab)
 &lt;code>grep -vE '^.+[0-9]{5,6}$' all_tags.txt &amp;gt; keep_tags.txt&lt;/code>&lt;/li>
@@ -103,7 +102,7 @@ for image in $(cat all_tags.txt); do
 echo &amp;#34;${REGISTRY_URL}/${IMAGE}@$(crane digest $image)&amp;#34; &amp;gt;&amp;gt; all_digests.txt;
 done
 sort -n all_digests.txt | uniq &amp;gt; all_digests_unique.txt
-&lt;/code>&lt;/pre>&lt;ol start="6">
+&lt;/code>&lt;/pre>&lt;ol>
 &lt;li>Получить список уникальных дайджестов для НУЖНЫХ тегов&lt;/li>
 &lt;/ol>
 &lt;pre tabindex="0">&lt;code>REGISTRY_URL=&amp;#34;registry.home.arpa&amp;#34;
@@ -113,7 +112,7 @@ for image in $(cat keep_tags.txt); do
 echo &amp;#34;${REGISTRY_URL}/${IMAGE}@$(crane digest $image)&amp;#34; &amp;gt;&amp;gt; keep_digests.txt;
 done
 sort -n keep_digests.txt | uniq &amp;gt; keep_digests_unique.txt
-&lt;/code>&lt;/pre>&lt;ol start="7">
+&lt;/code>&lt;/pre>&lt;ol>
 &lt;li>Выбрать из списка всех дайджейстов те, которых нет в списке НУЖНЫХ дайджестов
 Флаг -u для uniq после сортировки двух списков выведет только те элементы, которые встречаются только один раз
 &lt;code>sort -n all_digests_unique.txt keep_digests_unique.txt | uniq -u &amp;gt; delete_digests.txt&lt;/code>&lt;/li>
@@ -122,7 +121,7 @@ sort -n keep_digests.txt | uniq &amp;gt; keep_digests_unique.txt
 &lt;pre tabindex="0">&lt;code>for digest in $(cat delete_digests.txt); do
 crane delete $digest;
 done
-&lt;/code>&lt;/pre>&lt;ol start="9">
+&lt;/code>&lt;/pre>&lt;ol>
 &lt;li>Запустить в Nexus таску для удаления &amp;ldquo;осиротевших&amp;rdquo; тегов (&lt;strong>Docker - Delete unused manifests&lt;/strong>)&lt;/li>
 &lt;li>Запустить compact соответствующего blobstore (&lt;strong>Admin - Compact blob store&lt;/strong>)&lt;/li>
 &lt;/ol></description></item><item><title>Переменные окружения процесса в linux</title><link>https://zzamzam.dev/posts/2023-11-18-linux-process-envs/</link><pubDate>Sat, 18 Nov 2023 12:00:00 +0300</pubDate><guid>https://zzamzam.dev/posts/2023-11-18-linux-process-envs/</guid><description>&lt;h1 id="как-получить-переменные-окружения-процесса">Как получить переменные окружения процесса&lt;/h1>
@@ -307,10 +306,9 @@ admissionregistration.k8s.io). Этот хук означает, что надо
 &lt;p>&lt;strong>Это же можно сделать проще&lt;/strong>
 &lt;code>/usr/local/bin/kubeadm alpha kubeconfig user --org system:nodes --client-name system:node:$(hostname) &amp;gt;/etc/kubernetes/kubelet.conf&lt;/code>&lt;/p>
 &lt;p>&lt;strong>Для версии &amp;gt;=1.20 можно также задать cluster-name&lt;/strong>
-&lt;code>/usr/local/bin/kubeadm alpha kubeconfig user --org system:nodes --client-name system:node:$(hostname) --cluster-name cluster.local &amp;gt;/etc/kubernetes/kubelet.conf&lt;/code>
-{.is-info}&lt;/p>
+&lt;code>/usr/local/bin/kubeadm alpha kubeconfig user --org system:nodes --client-name system:node:$(hostname) --cluster-name cluster.local &amp;gt;/etc/kubernetes/kubelet.conf&lt;/code>&lt;/p>
 &lt;/blockquote>
-&lt;ol start="3">
+&lt;ol>
 &lt;li>Перезапустить docker и kubelet
 &lt;code>systemctl restart docker kubelet&lt;/code>&lt;/li>
 &lt;/ol>

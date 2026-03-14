@@ -70,10 +70,9 @@ admissionregistration.k8s.io). Этот хук означает, что надо
 &lt;p>&lt;strong>Это же можно сделать проще&lt;/strong>
 &lt;code>/usr/local/bin/kubeadm alpha kubeconfig user --org system:nodes --client-name system:node:$(hostname) &amp;gt;/etc/kubernetes/kubelet.conf&lt;/code>&lt;/p>
 &lt;p>&lt;strong>Для версии &amp;gt;=1.20 можно также задать cluster-name&lt;/strong>
-&lt;code>/usr/local/bin/kubeadm alpha kubeconfig user --org system:nodes --client-name system:node:$(hostname) --cluster-name cluster.local &amp;gt;/etc/kubernetes/kubelet.conf&lt;/code>
-{.is-info}&lt;/p>
+&lt;code>/usr/local/bin/kubeadm alpha kubeconfig user --org system:nodes --client-name system:node:$(hostname) --cluster-name cluster.local &amp;gt;/etc/kubernetes/kubelet.conf&lt;/code>&lt;/p>
 &lt;/blockquote>
-&lt;ol start="3">
+&lt;ol>
 &lt;li>Перезапустить docker и kubelet
 &lt;code>systemctl restart docker kubelet&lt;/code>&lt;/li>
 &lt;/ol>
