@@ -7,4 +7,12 @@
 &lt;p>&lt;strong>High CPU Droplets: Early Access&lt;/strong>&lt;/p>
 &lt;p>We are now offering early access to a new set Droplet Plans: High CPU Droplets.&lt;/p>
 &lt;p>Focused on reliable high performance, High CPU Droplets are backed by a more powerful, best-in-class CPU, and won&amp;rsquo;t have any overcommitment on the underlying physical resources.&lt;/p>
-&lt;/blockquote></description></item></channel></rss>
+&lt;/blockquote></description></item><item><title>Вышел Proxmox VE 3.0</title><link>https://zzamzam.dev/2013/05/vyshel-proxmox-ve-3-0/</link><pubDate>Tue, 21 May 2013 19:11:00 +0000</pubDate><guid>https://zzamzam.dev/2013/05/vyshel-proxmox-ve-3-0/</guid><description>&lt;p>&lt;strong>upd 28.05.13&lt;/strong>&lt;br>
+Полностью зарелизили версию 3.0&lt;br>
+Теперь можно создавать шаблоны для будущего удобного развёртывания и клонировать свои виртуальные машины.&lt;br>
+Выдержка из &lt;a href="http://pve.proxmox.com/wiki/VM_Templates_and_Clones">proxmox wiki&lt;/a>:&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Templates&lt;/strong> - Templates are pre-configured operating system environments that deploy in a couple of clicks&lt;/li>
+&lt;li>&lt;strong>Linked Clone&lt;/strong> - A linked clone VM requires less disk space but cannot run without access to the base VM Template&lt;/li>
+&lt;li>&lt;strong>Full Clone&lt;/strong> - A full clone VM is a complete copy and is fully independant to the original VM or VM Template, but requires the same disk space as the original.&lt;/li>
+&lt;/ul></description></item></channel></rss>
